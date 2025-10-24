@@ -1,0 +1,9 @@
+{
+    "name": "ismaae/shopping-admin",
+    "description": "shopping admin system",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "mpdf/mpdf": "8.1"
+    }
+}

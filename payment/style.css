@@ -1,0 +1,50 @@
+.thaiqrpayment {
+    background-color: #717fe0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 70px;
+    text-align: center;
+}
+
+.qr-box {
+    background-color: #ffffff;
+    border: 2px solid #717fe0;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 20px;
+}
+
+.countdown-box {
+    margin-top: 10px;
+    background-color: #ebeeff;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.info-title {
+    margin-bottom: 10px;
+    background-color: #717fe0;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.info-item {
+    margin-bottom: 10px;
+    background-color: #ebeeff;
+    padding: 20px;
+    border: 2px solid #717fe0;
+    border-radius: 10px;
+}
+
+.info-label {
+    font-size: 12pt;
+}
+
+.my-bg {
+    background-image: url('../images/9307194.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}

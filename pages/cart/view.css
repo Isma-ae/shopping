@@ -1,0 +1,68 @@
+.product_out {
+    background-color: #f8f9fa;
+}
+
+.product-style {
+    border-radius: 10px;
+    margin-right: 5px;
+    font-size: 11px;
+    background-color: #f2f2f2;
+    padding: 5px;
+}
+
+.product-style2 {
+    border-radius: 10px;
+    margin-top: 5px;
+    font-size: 11px;
+    background-color: #f2f2f2;
+    padding: 5px;
+    color: #c82333;
+}
+
+.my-column-1 {
+    width: 80px;
+    padding-left: 50px;
+}
+
+.my-column-2 {
+    width: 133px;
+}
+
+.my-column-3 {
+    width: 320px;
+}
+
+.my-column-4 {
+    width: 172px;
+    text-align: right;
+}
+
+.my-column-5 {
+    width: 120px;
+    padding-right: 50px;
+    text-align: right;
+}
+
+.text-red {
+    color: red !important;
+}
+
+/* ปุ่มยืนยัน (จองสินค้า) - เขียว */
+.swal-button--confirm {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.swal-button--confirm:hover {
+    background-color: #c82333 !important;
+}
+
+/* ปุ่มยกเลิก (ไม่จอง) - แดง */
+.swal-button--cancel {
+    background-color: #ccc !important;
+    color: #000 !important;
+}
+
+.swal-button--cancel:hover {
+    background-color: #ddd !important;
+}

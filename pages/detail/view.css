@@ -1,0 +1,94 @@
+.selectgroup {
+    display: inline-flex;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.selectgroup-item {
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    position: relative;
+    font-weight: 400 !important;
+}
+
+.selectgroup-input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}
+
+.selectgroup-input:checked+.selectgroup-button {
+    border-color: #1a2780;
+    z-index: 1;
+    color: #1a2780;
+    background: rgb(218 222 255);
+}
+
+.selectgroup-item:not(:last-child) .selectgroup-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.selectgroup-button {
+    display: block;
+    border: 1px solid rgba(0, 0, 0);
+    text-align: center;
+    padding: .375rem 1rem;
+    position: relative;
+    cursor: pointer;
+    border-radius: 3px;
+    color: #000;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    min-width: 2.375rem;
+}
+
+.selectgroup-pills {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.selectgroup-pills .selectgroup-item {
+    margin-right: .5rem;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+}
+
+.selectgroup-pills .selectgroup-button {
+    border-radius: 50px !important;
+}
+
+.selectgroup label {
+    margin-bottom: .5rem;
+    white-space: nowrap;
+}
+
+/* ปุ่มยืนยัน (จองสินค้า) - เขียว */
+.swal-button--confirm {
+    background-color: #28a745 !important;
+    color: #fff !important;
+}
+
+.swal-button--confirm:hover {
+    background-color: #218838 !important;
+}
+
+/* ปุ่มยกเลิก (ไม่จอง) - แดง */
+.swal-button--cancel {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.swal-button--cancel:hover {
+    background-color: #c82333 !important;
+}
