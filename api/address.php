@@ -1,7 +1,6 @@
 <?php
 
     include("../config/all.php");
-    $currentUser = $_SESSION['user_info'];
 	$fn = isset( $_POST["fn"] ) ? $_POST["fn"] : "";
 	switch ($fn) {
         case 'select_address'	    : select_address(); 	    break;
@@ -17,7 +16,7 @@
 
     function select_address() {
         global $DB;
-        global $currentUser;
+        $currentUser = $_SESSION['user_info'];
         $sql = "SELECT * 
                 FROM tb_address
                 INNER JOIN provinces

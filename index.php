@@ -95,21 +95,18 @@
         });
     })
     </script>
-    <!--===============================================================================================-->
     <script src="vendor/daterangepicker/moment.min.js"></script>
     <script src="vendor/daterangepicker/daterangepicker.js"></script>
     <script src="js/slick-custom.js"></script>
-    <!--===============================================================================================-->
     <script src="vendor/parallax100/parallax100.js"></script>
     <script>
     $('.parallax100').parallax100();
     </script>
-    <!--===============================================================================================-->
     <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
     <script>
-    $('.gallery-lb').each(function() { // the containers for all your galleries
+    $('.gallery-lb').each(function() {
         $(this).magnificPopup({
-            delegate: 'a', // the selector for gallery item
+            delegate: 'a',
             type: 'image',
             gallery: {
                 enabled: true
@@ -118,7 +115,6 @@
         });
     });
     </script>
-    <!--===============================================================================================-->
     <script src="vendor/isotope/isotope.pkgd.min.js"></script>
     <script src="vendor/sweetalert/sweetalert.min.js"></script>
     <script>
@@ -147,7 +143,6 @@
         });
     });
     </script>
-    <!--===============================================================================================-->
     <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script>
     $('.js-pscroll').each(function() {
@@ -164,7 +159,6 @@
         })
     });
     </script>
-    <!--===============================================================================================-->
     <script src="js/main.js"></script>
 
 </body>
