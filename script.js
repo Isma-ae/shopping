@@ -19,6 +19,27 @@ $(document).ready(function () {
             }
         });
     });
+
+    update_stock();
+
+    function update_stock() {
+        $.ajax({
+            type: "post",
+            url: "api/update_stock.php",
+            dataType: "json",
+            success: function (response) {
+
+            }
+        });
+    }
+
+    $('[name="search"]').on('keypress', function (e) {
+        if (e.which === 13) { // ถ้ากด Enter
+            e.preventDefault();
+            var search = $(this).val();
+            window.location.href = "?page=product&search=" + search;
+        }
+    });
 });
 
 function load_qty() {

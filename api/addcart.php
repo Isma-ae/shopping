@@ -23,6 +23,21 @@
     function add_cart() {
         global $DB;
         global $currentUser;
+        if ($_POST["variant_color"] != "") {
+            $color = " AND variant_color = '".$_POST["variant_color"]."'";
+            $message1 = "สี".$_POST["variant_color"]."";
+        } else {
+            $color = "";
+            $message1 = "";
+        }
+
+        if ($_POST["variant_size"] != "") {
+            $size = " AND variant_size = '".$_POST["variant_size"]."'";
+            $message2 = "ขนาด ".$_POST["variant_size"]."";
+        } else {
+            $size = "";
+            $message2 = "";
+        }
         $sql = "SELECT
                     variant_id,
                     variant_stock,
@@ -30,10 +45,7 @@
                 FROM variants
                 INNER JOIN product
                     ON variants.product_id = product.product_id
-                WHERE
-                    variant_color = '".$_POST["variant_color"]."'
-                    AND variant_size = '".$_POST["variant_size"]."'
-                    AND MD5(variants.product_id) = '".$_POST["product_id"]."'";
+                WHERE MD5(variants.product_id) = '".$_POST["product_id"]."'".$color."".$size."";
         $obj = $DB->QueryObj($sql);
         if ($obj[0]["variant_stock"] < $_POST["cart_qty"]) {
             if ($obj[0]["variant_stock"] < 1) {
@@ -45,7 +57,7 @@
                 echo json_encode([
                     "data"=>'n',
                     "title"=>$_POST["product_name"],
-                    "message"=> "สี".$_POST["variant_color"]." ขนาด ".$_POST["variant_size"]." ".$stock_text,
+                    "message"=> "$message1 $message2 ".$stock_text,
                     "icon"=>"error"
                 ]);
                 exit();
@@ -53,7 +65,7 @@
                 echo json_encode([
                     "data"=>'r',
                     "title"=>$_POST["product_name"],
-                    "message"=> "สี".$_POST["variant_color"]." ขนาด ".$_POST["variant_size"]." ".$stock_text." ต้องการจองใช่หรือไม่",
+                    "message"=> "$message1 $message2 ".$stock_text." ต้องการจองใช่หรือไม่",
                     "icon"=>"warning"
                 ]);
                 exit();

@@ -16,6 +16,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 var html = '';
+                var html2 = '';
                 $.each(response.data, function (i, v) {
                     if (v.img_main == 1) {
                         var checked = 'checked=""';
@@ -32,21 +33,37 @@ $(document).ready(function () {
                     html += '<a class="btn btn-sm btn-primary" href="../file/product/' + v.img_name + '" target="_blank"><i class="fas fa-eye"></i></a>';
                     html += '</label>';
                     html += '</div>';
+
+                    html2 += '<div class="col-6 col-md-2 col-sm-4">';
+                    html2 += '<label class="imagecheck mb-4">';
+                    html2 += '<input name="img_id" type="radio" value="' + v.img_id + '" class="imagecheck-input"/>';
+                    html2 += '<figure class="imagecheck-figure">';
+                    html2 += '<img src="../file/product/' + v.img_name + '" alt="title" class="imagecheck-image" />';
+                    html2 += '</figure>';
+                    html2 += '</label>';
+                    html2 += '</div>';
                 });
                 $('.image-data').html(html);
+                $('.color-img').html(html2);
             }
         });
     }
 
     $('#img_name').on('change', function () {
         var fn = 'upload_image';
-        var file = this.files[0];
+        var files = this.files;
         var product_id = $('#product_id').val();
-        if (file) {
+
+        if (files.length > 0) {
             var formData = new FormData();
             formData.append('fn', fn);
-            formData.append('img_name', file);
             formData.append('product_id', product_id);
+
+            // วนลูปเพิ่มไฟล์ทั้งหมดลงใน formData
+            for (var i = 0; i < files.length; i++) {
+                formData.append('img_name[]', files[i]);
+            }
+
             $.ajax({
                 url: 'api/product-image.php',
                 type: 'POST',
@@ -56,7 +73,8 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response.data === 'y') {
-                        select_image();
+                        select_image(); // โหลดภาพใหม่
+                        dataTable.ajax.reload();
                     } else {
                         Swal.fire(response.title, response.message, response.icon);
                     }
@@ -173,6 +191,8 @@ $(document).ready(function () {
             }
         ]
     });
+
+
 
     $('#productTable tbody').on('click', '.edit_variant', function () {
         var data = dataTable.row($(this).parents('tr')).data();

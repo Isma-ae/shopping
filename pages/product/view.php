@@ -16,6 +16,12 @@
 
         <div class="row isotope-grid">
             <?php
+                    $search = '';
+                    if (!empty($_GET['search'])) {
+                        $search_term = $DB->escape($_GET['search']); // ถ้ามีฟังก์ชัน escape
+                        $search = " AND product_name LIKE '%{$search_term}%'";
+                    }
+                    
                     $sql = "SELECT
                                 MD5(product.product_id) AS product_id,
                                 product_name,
@@ -27,11 +33,12 @@
                             LEFT JOIN img
                                 ON product.product_id = img.product_id
                                 AND img_main = '1'
-                            WHERE product_status = 2
+                            WHERE product_status = 2 $search
                             GROUP BY 
                                 product_id, 
                                 product_name, 
-                                img_name";
+                                img_name
+                            ORDER BY product.product_id DESC";
                     $obj = $DB->QueryObj($sql);
                     if(sizeof($obj)>0){
                         foreach ($obj as $key => $row) {

@@ -16,7 +16,7 @@
 <html lang="en">
 
 <head>
-    <title>Homeaaa</title>
+    <title>OAR Shopping | <?=$PAGE;?></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="images/icons/logo-mini.png" />
@@ -43,8 +43,9 @@
 </head>
 
 <body class="animsition">
+    <div class="wrapper">
 
-    <?php
+        <?php
 		include_once("master/header.php");
 
         if( ChkPermit() ) {
@@ -68,6 +69,10 @@
             if( !file_exists("pages/".$PAGE."/view.js") ) return false;
             return true;
         }
+    ?>
+        <div class="push"></div>
+    </div>
+    <?php
 
         include_once("master/footer.php");
     ?>

@@ -63,18 +63,14 @@
     function delete_product() {
         global $DB;
         $dir = "../../file/product/";
-        $dir2 = "../../file/product-stock/";
         $obj = $DB->QueryObj("SELECT * FROM variants WHERE product_id = '".$_POST['product_id']."'");
         $obj2 = $DB->QueryObj("SELECT * FROM img WHERE product_id = '".$_POST['product_id']."'");
         $delete = $DB->QueryDelete("product","product_id = '".$_POST['product_id']."'");
         $delete2 = $DB->QueryDelete("variants","product_id = '".$_POST['product_id']."'");
         $delete3 = $DB->QueryDelete("img","product_id = '".$_POST['product_id']."'");
         if ($delete) {
-            foreach ($obj as $value) {
+            foreach ($obj2 as $value) {
                 deleteFile($dir,$value["img_name"]);
-            }
-            foreach ($obj2 as $value2) {
-                deleteFile($dir2,$value2["color_img"]);
             }
             echo json_encode([
                 "title"=>"สำเร็จ",

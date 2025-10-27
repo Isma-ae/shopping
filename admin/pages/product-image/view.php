@@ -37,7 +37,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="img_name">เพิ่มรูป</label>
-                        <input type="file" class="form-control" id="img_name" placeholder="img_name">
+                        <input type="file" class="form-control" id="img_name" name="img_name[]" multiple>
                     </div>
                     <div>
                         <label class="form-label">รูปสินค้าหลัก</label>
@@ -96,22 +96,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="color_img">รูปสินค้าในแต่ละสี</label>
-                                <div class="row">
-                                    <?php
-                                        $obj2 = $DB->QueryObj("SELECT * FROM img WHERE product_id = '".$_GET["product_id"]."'");
-                                        foreach ($obj2 as $key2 => $value2) {
-                                    ?>
-                                    <div class="col-6 col-md-2 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="img_id" type="radio" value="<?=$value2["img_id"];?>"
-                                                class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../file/product/<?=$value2["img_name"];?>" alt="title"
-                                                    class="imagecheck-image" />
-                                            </figure>
-                                        </label>
-                                    </div>
-                                    <?php }?>
+                                <div class="row color-img">
                                 </div>
                             </div>
                         </div>

@@ -70,7 +70,8 @@ $(document).ready(function () {
                     });
                     html += '</div>';
                 } else {
-                    html += '<input type="hidden" name="variant_size" value="' + response.data[0].variant_size + '">';
+                    var variant_size = "";
+                    select_price(variant_size);
                 }
                 $('.size-data').html(html);
                 $('[name="variant_size"]').change(function (e) {
@@ -97,7 +98,7 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (response) {
-                $('.price-data').html(response.data[0].variant_sale)
+                $('.price-data').html('฿' + response.data[0].variant_sale)
             }
         });
     }
@@ -119,13 +120,26 @@ $(document).ready(function () {
         if (color !== "" && typeof color !== "undefined") {
             var variant_color = color;
         } else {
-            var variant_color = $('[name="variant_color"]').val();
+            var variant_color = "";
         }
-        var size = $('[name="variant_size"]:checked').val();
-        if (size !== "" && typeof size !== "undefined") {
-            var variant_size = size;
+
+        var variant_color = "";
+        if ($('input[name="variant_color"]').length > 0) {
+            variant_color = $('input[name="variant_color"]:checked').val();
         } else {
-            var variant_size = $('[name="variant_size"]').val();
+            variant_color = "";
+        }
+        var variant_size = "";
+        if ($('input[name="variant_size"]').length > 0) {
+            var checked = $('input[name="variant_size"]:checked');
+            if (checked.length > 0) {
+                variant_size = checked.val();
+            } else {
+                swal("กรุณาเลือกขนาดสินค้า", "", "warning");
+                return;
+            }
+        } else {
+            variant_size = "";
         }
         var cart_qty = $('[name="cart_qty"]').val();
         $.ajax({
@@ -202,17 +216,17 @@ $(document).ready(function () {
     function reserve_product() {
         var product_id = $('#product_id').val();
         var product_name = $('.product_name').text();
-        var variant_color = $('[name="variant_color"]:checked').val();
+        var color = $('[name="variant_color"]:checked').val();
         if (color !== "" && typeof color !== "undefined") {
             var variant_color = color;
         } else {
-            var variant_color = $('[name="variant_color"]').val();
+            var variant_color = "";
         }
         var size = $('[name="variant_size"]:checked').val();
         if (size !== "" && typeof size !== "undefined") {
             var variant_size = size;
         } else {
-            var variant_size = $('[name="variant_size"]').val();
+            var variant_size = "";
         }
         var cart_qty = $('[name="cart_qty"]').val();
         $.ajax({
@@ -237,6 +251,163 @@ $(document).ready(function () {
             }
         });
     }
+
+    $('#buy-product').click(function (e) {
+        e.preventDefault();
+        var product_id = $('#product_id').val();
+        var cart_qty = $('[name="cart_qty"]').val();
+        $.ajax({
+            type: "post",
+            url: "api/addcart.php",
+            data: {
+                fn: "buy_product",
+                product_id: product_id
+            },
+            dataType: "dataType",
+            success: function (res) {
+
+            }
+        });
+    });
+
+    let offset = 0;
+    const limit = 5;
+    let totalReviews = 0;
+
+    // โหลดรีวิวครั้งแรก
+    loadReviews();
+
+    function loadReviews() {
+        const product_id = $('#product_id').val();
+        $.ajax({
+            type: "POST",
+            url: "api/review.php",
+            data: {
+                fn: "select_review",
+                product_id,
+                limit,
+                offset
+            },
+            dataType: "json",
+            success: function (res) {
+                totalReviews = res.total;
+
+                let html = '';
+                $.each(res.data, function (i, v) {
+                    let rating = '';
+                    for (let i = 1; i <= 5; i++) {
+                        rating += `<i class="zmdi ${i <= v.review_rating ? 'zmdi-star' : 'zmdi-star-outline'}"></i>`;
+                    }
+
+                    html += `
+                        <div class="flex-w flex-t p-tb-20 bor12">
+                            <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                                <img src="images/feedback.png" alt="AVATAR">
+                            </div>
+                            <div class="size-207">
+                                <div class="flex-w flex-sb-m p-b-10">
+                                    <span class="mtext-107 cl2 p-r-20">${v.name}</span>
+                                    <span class="fs-18 cl11">${rating}</span>
+                                </div>
+                                <p class="stext-102 cl6">${v.review_detail}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                $('.review-data').append(html);
+
+                offset += res.data.length;
+
+                // ซ่อนปุ่มถ้าโหลดครบ
+                if (offset >= totalReviews) {
+                    $('#load-more').hide();
+                } else {
+                    $('#load-more').show();
+                }
+            }
+        });
+    }
+
+    // เมื่อคลิกปุ่มโหลดเพิ่ม
+    $('#load-more').on('click', function () {
+        loadReviews();
+    });
+
+    $('.wrap-rating .item-rating').on('click', function () {
+        // หาตำแหน่งของดาวที่คลิก (index เริ่มที่ 0)
+        var index = $(this).index();
+
+        // ลูปเปลี่ยนดาวทั้งหมด
+        $('.wrap-rating .item-rating').each(function (i) {
+            if (i <= index) {
+                $(this).removeClass('zmdi-star-outline').addClass('zmdi-star');
+            } else {
+                $(this).removeClass('zmdi-star').addClass('zmdi-star-outline');
+            }
+        });
+
+        // นับจำนวนดาวที่เปิดอยู่ (zmdi-star)
+        var count = $('.wrap-rating .zmdi-star').length;
+        $('[name="review_rating"]').val(count);
+    });
+
+
+    $('#insert-review').click(function (e) {
+        e.preventDefault();
+        var product_id = $('#product_id').val();
+        var review_rating = $('[name="review_rating"]').val();
+        var review_detail = $('[name="review_detail"]').val();
+        $.ajax({
+            type: "post",
+            url: "api/review.php",
+            data: {
+                fn: "add_review",
+                review_rating: review_rating,
+                review_detail: review_detail,
+                product_id: product_id,
+            },
+            dataType: "json",
+            success: function (res) {
+                if (res.data == 'f') {
+                    swal({
+                        title: res.title,
+                        text: res.message,
+                        icon: res.icon,
+                        buttons: {
+                            cancel: {
+                                text: "ยกเลิก",
+                                visible: true,
+                                className: "swal-button--cancel",
+                                closeModal: true,
+                            },
+                            confirm: {
+                                text: "เข้าสู่ระบบ",
+                                visible: true,
+                                className: "swal-button--confirm",
+                                closeModal: true,
+                            },
+                        },
+                    }).then((willInsert) => {
+                        if (willInsert) {
+                            window.location.href = "./login"
+                        }
+                    });
+                } else if (res.data == 't') {
+                    swal(res.title, res.message, res.icon);
+                    offset = 0;
+                    $('.review-data').empty();
+                    loadReviews();
+
+                    // ✅ ล้างค่าฟอร์มหลังรีวิว
+                    $('[name="review_rating"]').val('');
+                    $('[name="review_detail"]').val('');
+                } else {
+                    swal(res.title, res.message, res.icon);
+                }
+            }
+        });
+    });
 
     load_qty();
 

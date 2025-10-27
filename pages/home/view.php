@@ -57,6 +57,7 @@
                                 product_id, 
                                 product_name, 
                                 img_name
+                            ORDER BY product.product_id DESC
                             LIMIT 8";
                     $obj = $DB->QueryObj($sql);
                     if(sizeof($obj)>0){

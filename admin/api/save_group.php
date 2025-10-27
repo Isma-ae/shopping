@@ -7,6 +7,14 @@
     $product_id = $DB->QueryMaxId("product","product_id", "", 7);
     $img = $_FILES["img_name"];
     $img_name = uploadFile($dir,$img,md5($img_id));
+    if ($img_name != "") {
+        $DB->QueryInsert('img',[
+            'img_id' => $img_id,
+            'img_name' => $img_name,
+            'img_main' => '1',
+            'product_id' => $product_id
+        ]);
+    }
     $insert = $DB->QueryInsert('product',[
         'product_id'        => $product_id,
         'product_name'      => $_POST["product_name"],
@@ -36,12 +44,6 @@
     }
 
     if ($insert) {
-        $DB->QueryInsert('img',[
-            'img_id' => $img_id,
-            'img_name' => $img_name,
-            'img_main' => '1',
-            'product_id' => $product_id
-        ]);
         echo json_encode([
             "data"=>"y",
             "title"=>"สำเร็จ",

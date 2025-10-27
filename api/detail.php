@@ -24,12 +24,13 @@
 
     function select_price() {
         global $DB;
+        $size = ($_POST["variant_size"] != "") ? "AND variant_size = '".$_POST["variant_size"]."'" : "" ;
         $sql = "SELECT variant_sale
                 FROM variants
                 WHERE 
                     MD5(product_id) = '".$_POST["product_id"]."'
                     AND variant_color = '".$_POST["variant_color"]."'
-                    AND variant_size = '".$_POST["variant_size"]."'";
+                    $size";
         $return["data"] = $DB->QueryObj($sql);
 		echo json_encode( $return );
     }

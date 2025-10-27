@@ -27,40 +27,48 @@
     function upload_image() {
         global $DB;
         $dir = "../../file/product/";
-        $img_id = $DB->QueryMaxId("img", "img_id");
         $product_id = $_POST["product_id"];
-        $img = $_FILES["img_name"];
+        $files = $_FILES["img_name"];
+        $count = count($files["name"]);
+        $success = 0;
 
-        $img_name = uploadFile($dir, $img, md5($img_id));
+        for ($i = 0; $i < $count; $i++) {
+            if ($files["error"][$i] == 0) {
+                $img_id = $DB->QueryMaxId("img", "img_id");
+                $file = [
+                    "name" => $files["name"][$i],
+                    "tmp_name" => $files["tmp_name"][$i]
+                ];
 
-        if ($img_name != "") {
-            $insert = $DB->QueryInsert('img', [
-                'img_id' => $img_id,
-                'img_name' => $img_name,
-                'img_main' => '2',
-                'product_id' => $product_id
-            ]);
-        } else {
-            $insert = false;
+                $img_name = uploadFile($dir, $file, md5($img_id));
+                if ($img_name != "") {
+                    $insert = $DB->QueryInsert('img', [
+                        'img_id' => $img_id,
+                        'img_name' => $img_name,
+                        'img_main' => '2',
+                        'product_id' => $product_id
+                    ]);
+                    if ($insert) $success++;
+                }
+            }
         }
 
-        if ($insert) {
+        if ($success > 0) {
             echo json_encode([
                 "data" => "y",
                 "title" => "สำเร็จ",
-                "message" => "เพิ่มรูปสินค้าเรียบร้อย",
+                "message" => "อัปโหลดรูปสินค้าทั้งหมดเรียบร้อย",
                 "icon" => "success"
             ]);
         } else {
             echo json_encode([
                 "data" => "n",
                 "title" => "ไม่สำเร็จ",
-                "message" => "ไม่สามารถเพิ่มรูปสินค้าได้",
+                "message" => "ไม่สามารถอัปโหลดรูปสินค้าได้",
                 "icon" => "error"
             ]);
         }
     }
-
 
     function delete_image() {
         global $DB;
