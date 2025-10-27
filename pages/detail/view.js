@@ -254,21 +254,116 @@ $(document).ready(function () {
 
     $('#buy-product').click(function (e) {
         e.preventDefault();
+        $.ajax({
+            type: "post",
+            url: "api/addcart.php",
+            data: {
+                fn: "check_login"
+            },
+            dataType: "json",
+            success: function (res) {
+                if (res.data == 'f') {
+                    swal({
+                        title: res.title,
+                        text: res.message,
+                        icon: res.icon,
+                        buttons: {
+                            cancel: {
+                                text: "ยกเลิก",
+                                value: "cancel",
+                                visible: true,
+                                className: "swal-button--cancel",
+                                closeModal: true,
+                            },
+                            login: {
+                                text: "เข้าสู่ระบบก่อน",
+                                value: "login",
+                                visible: true,
+                                className: "swal-button--login",
+                                closeModal: true,
+                            },
+                            order: {
+                                text: "สั่งซื้อทันที",
+                                value: "order",
+                                visible: true,
+                                className: "swal-button--order",
+                                closeModal: true,
+                            },
+                        },
+                    }).then((value) => {
+                        switch (value) {
+                            case "order":
+                                buy_product();
+                                break;
+
+                            case "login":
+                                window.location.href = "./login";
+                                break;
+
+                            case "cancel":
+                            default:
+                                break;
+                        }
+                    });
+
+                } else {
+                    buy_product();
+                }
+
+            }
+        });
+    });
+
+    function buy_product() {
         var product_id = $('#product_id').val();
+        var product_name = $('.product_name').text();
+        var color = $('[name="variant_color"]:checked').val();
+        if (color !== "" && typeof color !== "undefined") {
+            var variant_color = color;
+        } else {
+            var variant_color = "";
+        }
+
+        var variant_color = "";
+        if ($('input[name="variant_color"]').length > 0) {
+            variant_color = $('input[name="variant_color"]:checked').val();
+        } else {
+            variant_color = "";
+        }
+        var variant_size = "";
+        if ($('input[name="variant_size"]').length > 0) {
+            var checked = $('input[name="variant_size"]:checked');
+            if (checked.length > 0) {
+                variant_size = checked.val();
+            } else {
+                swal("กรุณาเลือกขนาดสินค้า", "", "warning");
+                return;
+            }
+        } else {
+            variant_size = "";
+        }
         var cart_qty = $('[name="cart_qty"]').val();
         $.ajax({
             type: "post",
             url: "api/addcart.php",
             data: {
                 fn: "buy_product",
-                product_id: product_id
+                product_id: product_id,
+                product_name: product_name,
+                variant_color: variant_color,
+                variant_size: variant_size,
+                cart_qty: cart_qty
             },
-            dataType: "dataType",
+            dataType: "json",
             success: function (res) {
-
+                if (res.data == 't') {
+                    window.location.href = "?page=order&variant=" + res.variant_id + "&qty=" + cart_qty;
+                } else {
+                    swal(res.title, res.message, res.icon);
+                }
             }
         });
-    });
+    }
 
     let offset = 0;
     const limit = 5;

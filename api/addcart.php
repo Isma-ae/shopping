@@ -1,28 +1,45 @@
 <?php
 
     include("../config/all.php");
-
-    if (!isset($_SESSION["user_info"])) {
-        echo json_encode([
-            "data"=>'f',
-            "title"=>"กรุณาเข้าสู่ระบบ",
-            "message"=>"เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
-            "icon"=>"warning"
-        ]);
-        exit();
-    }
-    
-    $currentUser = $_SESSION['user_info'];
     $fn = isset( $_POST["fn"] ) ? $_POST["fn"] : "";
     switch ($fn) {
+        case 'check_login'	    : check_login();        break;
         case 'add_cart'	        : add_cart();           break;
         case 'reserve_product'  : reserve_product();    break;
+        case 'buy_product'      : buy_product();        break;
 		default: break;
 	}
 
+    function check_login() {
+        if (!isset($_SESSION["user_info"])) {
+            echo json_encode([
+                "data"=>'f',
+                "title"=>"กรุณาเข้าสู่ระบบ",
+                "message"=>"เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
+                "icon"=>"warning"
+            ]);
+        } else {
+            echo json_encode([
+                "data"=>'t',
+                "title"=>"เข้าสู่ระบบ",
+                "message"=>"หยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้าได้ทันที",
+                "icon"=>"success"
+            ]);
+        }
+    }
+
     function add_cart() {
         global $DB;
-        global $currentUser;
+        if (!isset($_SESSION["user_info"])) {
+            echo json_encode([
+                "data"=>'f',
+                "title"=>"กรุณาเข้าสู่ระบบ",
+                "message"=>"เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
+                "icon"=>"warning"
+            ]);
+            exit();
+        }
+        $currentUser = $_SESSION['user_info'];
         if ($_POST["variant_color"] != "") {
             $color = " AND variant_color = '".$_POST["variant_color"]."'";
             $message1 = "สี".$_POST["variant_color"]."";
@@ -111,7 +128,7 @@
     
     function reserve_product() {
         global $DB;
-        global $currentUser;
+        $currentUser = $_SESSION['user_info'];
         $sql = "SELECT
                     variant_id
                 FROM variants
@@ -156,4 +173,51 @@
                 "icon"=>"error"
             ]);
         }
+    }
+
+    function buy_product() {
+        global $DB;
+        if ($_POST["variant_color"] != "") {
+            $color = " AND variant_color = '".$_POST["variant_color"]."'";
+            $message1 = "สี".$_POST["variant_color"]."";
+        } else {
+            $color = "";
+            $message1 = "";
+        }
+
+        if ($_POST["variant_size"] != "") {
+            $size = " AND variant_size = '".$_POST["variant_size"]."'";
+            $message2 = "ขนาด ".$_POST["variant_size"]."";
+        } else {
+            $size = "";
+            $message2 = "";
+        }
+        $sql = "SELECT
+                    MD5(variant_id) AS variant_id,
+                    variant_stock
+                FROM variants
+                INNER JOIN product
+                    ON variants.product_id = product.product_id
+                WHERE MD5(variants.product_id) = '".$_POST["product_id"]."'".$color."".$size."";
+        $obj = $DB->QueryObj($sql);
+        if ($obj[0]["variant_stock"] < $_POST["cart_qty"]) {
+            if ($obj[0]["variant_stock"] < 1) {
+                $stock_text = "หมดแล้ว";
+            } else {
+                $stock_text = "เหลือเพียง ".$obj[0]["variant_stock"];
+            }
+            echo json_encode([
+                "data"=>'n',
+                "title"=>$_POST["product_name"],
+                "message"=> "$message1 $message2 ".$stock_text,
+                "icon"=>"error"
+            ]);
+            exit();
+        }
+
+        echo json_encode([
+            "data"=>'t',
+            "variant_id" => $obj[0]["variant_id"]
+        ]);
+
     }
