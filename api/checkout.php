@@ -1,13 +1,6 @@
 <?php
     include("../config/all.php");
 
-    if (!isset($_SESSION["user_info"])) {
-        echo json_encode([
-            "data"=>'f',
-        ]);
-        exit();
-    }
-    $currentUser = $_SESSION['user_info'];
     $fn = isset( $_POST["fn"] ) ? $_POST["fn"] : "";
 	switch ($fn) {
         case 'select_cart'	    : select_order(); 	    break;
@@ -18,7 +11,13 @@
 
     function select_order() {
         global $DB;
-        global $currentUser;
+        if (!isset($_SESSION["user_info"])) {
+            echo json_encode([
+                "data"=>'f',
+            ]);
+            exit();
+        }
+        $currentUser = $_SESSION['user_info'];
         $sql = "SELECT * 
             FROM cart
             INNER JOIN variants
@@ -38,7 +37,13 @@
 
     function create_order() {
         global $DB;
-        global $currentUser;
+        if (!isset($_SESSION["user_info"])) {
+            echo json_encode([
+                "data"=>'f',
+            ]);
+            exit();
+        }
+        $currentUser = $_SESSION['user_info'];
         $receipt_id = $_POST["receipt_id"];
         $receipt_name = $_POST['receipt_name'];
         $receipt_number = $_POST['receipt_number'];
@@ -125,9 +130,10 @@
         global $DB;
         $sql_order = "SELECT variant_id, qty
                     FROM order_detail
+                    INNER JOIN orders ON order_detail.order_id = orders.order_id
                     WHERE order_type = 1
                         AND status_id = 1
-                        AND order_id = ".$_POST["order_id"]."";
+                        AND order_detail.order_id = ".$_POST["order_id"]."";
         $order_items = $DB->QueryObj($sql_order);
         if(sizeof($order_items) > 0) {
             foreach ($order_items as $item) {
