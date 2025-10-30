@@ -92,6 +92,13 @@
                     <div class="flex-w flex-t p-t-15 p-b-30">
 
                         <div class="form-front">
+                            <?php
+                                if (isset($_SESSION["user_info"])) {
+                                    echo '<input type="hidden" id="have_user" value="1">';
+                                    $name = htmlspecialchars($currentUser['name']);
+                                    $phone = htmlspecialchars($currentUser['user_phone']);
+                                    if(htmlspecialchars($currentUser['role']) == 'admin'){
+                            ?>
                             <div class="row">
                                 <div class="col-6 p-b-5">
                                     <label class="stext-102 cl3" for="shipping_name">ชื่อ นามสกุล <span
@@ -106,14 +113,31 @@
                                         name="shipping_phone">
                                 </div>
                                 <div class="col-12">
-                                    <label class="stext-102 cl3" for="shipping_department">หน่วยงาน <span
-                                            class="clr">*</span></label>
+                                    <label class="stext-102 cl3" for="shipping_department">หน่วยงาน</label>
                                     <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10"
                                         id="shipping_department" name="shipping_department"></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-in">
+                            <?php
+
+                                    } else {
+                            ?>
+                            
+                            <p class="stext-111 cl6 p-t-2 form-front">
+                                มารับได้ที่เคาน์เตอร์ยืมคืน สำนักวิทยบริการ ม.อ.ปัตตานี
+                            </p>
+                            <input id="shipping_name" type="hidden" name="shipping_name" value="<?=$name;?>">
+                            <input id="shipping_phone" type="hidden" name="shipping_phone" value="<?=$phone;?>">
+                            <input id="shipping_department" type="hidden" name="shipping_department" value="">
+                            <?php
+                                    }
+                            ?>
+                            <?php
+                                } else {
+                                    echo '<input type="hidden" id="have_user" value="">';
+                                    $name = "";
+                                    $phone = "";
+                            ?>
                             <div class="row">
                                 <div class="col-6 p-b-5">
                                     <label class="stext-102 cl3" for="shipping_name">ชื่อ นามสกุล <span
@@ -123,10 +147,34 @@
                                 </div>
 
                                 <div class="col-6 p-b-5">
+                                    <label class="stext-102 cl3" for="shipping_phone">หมายเลขโทรศัพท์</label>
+                                    <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="shipping_phone" type="text"
+                                        name="shipping_phone">
+                                </div>
+                                <div class="col-12">
+                                    <label class="stext-102 cl3" for="shipping_department">หน่วยงาน</label>
+                                    <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10"
+                                        id="shipping_department" name="shipping_department"></textarea>
+                                </div>
+                            </div>
+                            <?php
+                                }
+                            ?>
+                        </div>
+                        <div class="form-in">
+                            <div class="row">
+                                <div class="col-6 p-b-5">
+                                    <label class="stext-102 cl3" for="shipping_name">ชื่อ นามสกุล <span
+                                            class="clr">*</span></label>
+                                    <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="shipping_name" type="text"
+                                        name="shipping_name" value="<?=$name;?>">
+                                </div>
+
+                                <div class="col-6 p-b-5">
                                     <label class="stext-102 cl3" for="shipping_phone">หมายเลขโทรศัพท์ <span
                                             class="clr">*</span></label>
                                     <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="shipping_phone" type="text"
-                                        name="shipping_phone">
+                                        name="shipping_phone" value="<?=$phone;?>">
                                 </div>
                                 <div class="col-12">
                                     <label class="stext-102 cl3" for="shipping_department">หน่วยงาน <span
@@ -137,6 +185,9 @@
                             </div>
                         </div>
                         <div class="p-l-13 form-out">
+                            <?php
+                                if (!isset($_SESSION["user_info"])) {
+                            ?>
                             <form class="w-full" id="form_address" data-mode="add">
                                 <div class="row p-b-25">
                                     <div class="col-6 p-b-5">
@@ -178,6 +229,7 @@
                                     </div>
                                 </div>
                             </form>
+                            <?php }?>
                         </div>
                     </div>
                 </div>
@@ -235,3 +287,73 @@
         </div>
     </div>
 </form>
+
+<?php
+    if (isset($_SESSION["user_info"])) {
+?>
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg1">
+                <h5 class="modal-title cl0 mtext-112" id="addModalLabel">ที่อยู่ใหม่</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="w-full" id="form_address" data-mode="add">
+                    <div class="row p-b-25">
+                        <input type="hidden" id="address_id" name="address_id" value="">
+                        <div class="col-6 p-b-5">
+                            <label class="stext-102 cl3" for="name">ชื่อ นามสกุล</label>
+                            <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name">
+                        </div>
+
+                        <div class="col-6 p-b-5">
+                            <label class="stext-102 cl3" for="phone">หมายเลขโทรศัพท์</label>
+                            <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="phone" type="text" name="phone">
+                        </div>
+                        <div class="col-6 p-b-5">
+                            <label class="stext-102 cl3" for="province_id">จังหวัด</label>
+                            <select class="address-select" name="province_id" id="province_id">
+                            </select>
+                        </div>
+                        <div class="col-6 p-b-5">
+                            <label class="stext-102 cl3" for="district_id">เขต / อำเภอ</label>
+                            <select class="address-select" name="district_id" id="district_id">
+                            </select>
+                        </div>
+                        <div class="col-6 p-b-5">
+                            <label class="stext-102 cl3" for="subdistrict_id">แขวง / ตำบล</label>
+                            <select class="address-select" name="subdistrict_id" id="subdistrict_id">
+                            </select>
+                        </div>
+                        <div class="col-6 p-b-5">
+                            <label class="stext-102 cl3" for="zip_code">รหัสไปรษณีย์</label>
+                            <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="zip_code" type="text" name="zip_code"
+                                readonly>
+                        </div>
+                        <div class="col-12 p-b-5">
+                            <label class="stext-102 cl3" for="address_at">บ้านเลขที่, ซอย, หมู่, ถนน</label>
+                            <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="address_at"
+                                name="address_at"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="flex-c-m stext-101 cl0 size-112 bg5 bor11 hov-btn4 p-lr-15 trans-04 m-b-10"
+                    data-dismiss="modal">
+                    ยกเลิก
+                </button>
+                <button type="button" class="flex-c-m stext-101 cl0 size-112 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-b-10"
+                    id="btn_submit_address">
+                    บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    }
+?>

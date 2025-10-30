@@ -16,7 +16,31 @@
         </ul>
     </div>
     <?php
-        $sql="SELECT * FROM orders 
+        $sql="SELECT
+                order_id,
+                order_no,
+                orders.user_id,
+                tb_address.name AS address_recipient_name,
+                tb_address.phone AS address_recipient_phone,
+                receipt_id,
+                receipt_name,
+                receipt_link,
+                orders.shipping_name,
+                total_price,
+                orders.status_id,
+                orders.shipping_type,
+                orders.shipping_name,
+                orders.shipping_phone,
+                orders.shipping_department,
+                address_at,
+                subdistrict_name_in_thai,
+                district_name_in_thai,
+                province_name_in_thai,
+                zip_code,
+                orders.transported_id,
+                transported_name,
+                parcel_number
+            FROM orders 
             LEFT JOIN tb_address ON orders.address_id = tb_address.id
             LEFT JOIN provinces
                 ON tb_address.province_id = provinces.province_id
@@ -73,16 +97,30 @@
                             </p>';
                         } else {
                             $ship_type = '<span class="text-primary fw-bold">ส่งภายนอกวิทยาเขต</span>';
-                            $address = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                <span class="cl6">ผู้รับ:</span> '.$obj[0]["name"].'
-                                <span class="cl12 ml-4 mr-6">|</span>
-                                <span class="cl6">โทร:</span> '.$obj[0]["phone"].'<br>
-                                <span class="cl6">ที่อยู่:</span> '.$obj[0]["address_at"].' ตำบล'.$obj[0]["subdistrict_name_in_thai"].' อำเภอ'.$obj[0]["district_name_in_thai"].' จังหวัด'.$obj[0]["province_name_in_thai"].' '.$obj[0]["zip_code"].'
-                                <br>
-                                <span class="cl6 text-primary">จัดส่งโดย:</span> '.$obj[0]["transported_name"].'
-                                <span class="cl12 ml-4 mr-6">|</span>
-                                <span class="cl6 text-primary">หมายเลขพัสดุ:</span> '.$obj[0]["parcel_number"].'
-                            </p>';
+                            if ($obj[0]["user_id"] != 0) {
+                                $address = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                    <span class="cl6">ผู้รับ:</span> '.$obj[0]["address_recipient_name"].'
+                                    <span class="cl12 ml-4 mr-6">|</span>
+                                    <span class="cl6">โทร:</span> '.$obj[0]["address_recipient_phone"].'<br>
+                                    <span class="cl6">ที่อยู่:</span> '.$obj[0]["address_at"].' ตำบล'.$obj[0]["subdistrict_name_in_thai"].' อำเภอ'.$obj[0]["district_name_in_thai"].' จังหวัด'.$obj[0]["province_name_in_thai"].' '.$obj[0]["zip_code"].'
+                                    <br>
+                                    <span class="cl6 text-primary">จัดส่งโดย:</span> '.$obj[0]["transported_name"].'
+                                    <span class="cl12 ml-4 mr-6">|</span>
+                                    <span class="cl6 text-primary">หมายเลขพัสดุ:</span> '.$obj[0]["parcel_number"].'
+                                </p>';
+                            } else {
+                                $address = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                    <span class="cl6">ผู้รับ:</span> '.$obj[0]["shipping_name"].'
+                                    <span class="cl12 ml-4 mr-6">|</span>
+                                    <span class="cl6">โทร:</span> '.$obj[0]["shipping_phone"].'
+                                    <span class="cl12 ml-4 mr-6">|</span>
+                                    <span class="cl6">ที่อยู่:</span> '.$obj[0]["shipping_department"].'
+                                    <br>
+                                    <span class="cl6 text-primary">จัดส่งโดย:</span> '.$obj[0]["transported_name"].'
+                                    <span class="cl12 ml-4 mr-6">|</span>
+                                    <span class="cl6 text-primary">หมายเลขพัสดุ:</span> '.$obj[0]["parcel_number"].'
+                                </p>';
+                            }
                         }
 
                         if ($obj[0]["receipt_id"] == 1) {

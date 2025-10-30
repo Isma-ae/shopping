@@ -1,12 +1,16 @@
 $(function () {
     var grandTotal = 0;
-    var totalQty = 0;
 
     $('.form-in').hide();
     $('.form-out').hide();
     $('.receipt_form').hide();
 
     $('.js-example-basic-single').select2({
+        width: '100%'
+    });
+
+    $('.address-select').select2({
+        dropdownParent: $('#addModal'),
         width: '100%'
     });
 
@@ -103,7 +107,12 @@ $(function () {
             $('.form-front').hide();
             $('.form-in').hide();
             $('.form-out').show();
-            select_provinces();
+            var have_user = $('#have_user').val();
+            if (have_user != "") {
+                select_address();
+            } else {
+                select_provinces();
+            }
         }
         shipping_price(grandTotal);
     });
@@ -256,6 +265,10 @@ $(function () {
             var shipping_name = $('[name="shipping_name"]').val();
             var shipping_phone = $('[name="shipping_phone"]').val();
             var shipping_department = $('[name="shipping_department"]').val();
+            if (shipping_name == "") {
+                swal("กรุณากรอกข้อมูลให้ครบ", "กรุณากรอกข้อมูลของท่านก่อนยืนยันสั่งซื้อ", "warning");
+                return;
+            }
             var address_id = 0;
         } else if ($('#shipping-type-2').is(':checked')) {
             var shipping_name = $('[name="shipping_name"]').val();
@@ -267,28 +280,66 @@ $(function () {
             }
             var address_id = 0;
         } else if ($('#shipping-type-3').is(':checked')) {
-            var shipping_name = $('#name').val();
-            var shipping_phone = $('#phone').val();
-            var address_at = $('#address_at').val();
-            var subdistrict_id = $('#subdistrict_id').val();
-            var district_id = $('#district_id').val();
-            var province_id = $('#province_id').val();
-            var zip_code = $('#zip_code').val();
-            var shipping_department = address_at + ' ตำบล';
-            var address_id = $('input[name="address_id"]:checked').val();
-            if (!address_id) {
-                swal("กรุณาเลือกที่อยู่จัดส่ง", "คุณยังไม่ได้เลือกที่อยู่สำหรับการจัดส่งสินค้า", "warning");
-                return;
+            var have_user = $('#have_user').val();
+            if (have_user != "") {
+                var shipping_name = "";
+                var shipping_phone = "";
+                var shipping_department = "";
+                var address_id = $('input[name="address_id"]:checked').val();
+                if (!address_id) {
+                    swal("กรุณาเลือกที่อยู่จัดส่ง", "คุณยังไม่ได้เลือกที่อยู่สำหรับการจัดส่งสินค้า", "warning");
+                    return;
+                }
+            } else {
+                var shipping_name = $('#name').val().trim();
+                var shipping_phone = $('#phone').val().trim();
+                var address_at = $('#address_at').val().trim();
+
+                var subdistrict_id = $('#subdistrict_id').val();
+                var district_id = $('#district_id').val();
+                var province_id = $('#province_id').val();
+
+                var subdistrict_name = $('#subdistrict_id option:selected').text();
+                var district_name = $('#district_id option:selected').text();
+                var province_name = $('#province_id option:selected').text();
+
+                var zip_code = $('#zip_code').val().trim();
+
+                var shipping_department = address_at +
+                    ' ตำบล' + subdistrict_name +
+                    ' อำเภอ' + district_name +
+                    ' จังหวัด' + province_name +
+                    ' ' + zip_code;
+                if (
+                    shipping_name === "" ||
+                    shipping_phone === "" ||
+                    address_at === "" ||
+                    !subdistrict_id ||
+                    !district_id ||
+                    !province_id ||
+                    zip_code === ""
+                ) {
+                    swal({
+                        title: "กรุณากรอกข้อมูลให้ครบ",
+                        text: "กรุณากรอกชื่อ เบอร์โทร ที่อยู่ และเลือกตำบล อำเภอ จังหวัด ให้ครบก่อนยืนยันสั่งซื้อ",
+                        icon: "warning",
+                    });
+                    return;
+                }
+                var address_id = 0;
             }
         }
         var shipping_price = parseFloat($('.shipping-price').text().replace(/[^\d.]/g, ''));
         var total_price = parseFloat($('.total-price').text().replace(/[^\d.]/g, ''));
-
+        var variant_id = $('#variant').val();
+        var cart_qty = $('#qty').val();
         $.ajax({
             type: "POST",
-            url: "api/checkout.php",
+            url: "api/order.php",
             data: {
                 fn: "create_order",
+                variant_id: variant_id,
+                cart_qty: cart_qty,
                 receipt_id: receipt_id,
                 receipt_name: receipt_name,
                 receipt_number: receipt_number,
@@ -308,6 +359,187 @@ $(function () {
                 } else {
                     alert("เกิดข้อผิดพลาด: " + res.msg);
                 }
+            }
+        });
+    });
+
+    function select_address() {
+        $.ajax({
+            type: "post",
+            url: "api/address.php",
+            data: {
+                fn: "select_address"
+            },
+            dataType: "json",
+            success: function (res) {
+                var html = '';
+                if (res.data.length === 0) {
+                    html += '<div class="flex-w m-r--5">';
+                    html += '<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 add-address">เพิ่มที่อยู่จัดส่ง</a>';
+                    html += '</div>';
+                } else {
+                    html += '<table style="width:100%">';
+                    $.each(res.data, function (i, v) {
+                        if (i == 0) {
+                            var checked = 'checked';
+                        } else {
+                            var checked = '';
+                        }
+                        html += '<tr class="bor12">';
+                        html += '<td style="width:5%">';
+                        html += '<input class="input-radio" type="radio" name="address_id" id="address_id' + (i + 1) + '" ' + checked + ' value="' + v.id + '">';
+                        html += '</td>';
+                        html += '<td style="width:75%"';
+                        html += ' data-id="' + v.id + '"';
+                        html += ' data-name="' + v.name + '"';
+                        html += ' data-phone="' + v.phone + '"';
+                        html += ' data-address="' + v.address_at + '"';
+                        html += ' data-province="' + v.province_id + '"';
+                        html += ' data-district="' + v.district_id + '"';
+                        html += ' data-subdistrict="' + v.subdistrict_id + '"';
+                        html += ' data-zipcode="' + v.zip_code + '">';
+                        html += '<label class="form-check-label" for="address_id' + (i + 1) + '">';
+                        html += '<b>' + v.name + ' ' + v.phone + '</b> ' + v.address_at + ' ตำบล' + v.subdistrict_name_in_thai + ' อำเภอ' + v.district_name_in_thai + ' จังหวัด' + v.province_name_in_thai + ' ' + v.zip_code;
+                        html += '</label>';
+                        html += '</td>';
+                        html += '<td style="width:20%">';
+                        html += '<div class="flex-w m-r--5">';
+                        html += '<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 edit-address">แก้ไข</a>';
+                        html += '<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 delete-address" data-id="' + v.id + '">ลบ</a>';
+                        html += '</div>';
+                        html += '</td>';
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                    html += '<div class="flex-w m-r--5 m-t-5">';
+                    html += '<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 add-address">เพิ่มที่อยู่จัดส่ง</a>';
+                    html += '</div>';
+                }
+                $('.form-out').html(html);
+            }
+        });
+    }
+
+    $('.form-out').on('click', '.add-address', function (e) {
+        e.preventDefault();
+
+        $('#addModalLabel').text('ที่อยู่ใหม่');
+        $('#addModal').modal('show');
+    });
+
+    $(document).on('click', '.edit-address', function (e) {
+        e.preventDefault();
+
+        // ดึงข้อมูลจาก <td> ที่อยู่ถัดไป (หรือใช้ .closest('tr').find('td:eq(1)')
+        var td = $(this).closest('tr').find('td:eq(1)');
+
+        var data = {
+            id: td.data('id'),
+            name: td.data('name'),
+            phone: td.data('phone'),
+            address: td.data('address'),
+            province: td.data('province'),
+            district: td.data('district'),
+            subdistrict: td.data('subdistrict'),
+            zipcode: td.data('zipcode')
+        };
+
+        // ใส่ค่าในฟอร์ม
+        $('#address_id').val(data.id);
+        $('#name').val(data.name);
+        $('#phone').val(data.phone);
+        $('#address_at').val(data.address);
+        $('#zip_code').val(data.zipcode);
+
+        // โหลด province / district / subdistrict พร้อมเลือกค่าเดิม
+        $('#province_id').val(data.province).trigger('change');
+        select_districts(data.province, data.district);
+        select_subdistricts(data.district, data.subdistrict);
+
+        // เปลี่ยนปุ่มและโหมด
+        $('#addModalLabel').text('แก้ไขที่อยู่จัดส่ง');
+        $('#btn_submit_address').text('บันทึกการแก้ไข');
+        $('#form_address').attr('data-mode', 'edit');
+
+        $('#addModal').modal('show');
+    });
+
+    $('#btn_submit_address').click(function (e) {
+        e.preventDefault(); // ป้องกันการ submit ปกติ
+
+        var form = $('#form_address');
+        var mode = form.attr('data-mode'); // 'add' หรือ 'edit'
+        var fn = (mode === 'edit') ? 'update_address' : 'insert_address';
+
+        $.ajax({
+            type: "post",
+            url: "api/address.php",
+            data: form.serialize() + '&fn=' + fn,
+            dataType: "json",
+            success: function (res) {
+                swal({
+                    title: res.title,
+                    text: res.message,
+                    icon: res.icon,
+                    button: "ตกลง",
+                }).then(() => {
+                    if (res.status === "success") {
+                        $('#addModal').modal('hide'); // ปิด modal
+                        form.trigger('reset').attr('data-mode', 'add');
+                        $('#btn_submit_address').text('ยืนยัน');
+                        select_address();
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: "เกิดข้อผิดพลาด!",
+                    text: error,
+                    icon: "error",
+                    button: "ตกลง",
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-address', function (e) {
+        e.preventDefault();
+
+        // ดึงค่า address_id จาก radio ที่อยู่ใน row เดียวกัน
+        var address_id = $(this).data('id');
+
+        swal({
+            title: "ยืนยันการลบ?",
+            text: "คุณต้องการลบที่อยู่นี้ใช่หรือไม่",
+            icon: "warning",
+            buttons: ["ยกเลิก", "ลบเลย"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "post",
+                    url: "api/address.php",
+                    data: {
+                        fn: "delete_address",
+                        address_id: address_id
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        swal({
+                            title: res.title,
+                            text: res.message,
+                            icon: res.icon,
+                            timer: 1500,
+                            buttons: false
+                        });
+
+                        // โหลดรายการที่อยู่ใหม่
+                        select_address();
+                    },
+                    error: function () {
+                        swal("เกิดข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+                    }
+                });
             }
         });
     });

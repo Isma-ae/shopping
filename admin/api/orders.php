@@ -23,21 +23,42 @@
 
     function select_order() {
         global $DB;
-        $sql="SELECT * FROM orders
-            LEFT JOIN users 
+        $sql="SELECT 
+            order_id,
+            order_no,
+            orders.user_id,
+            users.name,
+            tb_address.name AS recipient_name,
+            tb_address.phone AS recipient_phone,
+            orders.shipping_name,
+            total_price,
+            orders.status_id,
+            orders.shipping_type,
+            orders.shipping_name,
+            orders.shipping_phone,
+            orders.shipping_department,
+            address_at,
+            subdistrict_name_in_thai,
+            district_name_in_thai,
+            province_name_in_thai,
+            zip_code,
+            transported_name,
+            parcel_number
+        FROM orders
+        LEFT JOIN users 
                 ON orders.status_id = users.id
-            LEFT JOIN tb_address 
+        LEFT JOIN tb_address 
                 ON orders.address_id = tb_address.id
-            LEFT JOIN provinces
+        LEFT JOIN provinces
                 ON tb_address.province_id = provinces.province_id
-            LEFT JOIN districts
+        LEFT JOIN districts
                 ON tb_address.district_id = districts.district_id
-            LEFT JOIN subdistricts
+        LEFT JOIN subdistricts
                 ON tb_address.subdistrict_id = subdistricts.subdistrict_id
-            LEFT JOIN transported
+        LEFT JOIN transported
                 ON orders.transported_id = transported.transported_id
-            WHERE orders.status_id = '".$_POST["status_id"]."'
-            ORDER BY order_id DESC";
+        WHERE orders.status_id = '1'
+        ORDER BY order_id DESC";
         $return = array();
 		$return["data"] = $DB->QueryObj($sql);
 		echo json_encode( $return );

@@ -1,3 +1,11 @@
+<?php 
+
+if (!isset($_SESSION["user_info"])) {
+    echo "<script>window.location.href = './';</script>";
+    exit(); // สำคัญ! หยุดการทำงานของสคริปต์หลัง redirect
+}
+?>
+
 <section class="bg1 txt-center p-lr-15 p-tb-92">
     <h2 class="ltext-105 cl0 txt-center">
         รายการสั่งซื้อ
@@ -55,13 +63,19 @@
                                     foreach ($obj as $key => $value) {
                                         if ($value["shipping_type"] == "1") {
                                             $ship_type = 'รับหน้าร้าน';
-                                            $address = '';
+                                            $address = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                                <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].'
+                                            </p>';
                                         } elseif ($value["shipping_type"] == "2") {
                                             $ship_type = 'ส่งภายในวิทยาเขต';
-                                            $address = '';
+                                            $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                                <span class="cl6">ผู้รับ:</span> '.$value0["shipping_name"].' โทร'.$value0["shipping_phone"].'
+                                                <span class="cl6">คณะ / หน่วยงาน:</span> '.$value0["shipping_department"].'
+                                            </p>';
                                         } else {
                                             $ship_type = 'ส่งภายนอกวิทยาเขต';
                                             $address = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                                <span class="cl6">ผู้รับ:</span> '.$value["name"].' <span class="cl6">โทร:</span> '.$value["phone"].'<br>
                                                 <span class="cl6">ที่อยู่:</span> '.$value["address_at"].' ตำบล'.$value["subdistrict_name_in_thai"].' อำเภอ'.$value["district_name_in_thai"].' จังหวัด'.$value["province_name_in_thai"].' '.$value["zip_code"].'
                                             </p>';
                                         }
@@ -188,7 +202,9 @@
                                     foreach ($obj0 as $key0 => $value0) {
                                         if ($value0["shipping_type"] == "1") {
                                             $ship_type0 = 'รับหน้าร้าน';
-                                            $address0 = '';
+                                            $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                                <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].'
+                                            </p>';
                                         } elseif ($value0["shipping_type"] == "2") {
                                             $ship_type0 = 'ส่งภายในวิทยาเขต';
                                             $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">

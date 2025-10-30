@@ -119,8 +119,8 @@
                             <p class="stext-111 cl6 p-t-2 form-front">
                                 มารับได้ที่เคาน์เตอร์ยืมคืน สำนักวิทยบริการ ม.อ.ปัตตานี
                             </p>
-                            <input id="shipping_name" type="hidden" name="shipping_name" value="">
-                            <input id="shipping_phone" type="hidden" name="shipping_phone" value="">
+                            <input id="shipping_name" type="hidden" name="shipping_name" value="<?=htmlspecialchars($currentUser['name']);?>">
+                            <input id="shipping_phone" type="hidden" name="shipping_phone" value="<?=htmlspecialchars($currentUser['user_phone']);?>">
                             <input id="shipping_department" type="hidden" name="shipping_department" value="">
                             <?php
                                 }
@@ -132,14 +132,14 @@
                                     <label class="stext-102 cl3" for="shipping_name">ชื่อ นามสกุล <span
                                             class="clr">*</span></label>
                                     <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="shipping_name" type="text"
-                                        name="shipping_name">
+                                        name="shipping_name" value="<?=htmlspecialchars($currentUser['name']);?>">
                                 </div>
 
                                 <div class="col-6 p-b-5">
                                     <label class="stext-102 cl3" for="shipping_phone">หมายเลขโทรศัพท์ <span
                                             class="clr">*</span></label>
                                     <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="shipping_phone" type="text"
-                                        name="shipping_phone">
+                                        name="shipping_phone" value="<?=htmlspecialchars($currentUser['user_phone']);?>">
                                 </div>
                                 <div class="col-12">
                                     <label class="stext-102 cl3" for="shipping_department">หน่วยงาน <span

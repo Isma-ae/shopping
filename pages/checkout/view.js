@@ -23,7 +23,7 @@ $(function () {
             dataType: "json",
             success: function (res) {
                 if (res.data == 'f') {
-                    window.location.href = './login';
+                    window.location.href = './';
                     return;
                 }
                 if (res.data.length === 0) {
@@ -453,6 +453,10 @@ $(function () {
             var shipping_name = $('[name="shipping_name"]').val();
             var shipping_phone = $('[name="shipping_phone"]').val();
             var shipping_department = $('[name="shipping_department"]').val();
+            if (shipping_name == "") {
+                swal("กรุณากรอกข้อมูลให้ครบ", "กรุณากรอกข้อมูลก่อนยืนยันสั่งซื้อ", "warning");
+                return;
+            }
             var address_id = 0;
         } else if ($('#shipping-type-2').is(':checked')) {
             var shipping_name = $('[name="shipping_name"]').val();

@@ -72,7 +72,10 @@ $(document).ready(function () {
                 "data": "order_no"
             },
             {
-                "data": "name"
+                "data": function (row) {
+                    if (row.user_id != 0) return row.name;
+                    else return row.shipping_name;
+                }
             },
             {
                 "data": "total_price"
@@ -92,7 +95,17 @@ $(document).ready(function () {
                     } else if (row.shipping_type == '2') {
                         return 'ส่งภายในวิทยาเขต<br>ผู้รับ: ' + row.shipping_name + ' | โทร:' + row.shipping_phone + '<br>หน่วยงาน' + row.shipping_department;
                     } else {
-                        return 'ส่งภายนอกวิทยาเขต<br>ที่อยู่: ' + row.address_at + ' ตำบล' + row.subdistrict_name_in_thai + ' อำเภอ' + row.district_name_in_thai + ' จังหวัด' + row.province_name_in_thai + ' ' + row.zip_code + '<br>จัดส่งโดย: ' + row.transported_name + ' | หมายเลขพัสดุ' + row.parcel_number;
+                        if (row.transported_name != "" && row.transported_name != null) {
+                            var transported = '<br>จัดส่งโดย: ' + row.transported_name + ' | หมายเลขพัสดุ' + row.parcel_number;
+                        } else {
+                            var transported = '';
+                        }
+                        if (row.user_id != 0) {
+                            return 'ส่งภายนอกวิทยาเขต<br>ผู้รับ: ' + row.recipient_name + ' | โทร:' + row.recipient_phone + '<br>ที่อยู่: ' + row.address_at + ' ตำบล' + row.subdistrict_name_in_thai + ' อำเภอ' + row.district_name_in_thai + ' จังหวัด' + row.province_name_in_thai + ' ' + row.zip_code + transported;
+
+                        } else {
+                            return 'ส่งภายนอกวิทยาเขต<br>ผู้รับ: ' + row.shipping_name + ' | โทร:' + row.shipping_phone + '<br>ที่อยู่: ' + row.shipping_department + transported;
+                        }
                     }
                 }
             },

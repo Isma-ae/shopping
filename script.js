@@ -20,18 +20,18 @@ $(document).ready(function () {
         });
     });
 
-    update_stock();
+    // update_stock();
 
-    function update_stock() {
-        $.ajax({
-            type: "post",
-            url: "api/update_stock.php",
-            dataType: "json",
-            success: function (response) {
+    // function update_stock() {
+    //     $.ajax({
+    //         type: "post",
+    //         url: "api/update_stock.php",
+    //         dataType: "json",
+    //         success: function (response) {
 
-            }
-        });
-    }
+    //         }
+    //     });
+    // }
 
     $('[name="search"]').on('keypress', function (e) {
         if (e.which === 13) { // ถ้ากด Enter

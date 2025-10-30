@@ -40,7 +40,8 @@ function login() {
             'user_id' => $row["user_id"],
             'name' => $row["name"],
             'email' => $row["email"],
-            'role' => $row["role"]
+            'role' => $row["role"],
+            'user_phone' => $row["user_phone"]
         ];
         $_SESSION['user_info'] = $internalUser;
 
