@@ -11,7 +11,7 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="?page=order">ย้อนกลับ</a>
+                <a href="?page=orders">ย้อนกลับ</a>
             </li>
         </ul>
     </div>

@@ -666,6 +666,9 @@ html {
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 [ Header Mobile ]*/
 .wrap-header-mobile {
+  position: fixed;
+  z-index: 1100;
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;

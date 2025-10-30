@@ -129,7 +129,7 @@
                                     </div>
 
                                     <input class="mtext-104 cl3 txt-center num-product" type="number" name="cart_qty"
-                                        value="1">
+                                        value="1" readonly>
 
                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                         <i class="fs-16 zmdi zmdi-plus"></i>

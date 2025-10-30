@@ -141,7 +141,13 @@ $(document).ready(function () {
         } else {
             variant_size = "";
         }
-        var cart_qty = $('[name="cart_qty"]').val();
+        var qty = parseInt($('[name="cart_qty"]').val());
+        if (isNaN(qty) || qty <= 0) {
+            var cart_qty = 1;
+            $('[name="cart_qty"]').val(1);
+        } else {
+            var cart_qty = qty;
+        }
         $.ajax({
             type: "post",
             url: "api/addcart.php",

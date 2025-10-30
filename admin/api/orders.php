@@ -57,7 +57,7 @@
                 ON tb_address.subdistrict_id = subdistricts.subdistrict_id
         LEFT JOIN transported
                 ON orders.transported_id = transported.transported_id
-        WHERE orders.status_id = '1'
+        WHERE orders.status_id = ".$_POST["status_id"]."
         ORDER BY order_id DESC";
         $return = array();
 		$return["data"] = $DB->QueryObj($sql);

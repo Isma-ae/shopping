@@ -21,7 +21,7 @@ $(document).ready(function () {
                 if (res.count3[0].count_status > 0) {
                     $('.count3').html('(' + res.count3[0].count_status + ')');
                 }
-                if (condition) {
+                if (res.count4[0].count_status > 0) {
                     $('.count4').html('(' + res.count4[0].count_status + ')');
                 }
             }
