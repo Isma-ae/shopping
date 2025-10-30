@@ -22,6 +22,9 @@ if ($PAGE != 'home') {
                         // if (!isset($_SESSION["user_id"])) {
                         if (!isset($_SESSION["user_info"])) {
                     ?>
+                    <a href="?page=search-order" class="flex-c-m trans-04 p-lr-25">
+                        <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
+                    </a>
                     <a href="login/" class="flex-c-m trans-04 p-lr-25">
                         <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
                     </a>
@@ -153,6 +156,9 @@ if ($PAGE != 'home') {
                     // if (!isset($_SESSION["user_id"])) {
                     if (!isset($_SESSION["user_info"])) {
                     ?>
+                    <a href="?page=search-order" class="flex-c-m p-lr-10 trans-04">
+                        <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
+                    </a>
                     <a href="login/" class="flex-c-m p-lr-10 trans-04">
                         <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
                     </a>

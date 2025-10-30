@@ -10,8 +10,18 @@
         </span>
     </div>
 </div>
-<input type="hidden" id="variant" value="<?=$_GET["variant"];?>">
-<input type="hidden" id="qty" value="<?=$_GET["qty"];?>">
+<?php
+$variant = isset($_GET['variant']) ? $_GET['variant'] : '';
+$qty = isset($_GET['qty']) ? (int) $_GET['qty'] : 1;
+
+// ตรวจสอบค่า qty
+if ($qty <= 0) {
+    $qty = 1;
+}
+
+?>
+<input type="hidden" id="variant" value="<?=$variant;?>">
+<input type="hidden" id="qty" value="<?=$qty;?>">
 <form class="bg0 p-t-75 p-b-85">
     <div class="container">
         <div class="m-l-25 m-r--38 m-lr-0-xl">
