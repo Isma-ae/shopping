@@ -299,7 +299,10 @@ $(document).ready(function () {
                     }).then((value) => {
                         switch (value) {
                             case "order":
-                                buy_product();
+                                swal("หากไม่เข้าสู่ระบบให้บันทึกเลขที่ใบสั่งซื้อ เพื่อติดตามสถานะสินค้า")
+                                    .then((value) => {
+                                        buy_product();
+                                    });
                                 break;
 
                             case "login":

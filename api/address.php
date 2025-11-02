@@ -65,7 +65,7 @@
 
     function insert_address() {
         global $DB;
-        global $currentUser;
+        $currentUser = $_SESSION['user_info'];
         $address_id = $DB->QueryMaxId('tb_address','id');
         $insert = $DB->QueryInsert('tb_address',[
             "id" => $address_id,

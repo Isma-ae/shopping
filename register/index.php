@@ -34,14 +34,14 @@
             <div class="wrap-menu-desktop how-shadow1">
                 <nav class="limiter-menu-desktop container">
                     <a href="../" class="logo">
-                        <img src="../images/icons/oar-shopping.png" alt="IMG-LOGO">
+                        <img src="../images/icons/S__8732697.png" alt="IMG-LOGO">
                     </a>
                 </nav>
             </div>
         </div>
         <div class="wrap-header-mobile">
             <div class="logo-mobile">
-                <a href="../"><img src="../images/icons/oar-shopping.png" alt="IMG-LOGO"></a>
+                <a href="../"><img src="../images/icons/S__8732697.png" alt="IMG-LOGO"></a>
             </div>
         </div>
         <div class="menu-mobile">
@@ -54,8 +54,8 @@
     <section class="bg1 p-t-104 p-b-116">
         <div class="container">
             <div class="flex-w flex-tr">
-                <div class="p-lr-15 p-lr-15-lg p-t-55">
-                    <img src="../images/icons/OARShopping.png" style="width:100%">
+                <div class="p-r-30 p-lr-15-lg p-t-55">
+                    <img src="../images/icons/logo_login.png" style="width:100%">
                 </div>
 
                 <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md bg0">

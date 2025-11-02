@@ -69,21 +69,24 @@ if ($PAGE != 'home') {
 
                 <!-- Logo desktop -->
                 <a href="./" class="logo">
-                    <img src="images/icons/oar-shopping.png" alt="IMG-LOGO">
+                    <img src="images/icons/S__8732697.png" alt="IMG-LOGO">
                 </a>
 
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
                     <ul class="main-menu">
                         <li>
-                            <a href="./"><b>หน้าแรก</b></a>
+                            <a href="./"
+                                style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff;"><b>หน้าแรก</b></a>
                         </li>
 
                         <li>
-                            <a href="?page=product"><b>สินค้า</b></a>
+                            <a href="?page=product"
+                                style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff;"><b>สินค้า</b></a>
                         </li>
                         <li>
-                            <a href="?page=contact"><b>ติดต่อ</b></a>
+                            <a href="?page=contact"
+                                style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff;"><b>ติดต่อ</b></a>
                         </li>
                     </ul>
                 </div>
@@ -104,100 +107,102 @@ if ($PAGE != 'home') {
     </div>
 
     <!-- Header Mobile -->
-    <div class="wrap-header-mobile">
-        <!-- Logo moblie -->
-        <div class="logo-mobile">
-            <a href="./"><img src="images/icons/oar-shopping.png" alt="IMG-LOGO"></a>
-        </div>
-
-        <!-- Icon header -->
-        <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
-                <i class="zmdi zmdi-search"></i>
+    <div class="wrap-menu-mobile">
+        <div class="wrap-header-mobile">
+            <!-- Logo moblie -->
+            <div class="logo-mobile">
+                <a href="./"><img src="images/icons/S__8732697.png" alt="IMG-LOGO"></a>
             </div>
 
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
-                data-notify="2">
-                <a href="?page=cart"><i class="zmdi zmdi-shopping-cart"></i></a>
+            <!-- Icon header -->
+            <div class="wrap-icon-header flex-w flex-r-m m-r-15">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
+                    <i class="zmdi zmdi-search"></i>
+                </div>
+
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
+                    data-notify="2">
+                    <a href="?page=cart"><i class="zmdi zmdi-shopping-cart"></i></a>
+                </div>
+            </div>
+
+            <!-- Button show menu -->
+            <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
             </div>
         </div>
 
-        <!-- Button show menu -->
-        <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
-            <span class="hamburger-box">
-                <span class="hamburger-inner"></span>
-            </span>
-        </div>
-    </div>
 
-
-    <!-- Menu Mobile -->
-    <div class="menu-mobile">
-        <ul class="topbar-mobile">
-            <li>
-                <div class="left-top-bar">
-                    <?php
+        <!-- Menu Mobile -->
+        <div class="menu-mobile">
+            <ul class="topbar-mobile">
+                <li>
+                    <div class="left-top-bar">
+                        <?php
                         if (isset($_SESSION["user_info"])) {
                     ?>
 
-                    <a href="#" class="flex-c-m p-lr-10 trans-04">
-                        <b class="cl0 hov-cl1"><?=htmlspecialchars($currentUser['name'])?></b>
-                    </a>
-                    <?php
+                        <a href="#" class="flex-c-m p-lr-10 trans-04">
+                            <b class="cl0 hov-cl1"><?=htmlspecialchars($currentUser['name'])?></b>
+                        </a>
+                        <?php
                            
                     }
                     ?>
-                </div>
-            </li>
+                    </div>
+                </li>
 
-            <li>
-                <div class="right-top-bar flex-w h-full">
-                    <?php
+                <li>
+                    <div class="right-top-bar flex-w h-full">
+                        <?php
                     // if (!isset($_SESSION["user_id"])) {
                     if (!isset($_SESSION["user_info"])) {
                     ?>
-                    <a href="?page=search-order" class="flex-c-m p-lr-10 trans-04">
-                        <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
-                    </a>
-                    <a href="login/" class="flex-c-m p-lr-10 trans-04">
-                        <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
-                    </a>
-                    <?php
+                        <a href="?page=search-order" class="flex-c-m p-lr-10 trans-04">
+                            <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
+                        </a>
+                        <a href="login/" class="flex-c-m p-lr-10 trans-04">
+                            <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
+                        </a>
+                        <?php
                     } else {
                         if (htmlspecialchars($currentUser['role']) == 'admin') {
                     ?>
-                    <a href="./admin/" class="flex-c-m p-lr-10 trans-04">
-                        <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
-                    </a>
-                    <?php
+                        <a href="./admin/" class="flex-c-m p-lr-10 trans-04">
+                            <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
+                        </a>
+                        <?php
                         }
                     ?>
-                    <a href="?page=shipping_list" class="flex-c-m p-lr-10 trans-04">
-                        <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
-                    </a>
-                    <a href="#" class="flex-c-m p-lr-10 trans-04" id="logout">
-                        <b class="cl0 hov-cl1">ออกจากระบบ</b>
-                    </a>
-                    <?php
+                        <a href="?page=shipping_list" class="flex-c-m p-lr-10 trans-04">
+                            <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
+                        </a>
+                        <a href="#" class="flex-c-m p-lr-10 trans-04" id="logout">
+                            <b class="cl0 hov-cl1">ออกจากระบบ</b>
+                        </a>
+                        <?php
                         }
                     ?>
-                </div>
-            </li>
-        </ul>
+                    </div>
+                </li>
+            </ul>
 
-        <ul class="main-menu-m">
-            <li>
-                <a href="./">หน้าแรก</a>
-            </li>
+            <ul class="main-menu-m">
+                <li>
+                    <a href="./">หน้าแรก</a>
+                </li>
 
-            <li>
-                <a href="?page=product">สินค้า</a>
-            </li>
+                <li>
+                    <a href="?page=product">สินค้า</a>
+                </li>
 
-            <li>
-                <a href="?page=contact">ติดต่อ</a>
-            </li>
-        </ul>
+                <li>
+                    <a href="?page=contact">ติดต่อ</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Modal Search -->

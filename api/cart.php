@@ -34,7 +34,8 @@
                     ON variants.product_id = product.product_id
                 LEFT JOIN img
                     ON variants.img_id = img.img_id
-                WHERE user_id = '".htmlspecialchars($currentUser['id'])."'";
+                WHERE user_id = '".htmlspecialchars($currentUser['id'])."'
+                ORDER BY cart_id DESC";
             $return = array();
             $return["data"] = $DB->QueryObj($sql);
             echo json_encode( $return );

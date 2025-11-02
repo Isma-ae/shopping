@@ -68,9 +68,9 @@ if (!isset($_SESSION["user_info"])) {
                                             </p>';
                                         } elseif ($value["shipping_type"] == "2") {
                                             $ship_type = 'ส่งภายในวิทยาเขต';
-                                            $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                                <span class="cl6">ผู้รับ:</span> '.$value0["shipping_name"].' โทร'.$value0["shipping_phone"].'
-                                                <span class="cl6">คณะ / หน่วยงาน:</span> '.$value0["shipping_department"].'
+                                            $address = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                                <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].' โทร'.$value["shipping_phone"].'
+                                                <span class="cl6">คณะ / หน่วยงาน:</span> '.$value["shipping_department"].'
                                             </p>';
                                         } else {
                                             $ship_type = 'ส่งภายนอกวิทยาเขต';

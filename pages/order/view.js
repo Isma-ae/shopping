@@ -110,6 +110,7 @@ $(function () {
             var have_user = $('#have_user').val();
             if (have_user != "") {
                 select_address();
+                select_provinces();
             } else {
                 select_provinces();
             }
@@ -118,6 +119,7 @@ $(function () {
     });
 
     function select_provinces() {
+        var have_user = $('#have_user').val();
         $.ajax({
             type: "post",
             url: "api/address.php",
@@ -134,9 +136,17 @@ $(function () {
                 $('#district_id').html('<option value="">-- เลือกอำเภอ --</option>').prop('disabled', true);
                 $('#subdistrict_id').html('<option value="">-- เลือกตำบล --</option>').prop('disabled', true);
                 $('#zip_code').val('');
-                $('#province_id').select2({
-                    width: '100%'
-                });
+
+                if (have_user != "") {
+                    $('#province_id').select2({
+                        dropdownParent: $('#addModal'),
+                        width: '100%'
+                    });
+                } else {
+                    $('#province_id').select2({
+                        width: '100%'
+                    });
+                }
             }
         });
     }
@@ -271,9 +281,9 @@ $(function () {
             }
             var address_id = 0;
         } else if ($('#shipping-type-2').is(':checked')) {
-            var shipping_name = $('[name="shipping_name"]').val();
-            var shipping_phone = $('[name="shipping_phone"]').val();
-            var shipping_department = $('[name="shipping_department"]').val();
+            var shipping_name = $('[name="shipping_name2"]').val();
+            var shipping_phone = $('[name="shipping_phone2"]').val();
+            var shipping_department = $('[name="shipping_department2"]').val();
             if (shipping_name == "" || shipping_phone == "" || shipping_department == "") {
                 swal("กรุณากรอกข้อมูลให้ครบ", "กรุณากรอกชื่อ หมายเลขโทรศัพท์ และหน่วยงานให้ครบก่อนยืนยันสั่งซื้อ", "warning");
                 return;

@@ -175,7 +175,7 @@ $(function () {
         });
     }
 
-    $('.form-out').on('click', '.add-address', function (e) {
+    $(document).on('click', '.add-address', function (e) {
         e.preventDefault();
 
         $('#addModalLabel').text('ที่อยู่ใหม่');
@@ -360,6 +360,42 @@ $(function () {
         var mode = form.attr('data-mode'); // 'add' หรือ 'edit'
         var fn = (mode === 'edit') ? 'update_address' : 'insert_address';
 
+        var shipping_name = $('#name').val().trim();
+        var shipping_phone = $('#phone').val().trim();
+        var address_at = $('#address_at').val().trim();
+
+        var subdistrict_id = $('#subdistrict_id').val();
+        var district_id = $('#district_id').val();
+        var province_id = $('#province_id').val();
+
+        var subdistrict_name = $('#subdistrict_id option:selected').text();
+        var district_name = $('#district_id option:selected').text();
+        var province_name = $('#province_id option:selected').text();
+
+        var zip_code = $('#zip_code').val().trim();
+
+        var shipping_department = address_at +
+            ' ตำบล' + subdistrict_name +
+            ' อำเภอ' + district_name +
+            ' จังหวัด' + province_name +
+            ' ' + zip_code;
+        if (
+            shipping_name === "" ||
+            shipping_phone === "" ||
+            address_at === "" ||
+            !subdistrict_id ||
+            !district_id ||
+            !province_id ||
+            zip_code === ""
+        ) {
+            swal({
+                title: "กรุณากรอกข้อมูลให้ครบ",
+                text: "กรุณากรอกชื่อ เบอร์โทร ที่อยู่ และเลือกตำบล อำเภอ จังหวัด ให้ครบก่อนยืนยันสั่งซื้อ",
+                icon: "warning",
+            });
+            return;
+        }
+
         $.ajax({
             type: "post",
             url: "api/address.php",
@@ -459,9 +495,9 @@ $(function () {
             }
             var address_id = 0;
         } else if ($('#shipping-type-2').is(':checked')) {
-            var shipping_name = $('[name="shipping_name"]').val();
-            var shipping_phone = $('[name="shipping_phone"]').val();
-            var shipping_department = $('[name="shipping_department"]').val();
+            var shipping_name = $('[name="shipping_name2"]').val();
+            var shipping_phone = $('[name="shipping_phone2"]').val();
+            var shipping_department = $('[name="shipping_department2"]').val();
             if (shipping_name == "" || shipping_phone == "" || shipping_department == "") {
                 swal("กรุณากรอกข้อมูลให้ครบ", "กรุณากรอกชื่อ หมายเลขโทรศัพท์ และหน่วยงานให้ครบก่อนยืนยันสั่งซื้อ", "warning");
                 return;
