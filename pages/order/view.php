@@ -14,7 +14,6 @@
 $variant = isset($_GET['variant']) ? $_GET['variant'] : '';
 $qty = isset($_GET['qty']) ? (int) $_GET['qty'] : 1;
 
-// ตรวจสอบค่า qty
 if ($qty <= 0) {
     $qty = 1;
 }

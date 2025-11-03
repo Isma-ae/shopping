@@ -69,13 +69,17 @@ if (!isset($_SESSION["user_info"])) {
                                         } elseif ($value["shipping_type"] == "2") {
                                             $ship_type = 'ส่งภายในวิทยาเขต';
                                             $address = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                                <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].' โทร'.$value["shipping_phone"].'
+                                                <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].'
+                                                <span class="cl12 ml-4 mr-6">|</span>
+                                                โทร'.$value["shipping_phone"].'
                                                 <span class="cl6">คณะ / หน่วยงาน:</span> '.$value["shipping_department"].'
                                             </p>';
                                         } else {
                                             $ship_type = 'ส่งภายนอกวิทยาเขต';
                                             $address = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                                <span class="cl6">ผู้รับ:</span> '.$value["name"].' <span class="cl6">โทร:</span> '.$value["phone"].'<br>
+                                                <span class="cl6">ผู้รับ:</span> '.$value["name"].' 
+                                                <span class="cl12 ml-4 mr-6">|</span>
+                                                <span class="cl6">โทร:</span> '.$value["phone"].'<br>
                                                 <span class="cl6">ที่อยู่:</span> '.$value["address_at"].' ตำบล'.$value["subdistrict_name_in_thai"].' อำเภอ'.$value["district_name_in_thai"].' จังหวัด'.$value["province_name_in_thai"].' '.$value["zip_code"].'
                                             </p>';
                                         }
@@ -85,7 +89,8 @@ if (!isset($_SESSION["user_info"])) {
                                 <div class="card-header">
                                     <div class="flex-w flex-sb-m">
                                         <span class="flex-w flex-m stext-111 cl2 p-r-30 m-tb-10">
-                                            <span class="stext-101 cl2">
+                                            รหัสใบสั่งซื้อ:
+                                            <span class="stext-101 cl1">
                                                 <?=$value["order_no"];?>
                                             </span>
                                         </span>
@@ -208,13 +213,17 @@ if (!isset($_SESSION["user_info"])) {
                                         } elseif ($value0["shipping_type"] == "2") {
                                             $ship_type0 = 'ส่งภายในวิทยาเขต';
                                             $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                                <span class="cl6">ผู้รับ:</span> '.$value0["shipping_name"].' โทร'.$value0["shipping_phone"].'
+                                                <span class="cl6">ผู้รับ:</span> '.$value0["shipping_name"].'
+                                                <span class="cl12 ml-4 mr-6">|</span> 
+                                                โทร: '.$value0["shipping_phone"].'<br>
                                                 <span class="cl6">คณะ / หน่วยงาน:</span> '.$value0["shipping_department"].'
                                             </p>';
                                         } else {
                                             $ship_type0 = 'ส่งภายนอกวิทยาเขต';
                                             $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                                <span class="cl6">ผู้รับ:</span> '.$value0["name"].' โทร'.$value0["phone"].'<br>
+                                                <span class="cl6">ผู้รับ:</span> '.$value0["name"].'
+                                                <span class="cl12 ml-4 mr-6">|</span>
+                                                โทร'.$value0["phone"].'<br>
                                                 <span class="cl6">ที่อยู่:</span> '.$value0["address_at"].' ตำบล'.$value0["subdistrict_name_in_thai"].' อำเภอ'.$value0["district_name_in_thai"].' จังหวัด'.$value0["province_name_in_thai"].' '.$value0["zip_code"].'
                                                 <span class="cl12 m-l-4 m-r-6">|</span>
                                                 <span class="cl6">จัดส่งโดย:</span> '.$value0["transported_name"].'
@@ -228,7 +237,8 @@ if (!isset($_SESSION["user_info"])) {
                                 <div class="card-header">
                                     <div class="flex-w flex-sb-m">
                                         <span class="flex-w flex-m stext-111 cl2 p-r-30 m-tb-10">
-                                            <span class="stext-101 cl2">
+                                            รหัสใบสั่งซื้อ:
+                                            <span class="stext-101 cl1">
                                                 <?=$value0["order_no"];?>
                                             </span>
                                         </span>
@@ -299,6 +309,16 @@ if (!isset($_SESSION["user_info"])) {
                                     style="align-items:center; justify-content: space-between;">
                                     <!-- ข้อความแจ้งเตือนอยู่ซ้าย -->
                                     <div>
+                                        <?php
+                                            if($value0["receipt_link"] != ""){
+                                        ?>
+                                        <span class="stext-116 cl8 trans-04">
+                                            เปิดดูใบเสร็จรับเงิน
+                                            <a href="<?=$value0["receipt_link"]?>" target="_blank">
+                                                คลิ๊กที่นี่
+                                            </a>
+                                        </span>
+                                        <?php }?>
                                     </div>
 
                                     <!-- กล่องรวมการสั่งซื้อ + ปุ่ม อยู่ขวา -->
@@ -332,7 +352,12 @@ if (!isset($_SESSION["user_info"])) {
                                             $address00 = '';
                                         } elseif ($value00["shipping_type"] == "2") {
                                             $ship_type00 = 'ส่งภายในวิทยาเขต';
-                                            $address00 = '';
+                                            $address00 = '<p class="stext-116 cl8 trans-04 p-t-10">
+                                                <span class="cl6">ผู้รับ:</span> '.$value00["shipping_name"].'
+                                                <span class="cl12 ml-4 mr-6">|</span> 
+                                                โทร: '.$value00["shipping_phone"].'<br>
+                                                <span class="cl6">คณะ / หน่วยงาน:</span> '.$value00["shipping_department"].'
+                                            </p>';
                                         } else {
                                             $ship_type00 = 'ส่งภายนอกวิทยาเขต';
                                             $address00 = '<p class="stext-116 cl8 trans-04 p-t-10">
@@ -349,7 +374,8 @@ if (!isset($_SESSION["user_info"])) {
                                 <div class="card-header">
                                     <div class="flex-w flex-sb-m">
                                         <span class="flex-w flex-m stext-111 cl2 p-r-30 m-tb-10">
-                                            <span class="stext-101 cl2">
+                                            รหัสใบสั่งซื้อ:
+                                            <span class="stext-101 cl1">
                                                 <?=$value00["order_no"];?>
                                             </span>
                                         </span>
@@ -420,6 +446,16 @@ if (!isset($_SESSION["user_info"])) {
                                     style="align-items:center; justify-content: space-between;">
                                     <!-- ข้อความแจ้งเตือนอยู่ซ้าย -->
                                     <div>
+                                        <?php
+                                            if($value00["receipt_link"] != ""){
+                                        ?>
+                                        <span class="stext-116 cl8 trans-04">
+                                            เปิดดูใบเสร็จรับเงิน
+                                            <a href="<?=$value00["receipt_link"]?>" target="_blank">
+                                                คลิ๊กที่นี่
+                                            </a>
+                                        </span>
+                                        <?php }?>
                                     </div>
 
                                     <!-- กล่องรวมการสั่งซื้อ + ปุ่ม อยู่ขวา -->

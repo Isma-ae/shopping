@@ -24,6 +24,8 @@
                 tb_address.phone AS address_recipient_phone,
                 receipt_id,
                 receipt_name,
+                receipt_number,
+                receipt_address,
                 receipt_link,
                 orders.shipping_name,
                 total_price,
@@ -125,10 +127,10 @@
 
                         if ($obj[0]["receipt_id"] == 1) {
                             $receipt = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                <span class="cl6">นามออกใบเสร็จ:</span> '.$obj[0]["receipt_name"].'
+                                <span class="cl6 text-primary fw-bold">นามออกใบเสร็จ:</span> '.$obj[0]["receipt_name"].'
                                 <span class="cl12 ml-4 mr-6">|</span>
-                                <span class="cl6">หมายเลขผู้เสียภาษี:</span> '.$obj[0]["receipt_number"].'<br>
-                                <span class="cl6">ที่อยู่:</span> '.$obj[0]["receipt_address"].'
+                                <span class="cl6 text-primary fw-bold">หมายเลขผู้เสียภาษี:</span> '.$obj[0]["receipt_number"].'<br>
+                                <span class="cl6 text-primary fw-bold">ที่อยู่:</span> '.$obj[0]["receipt_address"].'
                             </p>';
                         } else {
                             $receipt = '';
