@@ -5,6 +5,7 @@
     include_once("class.texcel.php");
     include('scb_class.php');
 	include('connect_scb.php');
+    include('payment_success.php');
 
     $host = "localhost";
 	$user = "root";
