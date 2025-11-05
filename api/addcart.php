@@ -64,7 +64,14 @@
                     ON variants.product_id = product.product_id
                 WHERE MD5(variants.product_id) = '".$_POST["product_id"]."'".$color."".$size."";
         $obj = $DB->QueryObj($sql);
-        if ($obj[0]["variant_stock"] < $_POST["cart_qty"]) {
+        $sql2 = "SELECT IFNULL(SUM(qty), 0) AS sum_order
+            FROM order_detail od
+            JOIN orders o ON od.order_id = o.order_id
+            WHERE od.variant_id = ".$obj[0]['variant_id']." 
+            AND o.status_id IN (2, 3)";
+        $obj2 = $DB->QueryObj($sql2);
+        $stock = $obj[0]["variant_stock"] - $obj2[0]["sum_order"];
+        if ($stock < $_POST["cart_qty"]) {
             if ($obj[0]["variant_stock"] < 1) {
                 $stock_text = "หมดแล้ว";
             } else {

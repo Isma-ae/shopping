@@ -96,7 +96,6 @@
             "order_type"    => 1,
             "total_price"   => $item[0]['variant_sale'] * $cart_qty
         ]);
-        $update_stock = $DB->Query("UPDATE variants SET variant_stock = variant_stock-".$cart_qty." WHERE variant_id = ".$item[0]['variant_id']."");
 
         if ($update_stock) {
             echo json_encode([

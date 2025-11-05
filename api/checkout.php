@@ -111,9 +111,6 @@
                 "order_type"    => $item['cart_type'],
                 "total_price"   => $item['variant_sale'] * $item['cart_qty']
             ]);
-            if($item['cart_type'] == 1){
-                $DB->Query("UPDATE variants SET variant_stock = variant_stock-".$item['cart_qty']." WHERE variant_id = ".$item['variant_id']."");
-            }
         }
 
         $delete = $DB->QueryDelete("cart","cart_status = 2 AND user_id = '".htmlspecialchars($currentUser['id'])."'");
@@ -128,18 +125,6 @@
 
     function cancel_order() {
         global $DB;
-        $sql_order = "SELECT variant_id, qty
-                    FROM order_detail
-                    INNER JOIN orders ON order_detail.order_id = orders.order_id
-                    WHERE order_type = 1
-                        AND status_id = 1
-                        AND order_detail.order_id = ".$_POST["order_id"]."";
-        $order_items = $DB->QueryObj($sql_order);
-        if(sizeof($order_items) > 0) {
-            foreach ($order_items as $item) {
-                $DB->Query("UPDATE variants SET variant_stock = variant_stock+".$item['qty']." WHERE variant_id = ".$item['variant_id']."");
-            }
-        }
         $update = $DB->QueryUpdate("orders",[
             "status_id" => 4,
             "order_status"  => "ยกเลิก"

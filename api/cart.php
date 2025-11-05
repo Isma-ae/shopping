@@ -44,13 +44,20 @@
 
     function change_qty() {
         global $DB;
-        $sql = "SELECT variants.variant_stock
+        $sql = "SELECT variants.variant_id, variants.variant_stock
                 FROM cart
                 INNER JOIN variants
                     ON cart.variant_id = variants.variant_id
                 WHERE cart_id = '".$_POST["cart_id"]."'";
-        $check = $DB->QueryObj($sql);
-        if ($_POST["cart_qty"] > $check[0]["variant_stock"]) {
+        $obj = $DB->QueryObj($sql);
+        $sql2 = "SELECT IFNULL(SUM(qty), 0) AS sum_order
+            FROM order_detail od
+            JOIN orders o ON od.order_id = o.order_id
+            WHERE od.variant_id = ".$obj[0]['variant_id']." 
+            AND o.status_id IN (2, 3)";
+        $obj2 = $DB->QueryObj($sql2);
+        $stock = $obj[0]["variant_stock"] - $obj2[0]["sum_order"];
+        if ($_POST["cart_qty"] > $stock) {
             echo json_encode([
                 "data"=>'n',
                 "title"=>"ไม่สามารถเพิ่มได้",

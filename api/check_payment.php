@@ -11,7 +11,7 @@
         global $con;
         $order_ref1 = $_POST["order_ref1"];
         $order_ref2 = $_POST["order_ref2"];
-        $check = "SELECT * FROM payment_confirm	WHERE billPaymentRef1 = '$order_ref1' AND billPaymentRef2 = '$order_ref2' AND billPaymentRef3 = 'OAR00013'";
+        $check = "SELECT * FROM payment_confirm	WHERE billPaymentRef1 = '$order_ref1' AND billPaymentRef2 = '$order_ref2' AND billPaymentRef3 = 'OAR00026'";
         $have = $con->QueryObj($check);
         if (sizeof($have) > 0) {
             echo json_encode([
@@ -27,7 +27,6 @@
     function change_status() {
         global $DB;
         $order_id = $_POST["order_id"];
-        $user = $DB->QueryObj("SELECT id FROM users WHERE user_id = '".$_SESSION["user_id"]."'");
         $change = $DB->QueryUpdate("orders",[
             "order_status" => 'ชำระเงิน',
             "status_id" => 2,

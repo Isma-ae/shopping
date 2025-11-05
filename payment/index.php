@@ -56,7 +56,8 @@
                         <!--<div class="qr-overlay" id="qr-overlay">QR Code หมดอายุแล้ว</div>-->
                         <div class="qr-box hov-img0">
                             <?php
-                            $sql = "SELECT total_price FROM orders WHERE order_no = '".$_GET["order_no"]."'";
+                            $order_no = $DB->Escape($_GET["order_no"]);
+                            $sql = "SELECT total_price FROM orders WHERE order_no = '".$order_no."'";
                             $obj = $DB->QueryObj($sql);
                             $requestUId = "U-00001";
                             function generateRefSecure($prefix = "R") {
@@ -66,8 +67,9 @@
                             $ref1 = generateRefSecure("PAY");
                             $ref2 = generateRefSecure("CHK");
                             $ref3 = "OAR00026";
-                            $res = $pay->CreateQR30($requestUId, $obj[0]['total_price'], $ref1, $ref2, $ref3);
-                            echo '<input type="hidden" id="order_no" value="'.$_GET["order_no"].'">';
+                            //$res = $pay->CreateQR30($requestUId, $obj[0]['total_price'], $_GET["order_no"], $_GET["order_no"], $ref3);
+                            $res = $pay->CreateQR30($requestUId, 1, $ref1, $ref2, $ref3);
+                            echo '<input type="hidden" id="order_no" value="'.$order_no.'">';
                             echo '<input type="hidden" id="ref1" value="'.$ref1.'">';
                             echo '<input type="hidden" id="ref2" value="'.$ref2.'">';
                             echo '<img width="100%" src="data:image/jpeg;base64, '.$res["data"]["qrImage"].'" alt="QR Code" class="qrcode" id="qr-image">';
@@ -86,13 +88,13 @@
                         <div class="col pe-2">
                             <div class="info-item">
                                 <div class="info-label cl2">เลขอ้างอิง 1</div>
-                                <div class="info-value cl1"><?=$_GET["order_no"]?> </div>
+                                <div class="info-value cl1"><?=$ref1?> </div>
                             </div>
                         </div>
                         <div class="col ps-2">
                             <div class="info-item">
                                 <div class="info-label cl2">เลขอ้างอิง 2</div>
-                                <div class="info-value cl1"><?=$_GET["order_no"]?> </div>
+                                <div class="info-value cl1"><?=$ref2?> </div>
                             </div>
                         </div>
                     </div>
@@ -117,7 +119,7 @@
                                 <div class="info-label cl2">
                                     เลขที่ใบสั่งซื้อ </div>
                                 <div class="info-value cl1">
-                                    <?=$_GET["order_no"]?> </div>
+                                    <?=$order_no;?> </div>
                             </div>
                         </div>
                     </div>
@@ -141,7 +143,7 @@
                     หากชำระเงินแล้ว กรุณารอสักครู่ ระบบกำลังตรวจสอบการชำระเงินของท่านภายใน 1 นาที
                 </div>
                 <div class="after-pay-link">
-                    หากไม่ขึ้นว่าชำระเงินแล้ว <a href="../?page=evidence&order_no=<?=$_GET["order_no"]?>"
+                    หากไม่ขึ้นว่าชำระเงินแล้ว <a href="../?page=evidence&order_no=<?=$order_no?>"
                         target="_blank">คลิกที่นี่เพื่อส่งหลักฐาน</a>
                 </div>
                 <div class="flex-c-m flex-w w-full p-t-20">
