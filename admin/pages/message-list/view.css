@@ -1,0 +1,8 @@
+.unread-row {
+    background-color: #f5f7fd !important;
+}
+
+.unread-row td {
+    background-color: transparent !important;
+    /* ป้องกัน td มี background ทับ */
+}

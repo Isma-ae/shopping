@@ -64,16 +64,24 @@ $(document).ready(function () {
                         let status_text = '';
                         switch (parseInt(order.status_id)) {
                             case 1:
-                                status_text = 'รายการรอชำระ';
+                                status_text = 'รายการรอชำระเงิน';
+                                create_date = `<span class="stext-116 cl8 trans-04">
+                                        ชำระเงินภายใน
+                                        <span class="cl1">${formatDate(order.create_date)}</span>
+                                        โดยQR พร้อมเพย์
+                                    </span>`;
                                 break;
                             case 2:
                                 status_text = 'รอจัดส่ง';
+                                create_date = '';
                                 break;
                             case 3:
                                 status_text = 'จัดส่งแล้ว';
+                                create_date = '';
                                 break;
                             default:
                                 status_text = 'ยกเลิก';
+                                create_date = '';
                         }
 
                         html += `
@@ -93,11 +101,7 @@ $(document).ready(function () {
                             </div>
                             <div class="d-flex p-t-18 p-b-15 p-lr-40 p-lr-15-sm" style="align-items:center; justify-content: space-between;">
                                 <div>
-                                    <span class="stext-116 cl8 trans-04">
-                                        ชำระเงินภายใน
-                                        <span class="cl1">${formatDate(order.create_date)}</span>
-                                        โดยQR พร้อมเพย์
-                                    </span>
+                                    ${create_date}
                                 </div>
                                 <div class="text-right">
                                     <div class="cl1 mb-2">

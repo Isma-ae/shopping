@@ -23,7 +23,8 @@
                             placeholder="เราสามารถช่วยอะไรคุณได้บ้าง?"></textarea>
                     </div>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                    <button type="button" id="send-message"
+                        class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         ส่ง
                     </button>
                 </form>
@@ -41,7 +42,7 @@
                         </span>
 
                         <p class="stext-115 cl6 size-213 p-t-18">
-                            เลขที่ 181 ถ.เจริญประดิษฐ์ ต.รูสะมิแล อ.เมือง จ.ปัตตานี 94000
+                            สำนักวิทยบริการ ม.อ.ปัตตานี เลขที่ 181 ถ.เจริญประดิษฐ์ ต.รูสะมิแล อ.เมือง จ.ปัตตานี 94000
                         </p>
                     </div>
                 </div>
@@ -58,7 +59,7 @@
 
                         <p class="stext-115 cl1 size-213 p-t-18">
                             ติดต่อวัน จ - ศ Tel 073 331 300 <br>
-                            ติตต่อวัน ส - อ Tel  073 313 486
+                            ติตต่อวัน ส - อ Tel 073 313 486
                         </p>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
 
                     <div class="size-212 p-t-2">
                         <span class="mtext-110 cl2">
-                            facebook page
+                            Facebook Page
                         </span><br><br>
 
                         <a href="https://www.facebook.com/OAR.PSU" target="_blank"

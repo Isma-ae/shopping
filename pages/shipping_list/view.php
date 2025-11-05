@@ -25,7 +25,7 @@ if (!isset($_SESSION["user_info"])) {
                         $sum3 = $DB->QueryObj($sqlsum." AND status_id = 3");
                     ?>
                     <li class="nav-item p-b-10">
-                        <a class="nav-link active" data-toggle="tab" href="#description" role="tab">รายการที่รอชำระ
+                        <a class="nav-link active" data-toggle="tab" href="#description" role="tab">รายการที่รอชำระเงิน
                             <?=($sum1[0]["sum_order"] > 0) ? '<span class="cl1">('.$sum1[0]["sum_order"].')</span>' : '' ;?></a>
                     </li>
 
@@ -71,7 +71,7 @@ if (!isset($_SESSION["user_info"])) {
                                             $address = '<p class="stext-116 cl8 trans-04 p-t-10">
                                                 <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].'
                                                 <span class="cl12 ml-4 mr-6">|</span>
-                                                โทร'.$value["shipping_phone"].'
+                                                โทร: '.$value["shipping_phone"].'
                                                 <span class="cl6">คณะ / หน่วยงาน:</span> '.$value["shipping_department"].'
                                             </p>';
                                         } else {
@@ -96,7 +96,7 @@ if (!isset($_SESSION["user_info"])) {
                                         </span>
 
                                         <strong class="stext-101 cl1 m-tb-10">
-                                            รายการรอชำระ
+                                            รายการที่รอชำระเงิน
                                         </strong>
                                     </div>
                                 </div>
@@ -173,6 +173,7 @@ if (!isset($_SESSION["user_info"])) {
                                     <!-- กล่องรวมการสั่งซื้อ + ปุ่ม อยู่ขวา -->
                                     <div class="text-right">
                                         <div class="cl1 mb-2">
+                                            ค่าส่ง: <span>฿<?=$value["shipping_price"];?></span><br>
                                             รวมการสั่งซื้อ: <span class="mtext-112">฿<?=$value["total_price"];?></span>
                                         </div>
 
@@ -324,6 +325,7 @@ if (!isset($_SESSION["user_info"])) {
                                     <!-- กล่องรวมการสั่งซื้อ + ปุ่ม อยู่ขวา -->
                                     <div class="text-right">
                                         <div class="cl1 mb-2">
+                                            ค่าส่ง: <span>฿<?=$value0["shipping_price"];?></span><br>
                                             รวมการสั่งซื้อ: <span class="mtext-112">฿<?=$value0["total_price"];?></span>
                                         </div>
 
@@ -461,6 +463,7 @@ if (!isset($_SESSION["user_info"])) {
                                     <!-- กล่องรวมการสั่งซื้อ + ปุ่ม อยู่ขวา -->
                                     <div class="text-right">
                                         <div class="cl1 mb-2">
+                                            ค่าส่ง: <span>฿<?=$value00["shipping_price"];?></span><br>
                                             รวมการสั่งซื้อ: <span
                                                 class="mtext-112">฿<?=$value00["total_price"];?></span>
                                         </div>

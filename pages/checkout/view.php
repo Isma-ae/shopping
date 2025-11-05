@@ -225,36 +225,39 @@
                     <div class="row p-b-25">
                         <input type="hidden" id="address_id" name="address_id" value="">
                         <div class="col-6 p-b-5">
-                            <label class="stext-102 cl3" for="name">ชื่อ นามสกุล</label>
+                            <label class="stext-102 cl3" for="name">ชื่อ นามสกุล <span class="clr">*</span></label>
                             <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name">
                         </div>
 
                         <div class="col-6 p-b-5">
-                            <label class="stext-102 cl3" for="phone">หมายเลขโทรศัพท์</label>
+                            <label class="stext-102 cl3" for="phone">หมายเลขโทรศัพท์ <span class="clr">*</span></label>
                             <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="phone" type="text" name="phone">
                         </div>
                         <div class="col-6 p-b-5">
-                            <label class="stext-102 cl3" for="province_id">จังหวัด</label>
+                            <label class="stext-102 cl3" for="province_id">จังหวัด <span class="clr">*</span></label>
                             <select class="js-example-basic-single" name="province_id" id="province_id">
                             </select>
                         </div>
                         <div class="col-6 p-b-5">
-                            <label class="stext-102 cl3" for="district_id">เขต / อำเภอ</label>
+                            <label class="stext-102 cl3" for="district_id">เขต / อำเภอ <span
+                                    class="clr">*</span></label>
                             <select class="js-example-basic-single" name="district_id" id="district_id">
                             </select>
                         </div>
                         <div class="col-6 p-b-5">
-                            <label class="stext-102 cl3" for="subdistrict_id">แขวง / ตำบล</label>
+                            <label class="stext-102 cl3" for="subdistrict_id">แขวง / ตำบล <span
+                                    class="clr">*</span></label>
                             <select class="js-example-basic-single" name="subdistrict_id" id="subdistrict_id">
                             </select>
                         </div>
                         <div class="col-6 p-b-5">
-                            <label class="stext-102 cl3" for="zip_code">รหัสไปรษณีย์</label>
+                            <label class="stext-102 cl3" for="zip_code">รหัสไปรษณีย์ <span class="clr">*</span></label>
                             <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="zip_code" type="text" name="zip_code"
                                 readonly>
                         </div>
                         <div class="col-12 p-b-5">
-                            <label class="stext-102 cl3" for="address_at">บ้านเลขที่, ซอย, หมู่, ถนน</label>
+                            <label class="stext-102 cl3" for="address_at">บ้านเลขที่, ซอย, หมู่, ถนน <span
+                                    class="clr">*</span></label>
                             <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="address_at"
                                 name="address_at"></textarea>
                         </div>

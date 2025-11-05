@@ -1,18 +1,33 @@
-<div class="container">
-    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="./" class="stext-109 cl8 hov-cl1 trans-04">
-            หน้าแรก
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <span class="stext-109 cl4">
-            สินค้า
-        </span>
-    </div>
-</div>
-
-<section class="sec-relate-product bg0 p-t-105 p-b-105">
+<section class="bg0 m-t-23 p-b-140 m-t-110-sm">
     <div class="container">
+        <div class="flex-w flex-sb-m p-b-52">
+            <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
+                    สินค้าทั้งหมด
+                </button>
+
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
+                    Women
+                </button>
+
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
+                    Men
+                </button>
+
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
+                    Bag
+                </button>
+
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
+                    Shoes
+                </button>
+
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
+                    Watches
+                </button>
+            </div>
+
+        </div>
 
         <div class="row isotope-grid">
             <?php

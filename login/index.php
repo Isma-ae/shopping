@@ -103,7 +103,7 @@
                                     class="flex-c-m stext-103 cl1 bor13 size-121 bg0 bor2 p-lr-15 trans-04">
                                     <img class="p-lr-5" src="../images/icons/logo-mini.png" alt="ICON"
                                         style="height:80%">
-                                    Paspport
+                                    Passport
                                 </a>
                             </div>
                             <div class="col-md-6">
@@ -117,7 +117,7 @@
                         <div class="p-t-18">
                             <p>หรือสมัครสมาชิก
                                 <a href="../register/" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                    คลิ๊กที่นี่
+                                    คลิกที่นี่
                                 </a>
                             </p>
                         </div>

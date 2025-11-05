@@ -669,6 +669,7 @@ html {
   position: fixed;
   z-index: 1100;
   width: 100%;
+  top: 0px;
 }
 
 .wrap-header-mobile {
@@ -2339,7 +2340,7 @@ input.num-product::-webkit-inner-spin-button {
 
 /*---------------------------------------------*/
 .stext-301 {
-  font-family: Montserrat-Bold;
+  font-family: PSU-Bold;
   font-size: 15px;
   line-height: 1.6;
   text-transform: uppercase;
@@ -3605,6 +3606,10 @@ input.num-product::-webkit-inner-spin-button {
   .m-lr-0-sm {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .m-t-110-sm {
+    margin-top: 110px;
   }
 
   .m-lr-15-sm {
