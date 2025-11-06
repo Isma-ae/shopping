@@ -11,16 +11,35 @@
 
     function select_stock() {
         global $DB;
-        $sql = "SELECT *
-                FROM variants
-                LEFT JOIN img
-                    ON variants.img_id = img.img_id
-                WHERE variants.product_id = '".$_POST["product_id"]."'
-                ";
+
+        $product_id = $DB->Escape($_POST["product_id"]);
+
+        $sql = "SELECT
+                    v.*,
+                    i.img_name,
+                    COALESCE(v.variant_stock, 0) AS total_stock,
+                    COALESCE(SUM(od.qty), 0) AS total_ordered,
+                    (COALESCE(v.variant_stock, 0) - COALESCE(SUM(od.qty), 0)) AS remaining_stock
+                FROM variants v
+                LEFT JOIN img i
+                    ON v.img_id = i.img_id
+                LEFT JOIN order_detail od
+                    ON v.variant_id = od.variant_id
+                LEFT JOIN orders o
+                    ON od.order_id = o.order_id
+                    AND o.status_id NOT IN (1, 4)  -- ไม่รวมออเดอร์ที่ถูกยกเลิกหรือคืนสินค้า
+                WHERE v.product_id = '".$product_id."'
+                GROUP BY 
+                    v.variant_id,
+                    v.product_api_id,
+                    v.variant_stock,
+                    i.img_name";
+
         $return = array();
-		$return["data"] = $DB->QueryObj($sql);
-		echo json_encode( $return );
+        $return["data"] = $DB->QueryObj($sql);
+        echo json_encode($return);
     }
+
 
     function edit_variant() {
         global $DB;

@@ -57,7 +57,7 @@ $(document).ready(function () {
                 "data": "variant_sale"
             },
             {
-                "data": "variant_stock"
+                "data": "remaining_stock"
             },
             {
                 "data": function (row, type, val, meta) {

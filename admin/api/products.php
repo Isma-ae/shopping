@@ -13,24 +13,30 @@
     function select_product() {
         global $DB;
         $sql = "SELECT
-                    p.*,
-                    c.category_name,
-                    i.img_name,
-                    COALESCE(SUM(v.variant_stock), 0) AS total_stock
-                FROM product p
-                INNER JOIN category c
-                    ON p.category_id = c.category_id
-                LEFT JOIN img i
-                    ON p.product_id = i.product_id
-                    AND i.img_main = '1'
-                LEFT JOIN variants v 
-                    ON p.product_id = v.product_id
-                GROUP BY 
-                    p.product_id, 
-                    p.product_name, 
-                    c.category_name, 
-                    i.img_name
-                ";
+                p.*,
+                c.category_name,
+                i.img_name,
+                COALESCE(SUM(v.variant_stock), 0) AS total_stock,
+                COALESCE(SUM(o.qty), 0) AS total_ordered,
+                (COALESCE(SUM(v.variant_stock), 0) - COALESCE(SUM(o.qty), 0)) AS remaining_stock
+            FROM product p
+            INNER JOIN category c
+                ON p.category_id = c.category_id
+            LEFT JOIN img i
+                ON p.product_id = i.product_id
+                AND i.img_main = '1'
+            LEFT JOIN variants v 
+                ON p.product_id = v.product_id
+            LEFT JOIN order_detail o
+                ON v.variant_id = o.variant_id
+            LEFT JOIN orders ord
+                ON o.order_id = ord.order_id
+                AND ord.status_id NOT IN (1, 4)  -- ตัด order ที่ยกเลิก/คืนสินค้าออก (แล้วแต่ระบบคุณ)
+            GROUP BY 
+                p.product_id, 
+                p.product_name, 
+                c.category_name, 
+                i.img_name";
         $return = array();
 		$return["data"] = $DB->QueryObj($sql);
 		echo json_encode( $return );

@@ -33,14 +33,14 @@
             <div class="wrap-menu-desktop how-shadow1">
                 <nav class="limiter-menu-desktop container">
                     <a href="../" class="logo">
-                        <img src="../images/icons/oar-shopping.png" alt="IMG-LOGO">
+                        <img src="../images/icons/S__8732697.png" alt="IMG-LOGO">
                     </a>
                 </nav>
             </div>
         </div>
         <div class="wrap-header-mobile">
             <div class="logo-mobile">
-                <a href="../"><img src="../images/icons/oar-shopping.png" alt="IMG-LOGO"></a>
+                <a href="../"><img src="../images/icons/S__8732697.png" alt="IMG-LOGO"></a>
             </div>
         </div>
     </header>
@@ -68,7 +68,7 @@
                             $ref2 = generateRefSecure("CHK");
                             $ref3 = "OAR00026";
                             //$res = $pay->CreateQR30($requestUId, $obj[0]['total_price'], $_GET["order_no"], $_GET["order_no"], $ref3);
-                            $res = $pay->CreateQR30($requestUId, 1, $ref1, $ref2, $ref3);
+                            $res = $pay->CreateQR30($requestUId, $obj[0]['total_price'], $ref1, $ref2, $ref3);
                             echo '<input type="hidden" id="order_no" value="'.$order_no.'">';
                             echo '<input type="hidden" id="ref1" value="'.$ref1.'">';
                             echo '<input type="hidden" id="ref2" value="'.$ref2.'">';

@@ -37,7 +37,7 @@ $(document).ready(function () {
                 "data": "category_name"
             },
             {
-                "data": "total_stock"
+                "data": "remaining_stock"
             },
             {
                 "data": function (row, type, val, meta) {
