@@ -5,12 +5,6 @@
         $order_no = $_GET["order_no"];
     }
 ?>
-<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('images/bg-01.jpg');">
-    <h2 class="ltext-105 cl0 txt-center">
-        Contact
-    </h2>
-</section>
-
 
 <!-- Content page -->
 <section class="bg0 p-t-20 p-b-116">

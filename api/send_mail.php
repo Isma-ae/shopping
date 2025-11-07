@@ -129,13 +129,13 @@
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'air.app204@gmail.com';
-    $mail->Password   = 'hkbk oljg rtop qrxl'; // ใช้ App Password
+    $mail->Username   = 'oarshopping@gmail.com';
+    $mail->Password   = 'ytdu mhio yiym wvaq'; // ใช้ App Password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
-    $mail->setFrom('air.app204@gmail.com', 'OAR Shopping');
+    $mail->setFrom('oarshopping@gmail.com', 'OAR Shopping');
     $mail->addAddress($email);
     $mail->isHTML(true);
     $mail->Subject = "ยืนยันคำสั่งซื้อของคุณ #$order_no สำเร็จแล้ว!";

@@ -46,7 +46,7 @@
             parcel_number
         FROM orders
         LEFT JOIN users 
-                ON orders.status_id = users.id
+                ON orders.user_id = users.id
         LEFT JOIN tb_address 
                 ON orders.address_id = tb_address.id
         LEFT JOIN provinces

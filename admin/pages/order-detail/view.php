@@ -19,6 +19,7 @@
         $sql="SELECT
                 order_id,
                 order_no,
+                ref1,
                 orders.user_id,
                 tb_address.name AS address_recipient_name,
                 tb_address.phone AS address_recipient_phone,
@@ -147,6 +148,14 @@
                         <div class="row">
                             <div class="col">
                                 <h6 class="fw-bold mb-3 text-primary">🛒 <?=$obj[0]["order_no"];?></h6>
+                                <?php
+                                    if ($obj[0]["status_id"] == 2 || $obj[0]["status_id"] == 3) {
+                                ?>
+                                <h6 class="fw-bold mb-3 text-success">ref1: <?=$obj[0]["ref1"]?></h6>
+                                <p><a href="https://scb.oas.psu.ac.th/" target="_blank">ตรวจสอบการชำระเงิน</a></p>
+                                <?php
+                                }
+                                ?>
                             </div>
                             <div class="col" style="text-align:right">
                                 <h6 class="fw-bold mb-3">

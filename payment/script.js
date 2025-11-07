@@ -31,12 +31,13 @@ $(document).ready(function () {
             dataType: "json", // ✅ รอรับข้อมูล JSON จาก PHP
             success: function (res) {
                 if (res.data === 't') {
+                    clearInterval(interval);
                     swal({
                         title: "ชำระเงินสำเร็จ",
                         icon: "success",
                     });
                     send_mail(order_no);
-                    change_status(order_no);
+                    change_status(order_no, order_ref1);
                 }
             },
             error: function (xhr, status, error) {
@@ -55,13 +56,14 @@ $(document).ready(function () {
         timer2 = minutes + ':' + seconds;
     }, 1000);
 
-    function change_status(order_id) {
+    function change_status(order_id, ref1) {
         $.ajax({
             type: "post",
             url: "../api/check_payment.php",
             data: {
                 fn: "change_status",
-                order_id: order_id
+                order_id: order_id,
+                ref1: ref1
             },
             dataType: "json",
             success: function (res) {

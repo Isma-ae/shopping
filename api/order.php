@@ -84,7 +84,7 @@
 
         // 4️⃣ วนลูปเพิ่มข้อมูลเข้า order_detail
         $detail_id = $DB->QueryMaxId("order_detail", "detail_id");
-        $DB->QueryInsert("order_detail", [
+        $insert_detail = $DB->QueryInsert("order_detail", [
             "detail_id"     => $detail_id,
             "order_id"      => $order_id,
             "variant_id"    => $item[0]['variant_id'],
@@ -97,7 +97,7 @@
             "total_price"   => $item[0]['variant_sale'] * $cart_qty
         ]);
 
-        if ($update_stock) {
+        if ($insert_detail) {
             echo json_encode([
                 "status" => "success",
                 "msg" => "สร้างคำสั่งซื้อสำเร็จ",
