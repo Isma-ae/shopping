@@ -1,12 +1,13 @@
 <?php
     include("../../config/all.php");
 
-    $dir = "../../file/product/";
+    $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/product/";
+    //$dir = "../../file/product/";
     $variants = json_decode($_POST['variants'], true);
     $img_id = $DB->QueryMaxId("img","img_id");
     $product_id = $DB->QueryMaxId("product","product_id", "", 7);
     $img = $_FILES["img_name"];
-    $img_name = uploadFile($dir,$img,md5($img_id));
+    $img_name = uploadFileFTP($host, $user, $pass, $ftp_dir, $img, md5($img_id));//uploadFile($dir,$img,md5($img_id));
     if ($img_name != "") {
         $DB->QueryInsert('img',[
             'img_id' => $img_id,

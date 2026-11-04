@@ -209,7 +209,7 @@ if (!isset($_SESSION["user_info"])) {
                                         if ($value0["shipping_type"] == "1") {
                                             $ship_type0 = 'รับหน้าร้าน';
                                             $address0 = '<p class="stext-116 cl8 trans-04 p-t-10">
-                                                <span class="cl6">ผู้รับ:</span> '.$value["shipping_name"].'
+                                                <span class="cl6">ผู้รับ:</span> '.$value0["shipping_name"].'
                                             </p>';
                                         } elseif ($value0["shipping_type"] == "2") {
                                             $ship_type0 = 'ส่งภายในวิทยาเขต';

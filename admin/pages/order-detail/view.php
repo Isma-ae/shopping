@@ -238,7 +238,7 @@
                             if ($statusEligible && $shippingType == 3) {
                         ?>
                         <button type="button" class="btn btn-warning" id="update-shipping">
-                            <i class="fas fa-edit"></i> อัปเดทข้อมูลจัดส่ง
+                            <i class="fas fa-edit"></i> อัปเดตข้อมูลจัดส่ง
                         </button>
                         <?php    }
 
@@ -246,7 +246,7 @@
                             if ($statusEligible) {
                         ?>
                         <button type="button" class="btn btn-success" id="update-receipt">
-                            <i class="fas fa-file-upload"></i> อัปเดทใบเสร็จรับเงิน
+                            <i class="fas fa-file-upload"></i> อัปเดตใบเสร็จรับเงิน
                         </button>
                         <?php    }
                         ?>
@@ -293,7 +293,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                <button type="button" class="btn btn-primary" id="save-shipping">บัททึก</button>
+                <button type="button" class="btn btn-primary" id="save-shipping">บันทึก</button>
             </div>
         </div>
     </div>
@@ -303,7 +303,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="receiptModalLabel">อัพเดทใบเสร็จรับเงิน</h1>
+                <h1 class="modal-title fs-5" id="receiptModalLabel">อัปเดตใบเสร็จรับเงิน</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -314,7 +314,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                <button type="button" class="btn btn-primary" id="save-receipt">บัททึก</button>
+                <button type="button" class="btn btn-primary" id="save-receipt">บันทึก</button>
             </div>
         </div>
     </div>
@@ -324,7 +324,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="statusModalLabel">อัพเดทสถานะ</h1>
+                <h1 class="modal-title fs-5" id="statusModalLabel">อัปเดตสถานะ</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -356,7 +356,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                <button type="button" class="btn btn-primary" id="save-status">บัททึก</button>
+                <button type="button" class="btn btn-primary" id="save-status">บันทึก</button>
             </div>
         </div>
     </div>

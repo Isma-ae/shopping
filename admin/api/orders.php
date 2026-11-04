@@ -113,7 +113,8 @@
     function update_status() {
         global $DB;
         $update = $DB->QueryUpdate("orders",[
-            "status_id" => $_POST["status_id"]
+            "status_id" => $_POST["status_id"],
+            "update_date" => date("Y-m-d H:i:s")
         ],"order_id = ".$_POST["order_id"]);
         if ($update) {
            echo json_encode([

@@ -2,8 +2,8 @@
     include("../config/all.php");
     
     $message_id = $DB->QueryMaxId('message','message_id');
-    $email = $_POST["email"];
-    $msg = $_POST["msg"];
+    $email = $DB->Escape($_POST["email"]);
+    $msg = $DB->Escape($_POST["msg"]);
     $send_dete = date('Y-m-d H:i:s');
     $insert = $DB->QueryInsert('message',[
         'message_id'    => $message_id,

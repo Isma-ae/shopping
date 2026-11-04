@@ -18,8 +18,26 @@
                     v.*,
                     i.img_name,
                     COALESCE(v.variant_stock, 0) AS total_stock,
-                    COALESCE(SUM(od.qty), 0) AS total_ordered,
-                    (COALESCE(v.variant_stock, 0) - COALESCE(SUM(od.qty), 0)) AS remaining_stock
+
+                    COALESCE(
+                        SUM(
+                            CASE 
+                                WHEN o.status_id NOT IN (1,4) THEN od.qty
+                                ELSE 0
+                            END
+                        ), 0
+                    ) AS total_ordered,
+
+                    COALESCE(v.variant_stock, 0) -
+                    COALESCE(
+                        SUM(
+                            CASE 
+                                WHEN o.status_id NOT IN (1,4) THEN od.qty
+                                ELSE 0
+                            END
+                        ), 0
+                    ) AS remaining_stock
+
                 FROM variants v
                 LEFT JOIN img i
                     ON v.img_id = i.img_id
@@ -27,8 +45,9 @@
                     ON v.variant_id = od.variant_id
                 LEFT JOIN orders o
                     ON od.order_id = o.order_id
-                    AND o.status_id NOT IN (1, 4)  -- ไม่รวมออเดอร์ที่ถูกยกเลิกหรือคืนสินค้า
+
                 WHERE v.product_id = '".$product_id."'
+
                 GROUP BY 
                     v.variant_id,
                     v.product_api_id,

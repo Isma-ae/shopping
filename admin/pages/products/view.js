@@ -44,7 +44,7 @@ $(document).ready(function () {
                     if (row.product_status == 1) {
                         return '<span style="color:orange;">รอวางจำหน่าย</span>';
                     } else {
-                        return '<span style="color: green;">รอวางจำหน่าย</span>';
+                        return '<span style="color: green;">วางจำหน่าย</span>';
                     }
 
                 }

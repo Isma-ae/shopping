@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="style.css">
 
-    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/jquery/jquery-3.6.0.min.js"></script>
     <script src="vendor/sweetalert/sweetalert.min.js"></script>
     <script src="vendor/slick/slick.min.js"></script>
     <script src="script.js"></script>

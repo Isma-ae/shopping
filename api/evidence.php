@@ -1,11 +1,12 @@
 <?php
     include("../config/all.php");
-    $dir = "../file/evidence/";
+    $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/evidence/";
+    //$dir = "../file/evidence/";
     
     $evidence_id = $DB->QueryMaxId("evidence","evidence_id");
     $order_no = $DB->Escape($_POST["order_no"]);
-    $img = $_FILES["evidence_slip"];
-    $evidence_slip = uploadFile($dir,$img,md5($evidence_id));
+    $file = $_FILES["evidence_slip"];
+    $evidence_slip = uploadFileFTP($host, $user, $pass, $ftp_dir, $file, md5($evidence_id));//uploadFile($dir,$img,md5($evidence_id));
     if ($evidence_slip != "") {
         $insert = $DB->QueryInsert('evidence',[
             'evidence_id' => $evidence_id,

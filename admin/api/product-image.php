@@ -26,7 +26,11 @@
 
     function upload_image() {
         global $DB;
-        $dir = "../../file/product/";
+        global $host;
+        global $user;
+        global $pass;
+        $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/product/";
+        //$dir = "../../file/product/";
         $product_id = $_POST["product_id"];
         $files = $_FILES["img_name"];
         $count = count($files["name"]);
@@ -40,7 +44,7 @@
                     "tmp_name" => $files["tmp_name"][$i]
                 ];
 
-                $img_name = uploadFile($dir, $file, md5($img_id));
+                $img_name = uploadFileFTP($host, $user, $pass, $ftp_dir, $file, md5($img_id));//uploadFile($dir, $file, md5($img_id));
                 if ($img_name != "") {
                     $insert = $DB->QueryInsert('img', [
                         'img_id' => $img_id,
@@ -72,11 +76,15 @@
 
     function delete_image() {
         global $DB;
-        $dir = "../../file/product/";
+        global $host;
+        global $user;
+        global $pass;
+        $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/product/";
+        //$dir = "../../file/product/";
         $obj = $DB->QueryObj("SELECT * FROM img WHERE img_id = ".$_POST['img_id']."");
         $delete = $DB->QueryDelete('img','img_id = '.$_POST['img_id'].'');
         if ($delete) {
-            deleteFile($dir,$obj[0]["img_name"]);
+            deleteFileFTP($host, $user, $pass, $ftp_dir,$obj[0]["img_name"]);
             echo json_encode([
                 "title"=>"สำเร็จ",
                 "message"=>"ลบรูปสินค้าสำเร็จ",

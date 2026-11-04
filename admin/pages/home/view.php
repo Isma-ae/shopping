@@ -6,6 +6,15 @@
         </div>
     </div>
     <div class="row">
+        <?php
+            $sql = "SELECT COUNT(id) AS count_member FROM users";
+            $obj = $DB->QueryObj($sql);
+            $sql2 = "SELECT SUM(total_price) AS total_price FROM orders WHERE status_id = 2 OR status_id = 3";
+            $obj2 = $DB->QueryObj($sql2);
+            $sql3 = "SELECT COUNT(order_id) AS count_order FROM orders WHERE status_id = 2 OR status_id = 3";
+            $obj3 = $DB->QueryObj($sql3);
+
+        ?>
         <div class="col-sm-6 col-md-3">
             <div class="card card-stats card-round">
                 <div class="card-body">
@@ -37,7 +46,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">สมาชิก</p>
-                                <h4 class="card-title">0</h4>
+                                <h4 class="card-title"><?=$obj[0]["count_member"];?></h4>
                             </div>
                         </div>
                     </div>
@@ -56,7 +65,9 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">ยอดขาย</p>
-                                <h4 class="card-title">฿ 0</h4>
+                                <h4 class="card-title">
+                                    ฿ <?= number_format($obj2[0]["total_price"], 0); ?>
+                                </h4>
                             </div>
                         </div>
                     </div>
@@ -75,7 +86,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">รายการสั่งซื้อ</p>
-                                <h4 class="card-title">0</h4>
+                                <h4 class="card-title"><?=$obj3[0]["count_order"];?></h4>
                             </div>
                         </div>
                     </div>

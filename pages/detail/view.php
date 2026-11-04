@@ -6,7 +6,7 @@
             FROM product
             INNER JOIN variants 
                 ON product.product_id = variants.product_id
-            WHERE MD5(product.product_id) = '".$_GET["product"]."'";
+            WHERE MD5(product.product_id) = '".$DB->Escape($_GET["product"])."'";
     $obj = $DB->QueryObj($sql);
     if ($obj[0]["min_price"] == $obj[0]["max_price"]) {
         $product_price = '฿'.$obj[0]["min_price"];
@@ -44,7 +44,7 @@
                             <?php
                                 $sql4 = "SELECT *
                                         FROM img
-                                        WHERE MD5(product_id) = '".$_GET["product"]."'
+                                        WHERE MD5(product_id) = '".$DB->Escape($_GET["product"])."'
                                         ORDER BY img_main";
                                 $obj4 = $DB->QueryObj($sql4);
                                 foreach ($obj4 as $row4) {
@@ -85,7 +85,7 @@
                                         WHERE MD5(variants.product_id) = '".$_GET["product"]."'
                                         GROUP BY variant_color";
                                 $obj2 = $DB->QueryObj($sql2);
-                                if (sizeof($obj2) > 1) {
+                                if (sizeof($obj2) > 0) {
                             ?>
                             <div class="size-203 respon6 p-b-10">
                                 <strong>สี</strong>
@@ -113,7 +113,7 @@
                         <?php
                                 $sql3 = "SELECT variant_size, size_detail, size_order
                                         FROM variants
-                                        WHERE MD5(variants.product_id) = '".$_GET["product"]."'
+                                        WHERE MD5(variants.product_id) = '".$DB->Escape($_GET["product"])."'
                                         GROUP BY variant_size
                                         ORDER BY size_order";
                                 $obj3 = $DB->QueryObj($sql3);  

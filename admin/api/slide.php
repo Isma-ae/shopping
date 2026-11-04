@@ -33,10 +33,14 @@
 
     function add_slide() {
         global $DB;
-        $dir = "../../file/banner/";
+        global $host;
+        global $user;
+        global $pass;
+        $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/banner/";
+        //$dir = "../../file/banner/";
         $slide_id = $DB->QueryMaxId("slide","slide_id",'sl',11);
         $img = $_FILES['slide_img'];
-        $slide_img = uploadFile($dir,$img,"slide_".$slide_id);
+        $slide_img = uploadFileFTP($host, $user, $pass, $ftp_dir, $img, "slide_".$slide_id);//uploadFile($dir,$img,"slide_".$slide_id);
         $add = $DB->QueryInsert('slide',[
             'slide_id' => $slide_id,
             'slide_name' => $_POST["slide_name"],
@@ -55,10 +59,14 @@
 
     function edit_slide() {
         global $DB;
-        $dir = "../../file/banner/";
+        global $host;
+        global $user;
+        global $pass;
+        $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/banner/";
+        //$dir = "../../file/banner/";
         $slide_id = $_POST["slide_id"];
         $slide_img = @$_FILES["slide_img"];
-		$img = uploadFile($dir,$slide_img,"slide_".$slide_id);
+		$img = uploadFileFTP($host, $user, $pass, $ftp_dir, $slide_img, "slide_".$slide_id);//uploadFile($dir,$slide_img,"slide_".$slide_id);
 		$update_img = ($img=="") ? "" : " ,slide_img ='".$img."'";
         $sql = "UPDATE slide 
 			SET slide_name = '".$DB->Escape($_POST["slide_name"])."',
@@ -76,12 +84,16 @@
 
     function delete_slide() {
         global $DB;
-        $dir = "../../file/banner/";
+        global $host;
+        global $user;
+        global $pass;
+        $ftp_dir = "/home/httpd/vhost/shopping.oas.psu.ac.th/file/banner/";
+        //$dir = "../../file/banner/";
         $slide_id = $_POST["slide_id"];
         $obj = $DB->QueryObj("SELECT * FROM slide WHERE slide_id='".$slide_id."'");
         $delete = $DB->QueryDelete("slide","slide_id='".$slide_id."'");
         if ($delete) {
-            deleteFile($dir,$obj[0]["slide_img"]);
+            deleteFileFTP($host, $user, $pass, $ftp_dir,$obj[0]["slide_img"]);//deleteFile($dir,$obj[0]["slide_img"]);
 	        echo "t";
         } else {
             echo $delete;
