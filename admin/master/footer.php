@@ -11,7 +11,7 @@
         </nav>
         <div class="copyright">
             2025, made with <i class="fa fa-heart heart text-danger"></i> by
-            <a href="https://www.facebook.com/ismaae.dueramae">Isma-ae Dueramae</a>
+            <a href="https://www.oas.psu.ac.th/">สำนักวิทยบริการ มหาวิทยาลัยสงขลานครินทร์</a>
         </div>
     </div>
 </footer>

@@ -1,0 +1,104 @@
+.dashboard-page .kpi-subtext {
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.dashboard-page .action-strip-card {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    color: inherit;
+}
+
+.dashboard-page .action-strip-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-page .chart-box {
+    position: relative;
+    width: 100%;
+}
+
+.dashboard-page .chart-box-lg {
+    height: 310px;
+}
+
+.dashboard-page .chart-box-sm {
+    height: 220px;
+}
+
+.dashboard-page .chart-box-xs {
+    height: 200px;
+}
+
+.dashboard-page .chart-empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8d9498;
+    font-size: 0.9rem;
+    background: rgba(248, 249, 250, 0.65);
+    border-radius: 8px;
+    text-align: center;
+    padding: 1rem;
+}
+
+.dashboard-page .dashboard-scroll-list {
+    max-height: 335px;
+    overflow-y: auto;
+}
+
+.dashboard-page .dashboard-scroll-table {
+    max-height: 390px;
+    overflow-y: auto;
+}
+
+.dashboard-page .dashboard-table th,
+.dashboard-page .dashboard-table td {
+    padding: 0.65rem 0.9rem !important;
+    font-size: 0.875rem;
+}
+
+.dashboard-page .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.dashboard-page .low-stock-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.dashboard-page .low-stock-item:last-child {
+    border-bottom: none;
+}
+
+.dashboard-page .btn-group-xs > .btn,
+.dashboard-page .btn-xs {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.78rem;
+}
+
+.dashboard-page .is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+@media (max-width: 767.98px) {
+    .dashboard-page .chart-box-lg {
+        height: 250px;
+    }
+}
+

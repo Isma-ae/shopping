@@ -8,7 +8,7 @@ if ($PAGE != 'home') {
 }
 
 ?>
-<header<?=$header;?>>
+<header<?= $header; ?>>
     <!-- Header desktop -->
     <div class="container-menu-desktop">
         <!-- Topbar -->
@@ -19,52 +19,52 @@ if ($PAGE != 'home') {
 
                 <div class="right-top-bar flex-w h-full">
                     <?php
-                        // if (!isset($_SESSION["user_id"])) {
-                        if (!isset($_SESSION["user_info"])) {
-                    ?>
-                    <a href="?page=search-order" class="flex-c-m trans-04 p-lr-25">
-                        <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
-                    </a>
-                    <a href="login/" class="flex-c-m trans-04 p-lr-25">
-                        <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
-                    </a>
-                    <?php
-                        } else {
-                            /*  ข้อมูลผู้ใช้
-                                    echo htmlspecialchars($currentUser['id']); 
-                                    echo htmlspecialchars($currentUser['name']);
-                                    echo htmlspecialchars($currentUser['email']); 
-                                    echo htmlspecialchars($currentUser['role']);
-                                    echo htmlspecialchars($currentUser['user_phone']);
+                    // if (!isset($_SESSION["user_id"])) {
+                    if (!isset($_SESSION["user_info"])) {
+                        ?>
+                        <a href="?page=search-order" class="flex-c-m trans-04 p-lr-25">
+                            <b class="cl0 hov-cl1">ค้นหาจากเลขที่ใบสั่งซื้อ</b>
+                        </a>
+                        <a href="login/" class="flex-c-m trans-04 p-lr-25">
+                            <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
+                        </a>
+                        <?php
+                    } else {
+                        /*  ข้อมูลผู้ใช้
+                                echo htmlspecialchars($currentUser['id']); 
+                                echo htmlspecialchars($currentUser['name']);
+                                echo htmlspecialchars($currentUser['email']); 
+                                echo htmlspecialchars($currentUser['role']);
+                                echo htmlspecialchars($currentUser['user_phone']);
 
-                            */
-                    ?>
-                    <a href="#" class="flex-c-m trans-04 p-lr-25" id="profileDesk">
-                        <b class="cl0 hov-cl1"><?=htmlspecialchars($currentUser['name'])?></b>
-                    </a>
-                    <?php
+                        */
+                        ?>
+                        <a href="#" class="flex-c-m trans-04 p-lr-25" id="profileDesk">
+                            <b class="cl0 hov-cl1"><?= htmlspecialchars($currentUser['name']) ?></b>
+                        </a>
+                        <?php
                         if (htmlspecialchars($currentUser['role']) == 'admin') {
-                    ?>
-                    <a href="./admin/" class="flex-c-m trans-04 p-lr-25">
-                        <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
-                    </a>
-                    <?php
+                            ?>
+                            <a href="./admin/" class="flex-c-m trans-04 p-lr-25">
+                                <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
+                            </a>
+                            <?php
                         }
-                    ?>
-                    <a href="?page=shipping_list" class="flex-c-m trans-04 p-lr-25">
-                        <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
-                    </a>
-                    <a href="#" class="flex-c-m trans-04 p-lr-25" id="logout">
-                        <b class="cl0 hov-cl1">ออกจากระบบ</b>
-                    </a>
-                    <?php
-                        }
+                        ?>
+                        <a href="?page=shipping_list" class="flex-c-m trans-04 p-lr-25">
+                            <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
+                        </a>
+                        <a href="#" class="flex-c-m trans-04 p-lr-25" id="logout">
+                            <b class="cl0 hov-cl1">ออกจากระบบ</b>
+                        </a>
+                        <?php
+                    }
                     ?>
                 </div>
             </div>
         </div>
 
-        <div class="wrap-menu-desktop<?=$wrap;?>">
+        <div class="wrap-menu-desktop<?= $wrap; ?>">
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
@@ -142,49 +142,49 @@ if ($PAGE != 'home') {
                     <div class="left-top-bar">
                         <?php
                         if (isset($_SESSION["user_info"])) {
-                    ?>
+                            ?>
 
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            <b class="cl0 hov-cl1"><?=htmlspecialchars($currentUser['name'])?></b>
-                        </a>
-                        <?php
-                           
-                    }
-                    ?>
+                            <a href="#" class="flex-c-m p-lr-10 trans-04">
+                                <b class="cl0 hov-cl1"><?= htmlspecialchars($currentUser['name']) ?></b>
+                            </a>
+                            <?php
+
+                        }
+                        ?>
                     </div>
                 </li>
 
                 <li>
                     <div class="right-top-bar flex-w h-full">
                         <?php
-                    // if (!isset($_SESSION["user_id"])) {
-                    if (!isset($_SESSION["user_info"])) {
-                    ?>
-                        <a href="?page=search-order" class="flex-c-m p-lr-10 trans-04">
-                            <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
-                        </a>
-                        <a href="login/" class="flex-c-m p-lr-10 trans-04">
-                            <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
-                        </a>
-                        <?php
-                    } else {
-                        if (htmlspecialchars($currentUser['role']) == 'admin') {
-                    ?>
-                        <a href="./admin/" class="flex-c-m p-lr-10 trans-04">
-                            <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
-                        </a>
-                        <?php
+                        // if (!isset($_SESSION["user_id"])) {
+                        if (!isset($_SESSION["user_info"])) {
+                            ?>
+                            <a href="?page=search-order" class="flex-c-m p-lr-10 trans-04">
+                                <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
+                            </a>
+                            <a href="login/" class="flex-c-m p-lr-10 trans-04">
+                                <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
+                            </a>
+                            <?php
+                        } else {
+                            if (htmlspecialchars($currentUser['role']) == 'admin') {
+                                ?>
+                                <a href="./admin/" class="flex-c-m p-lr-10 trans-04">
+                                    <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
+                                </a>
+                                <?php
+                            }
+                            ?>
+                            <a href="?page=shipping_list" class="flex-c-m p-lr-10 trans-04">
+                                <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
+                            </a>
+                            <a href="#" class="flex-c-m p-lr-10 trans-04" id="logout">
+                                <b class="cl0 hov-cl1">ออกจากระบบ</b>
+                            </a>
+                            <?php
                         }
-                    ?>
-                        <a href="?page=shipping_list" class="flex-c-m p-lr-10 trans-04">
-                            <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
-                        </a>
-                        <a href="#" class="flex-c-m p-lr-10 trans-04" id="logout">
-                            <b class="cl0 hov-cl1">ออกจากระบบ</b>
-                        </a>
-                        <?php
-                        }
-                    ?>
+                        ?>
                     </div>
                 </li>
             </ul>
