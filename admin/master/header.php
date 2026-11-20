@@ -27,7 +27,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#read-message').click(function(e) {
+    $(document).on('click', '.js-read-message', function(e) {
         e.preventDefault();
         var message_id = $(this).attr('msg-id');
         $.ajax({
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 if (res.status == 'success') {
                     window.location.href = "?page=message&message_id=" + message_id;
                 } else {
-                    Swal.fire(res.title, res.message, res.icon);
+                    Swal.fire(res.title || 'ไม่สำเร็จ', res.message || '', res.icon || 'error');
                 }
             }
         });
@@ -53,8 +53,10 @@ $(document).ready(function() {
     <div class="main-header-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="./" class="logo">
-                <h2 class="text-white">OAR Shopping</h2>
+            <a href="./" class="logo" aria-label="OAR Shopping Admin">
+                <span class="admin-brand-badge">
+                    <img src="../images/icons/S__8732697.png" alt="OAR Shopping" class="navbar-brand">
+                </span>
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -115,7 +117,7 @@ $(document).ready(function() {
                                             }
 
                                     ?>
-                                    <a href="#" msg-id="<?=$rowm["message_id"];?>" id="read-message">
+                                    <a href="?page=message&message_id=<?=$rowm["message_id"];?>" msg-id="<?=$rowm["message_id"];?>" class="js-read-message">
                                         <div class="notif-img">
                                             <img src="assets/img/chat.png" alt="Img Profile" />
                                         </div>

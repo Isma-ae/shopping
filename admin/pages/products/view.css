@@ -1,0 +1,356 @@
+/* ==========================================================================
+   Admin - Products List Page
+   ========================================================================== */
+
+.prd-stat-card {
+    cursor: pointer;
+    border: 2px solid transparent !important;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.prd-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.prd-stat-card.is-active {
+    border-color: #6861ce !important;
+    box-shadow: 0 8px 22px rgba(104, 97, 206, 0.16);
+}
+
+.prd-status-tabs {
+    gap: 6px;
+}
+
+.prd-status-tabs .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+.prd-tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: rgba(104, 97, 206, 0.12);
+    color: #4a43a8;
+}
+
+.prd-status-tabs .nav-link.active .prd-tab-badge {
+    background: rgba(255, 255, 255, 0.24);
+    color: #ffffff;
+}
+
+.prd-cat-filter-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prd-filter-label {
+    font-size: 13px;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.prd-filter-select {
+    min-width: 155px;
+    border-radius: 999px;
+    font-size: 13px;
+    padding-left: 12px;
+}
+
+/* Product info cell */
+.prd-cell-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 240px;
+}
+
+.prd-thumb-btn {
+    position: relative;
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: 1px solid #e7eaf0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9fb;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.prd-thumb-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.prd-thumb-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.prd-thumb-empty {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border: 1px dashed #d3d9e4;
+    border-radius: 10px;
+    background: #f8f9fb;
+    color: #a0aab8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.prd-info {
+    min-width: 0;
+}
+
+.prd-name {
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.35;
+    margin-bottom: 4px;
+}
+
+.prd-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: #6c757d;
+}
+
+.prd-code-chip {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: #f1f3f7;
+    color: #4b5563;
+    padding: 1px 6px;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+.prd-variant-chip {
+    background: #eef4ff;
+    color: #1572e8;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.prd-preorder-chip {
+    background: #f3e8ff;
+    color: #7c3aed;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* Category pill */
+.prd-cat-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f4f6fa;
+    color: #3f4a5c;
+    border: 1px solid #e4e8f0;
+    white-space: nowrap;
+}
+
+/* Price */
+.prd-price {
+    font-weight: 700;
+    color: #1f2937;
+    white-space: nowrap;
+}
+
+/* Stock badge */
+.prd-stock-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+
+.prd-stock-pill.is-ok {
+    background: #e9f7ef;
+    color: #198754;
+    border: 1px solid #c5ebd5;
+}
+
+.prd-stock-pill.is-low {
+    background: #fff7e6;
+    color: #b86e00;
+    border: 1px solid #ffe0a3;
+}
+
+.prd-stock-pill.is-out {
+    background: #fdecec;
+    color: #dc3545;
+    border: 1px solid #f8c6cb;
+}
+
+.prd-stock-sub {
+    font-size: 11px;
+    color: #8c95a3;
+    margin-top: 3px;
+    white-space: nowrap;
+}
+
+/* Interactive status toggle pill */
+.prd-status-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 11px 5px 7px;
+    border-radius: 999px;
+    border: 1px solid #e9ecef;
+    background: #ffffff;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    margin: 0;
+}
+
+.prd-status-toggle.is-active {
+    background: #ecfaf2;
+    border-color: #bfe8d1;
+}
+
+.prd-status-toggle.is-pending {
+    background: #fff6e9;
+    border-color: #f6d8ab;
+}
+
+.prd-status-toggle:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.prd-status-toggle.is-loading {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.prd-switch-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.prd-switch-track {
+    position: relative;
+    width: 34px;
+    height: 20px;
+    border-radius: 999px;
+    background: #e2b46d;
+    flex-shrink: 0;
+    transition: background-color 0.24s ease;
+}
+
+.prd-switch-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+    transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.prd-switch-input:checked + .prd-switch-track {
+    background: #198754;
+}
+
+.prd-switch-input:checked + .prd-switch-track .prd-switch-thumb {
+    transform: translateX(14px);
+}
+
+.prd-status-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.prd-status-toggle.is-active .prd-status-label {
+    color: #146c43;
+}
+
+.prd-status-toggle.is-pending .prd-status-label {
+    color: #b45d00;
+}
+
+/* Action buttons */
+.prd-actions-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.prd-btn-locked {
+    opacity: 0.45;
+    cursor: not-allowed !important;
+}
+
+/* Reserve radio option cards in edit modal */
+.prd-reserve-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #dfe3eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.prd-reserve-option:hover {
+    border-color: #6861ce;
+    background: #faf9ff;
+}
+
+.prd-reserve-option:has(input:checked) {
+    border-color: #6861ce;
+    background: #f5f3ff;
+}
+
+.prd-reserve-option .form-check-input {
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+/* Preview modal image */
+.prd-preview-img {
+    max-height: 70vh;
+    object-fit: contain;
+}

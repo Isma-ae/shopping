@@ -150,4 +150,18 @@
     ];
 }
 
+    if (!function_exists('assetVer')) {
+        function assetVer($path) {
+            $cleanPath = explode('?', $path, 2)[0];
+            $scriptDir = !empty($_SERVER['SCRIPT_FILENAME']) ? dirname($_SERVER['SCRIPT_FILENAME']) : getcwd();
+            $fullPath = $scriptDir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $cleanPath);
+            if (!file_exists($fullPath)) {
+                $fullPath = $cleanPath;
+            }
+            $v = file_exists($fullPath) ? filemtime($fullPath) : time();
+            $sep = strpos($path, '?') === false ? '?' : '&';
+            return $path . $sep . 'v=' . $v;
+        }
+    }
+
     

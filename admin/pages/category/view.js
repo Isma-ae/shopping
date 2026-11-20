@@ -1,238 +1,376 @@
 $(document).ready(function () {
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function getRowData(table, $el) {
+        var $tr = $el.closest("tr");
+        if ($tr.hasClass("child")) {
+            $tr = $tr.prev();
+        }
+        return table.row($tr).data();
+    }
+
+    var dtLang = {
+        emptyTable: "ยังไม่มีข้อมูล",
+        zeroRecords: "ไม่พบข้อมูลที่ค้นหา",
+        search: "ค้นหา:",
+        lengthMenu: "แสดง _MENU_ รายการ",
+        info: "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+        infoEmpty: "แสดง 0 รายการ"
+    };
+
+    // ------------------------------------------------------------------
+    // 1. Product Categories
+    // ------------------------------------------------------------------
     var dataTable = $("#category-table").DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "ajax": {
-            "url": "api/category.php",
-            "type": "POST",
-            "data": function (d) {
+        paging: true,
+        lengthChange: false,
+        pageLength: 10,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,
+        language: dtLang,
+        ajax: {
+            url: "api/category.php",
+            type: "POST",
+            data: function (d) {
                 d.fn = "select_category";
+            },
+            dataSrc: function (json) {
+                var rows = (json && Array.isArray(json.data)) ? json.data : [];
+                $("#statCategoryCount").text(rows.length);
+                return rows;
             }
         },
-        "columns": [{
-                "data": function (row, type, val, meta) {
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
                     return meta.row + 1;
                 }
             },
             {
-                "data": "category_name"
+                data: "category_name",
+                render: function (data) {
+                    return '<span class="fw-semibold text-dark">' + escapeHtml(data) + '</span>';
+                }
             },
             {
-                "data": function (row, type, val, meta) {
-                    return '\
-                        <button class="btn btn-outline-warning btn-sm edit_category"><i class="fas fa-edit"></i></button>\
-                        <button class="btn btn-outline-danger btn-sm delete_category"><i class="fas fa-trash"></i></button>\
-                    ';
-
-                },
-                "bSortable": false
+                data: "product_count",
+                className: "text-center",
+                render: function (cnt) {
+                    var n = parseInt(cnt || 0, 10);
+                    return '<span class="cat-usage-pill' + (n === 0 ? ' is-zero' : '') + '">' + n + ' สินค้า</span>';
+                }
+            },
+            {
+                data: null,
+                className: "text-end",
+                bSortable: false,
+                render: function (row) {
+                    var inUse = parseInt(row.product_count || 0, 10) > 0;
+                    var delTitle = inUse ? "มีสินค้ากำลังใช้ประเภทนี้อยู่" : "ลบประเภทสินค้า";
+                    return '<div class="cat-actions-wrap">' +
+                        '<button type="button" class="btn btn-outline-warning btn-sm edit_category" title="แก้ไข"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-outline-danger btn-sm delete_category' + (inUse ? ' cat-btn-locked' : '') + '" title="' + delTitle + '"><i class="fas fa-trash"></i></button>' +
+                    '</div>';
+                }
             }
         ]
     });
 
-    $('#addCategory').click(function (e) {
-        e.preventDefault();
-        $('.category-label').text('เพิ่มประเภทสินค้า');
-        $('#fn').val('add_category');
-        $('#category_id').val('');
-        $('#category_name').val('');
-        $('#add-category').show();
-        $('#edit-category').hide();
-        $('#categoryModal').modal('show');
+    $("#categoryModal").on("shown.bs.modal", function () {
+        $("#category_name").trigger("focus");
     });
 
-
-    $('#category-table tbody').on('click', '.edit_category', function () {
-        var data = dataTable.row($(this).parents('tr')).data();
-        $('.category-label').text('แก้ไขประเภทสินค้า');
-        $('#fn').val('edit_category');
-        $('#category_id').val(data.category_id);
-        $('#category_name').val(data.category_name);
-        $('#add-category').hide();
-        $('#edit-category').show();
-        $('#categoryModal').modal('show');
+    $("#addCategory").on("click", function (e) {
+        e.preventDefault();
+        $(".category-label").text("เพิ่มประเภทสินค้า");
+        $("#fn").val("add_category");
+        $("#category_id").val("");
+        $("#category_name").val("");
+        $("#add-category").show();
+        $("#edit-category").hide();
+        $("#categoryModal").modal("show");
     });
 
-    $('#add-category,#edit-category').click(function (e) {
-        e.preventDefault();
-        $('#form-category').submit();
+    $("#category-table tbody").on("click", ".edit_category", function () {
+        var data = getRowData(dataTable, $(this));
+        if (!data) return;
+        $(".category-label").text("แก้ไขประเภทสินค้า");
+        $("#fn").val("edit_category");
+        $("#category_id").val(data.category_id);
+        $("#category_name").val(data.category_name);
+        $("#add-category").hide();
+        $("#edit-category").show();
+        $("#categoryModal").modal("show");
     });
 
-    $('#form-category').submit(function (e) {
+    $("#add-category, #edit-category").on("click", function (e) {
         e.preventDefault();
+        $("#form-category").trigger("submit");
+    });
+
+    $("#form-category").on("submit", function (e) {
+        e.preventDefault();
+        var name = $.trim($("#category_name").val());
+        if (name === "") {
+            Swal.fire("กรุณากรอกข้อมูล", "กรุณาระบุชื่อประเภทสินค้า", "warning");
+            $("#category_name").trigger("focus");
+            return;
+        }
+
+        var $btns = $("#add-category, #edit-category");
+        $btns.prop("disabled", true);
         $.ajax({
             type: "POST",
             url: "api/category.php",
-            data: $(this).serialize(), // เก็บข้อมูลทั้งหมดในฟอร์ม
+            data: $(this).serialize(),
             dataType: "json",
             success: function (res) {
-                if (res.status == "success") {
-                    Swal.fire(res.title, res.message, res.icon).then((result) => {
-                        dataTable.ajax.reload();
-                        $('#categoryModal').modal('hide');
+                if (res.status === "success") {
+                    Swal.fire(res.title, res.message, res.icon).then(function () {
+                        dataTable.ajax.reload(null, false);
+                        $("#categoryModal").modal("hide");
                     });
                 } else {
-                    Swal.fire(res.title, res.message, res.icon);
+                    Swal.fire(res.title || "ไม่สำเร็จ", res.message || "", res.icon || "error");
                 }
             },
-            error: function (xhr, status, error) {
-                console.error("เกิดข้อผิดพลาด:", error);
+            error: function () {
+                Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+            },
+            complete: function () {
+                $btns.prop("disabled", false);
             }
         });
     });
 
-    $('#category-table tbody').on('click', '.delete_category', function () {
-        var data = dataTable.row($(this).parents('tr')).data();
+    $("#category-table tbody").on("click", ".delete_category", function () {
+        var data = getRowData(dataTable, $(this));
+        if (!data) return;
+
+        var usedCnt = parseInt(data.product_count || 0, 10);
+        if (usedCnt > 0) {
+            Swal.fire(
+                "ไม่สามารถลบได้",
+                "มีสินค้า " + usedCnt + " รายการกำลังใช้ประเภท \"" + data.category_name + "\" อยู่ กรุณาย้ายประเภทสินค้าก่อนลบ",
+                "warning"
+            );
+            return;
+        }
+
         Swal.fire({
-            title: 'คุณแน่ใจใช่ไหม?',
-            text: "หากลบแล้วคุณจะไม่สามารถย้อนกลับได้!",
-            icon: 'warning',
+            title: "ยืนยันการลบประเภทสินค้า?",
+            text: "คุณต้องการลบประเภท \"" + data.category_name + "\" ใช่หรือไม่",
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonText: 'ใช่แล้ว ลบออก!',
-            cancelButtonText: 'ยกเลิก'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'api/category.php',
-                    dataType: 'json',
-                    data: {
-                        fn: "delete_category",
-                        category_id: data.category_id
-                    },
-                    success: function (data) {
-                        Swal.fire(data.title, data.message, data.icon).then(() => {
-                            dataTable.ajax.reload();
-                        });
-                    }
-                });
-
-            }
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "ใช่, ลบออก",
+            cancelButtonText: "ยกเลิก"
+        }).then(function (result) {
+            if (!result.isConfirmed) return;
+            $.ajax({
+                type: "POST",
+                url: "api/category.php",
+                dataType: "json",
+                data: {
+                    fn: "delete_category",
+                    category_id: data.category_id
+                },
+                success: function (res) {
+                    Swal.fire(res.title || "สำเร็จ", res.message || "", res.icon || "success").then(function () {
+                        dataTable.ajax.reload(null, false);
+                    });
+                },
+                error: function () {
+                    Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+                }
+            });
         });
     });
 
-    //----------------------------------บริษัทขนส่ง------------------------------------//
-
-
+    // ------------------------------------------------------------------
+    // 2. Shipping Carriers
+    // ------------------------------------------------------------------
     var dataTable2 = $("#shipping-table").DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "ajax": {
-            "url": "api/category.php",
-            "type": "POST",
-            "data": function (d) {
+        paging: true,
+        lengthChange: false,
+        pageLength: 10,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,
+        language: dtLang,
+        ajax: {
+            url: "api/category.php",
+            type: "POST",
+            data: function (d) {
                 d.fn = "select_shipping";
+            },
+            dataSrc: function (json) {
+                var rows = (json && Array.isArray(json.data)) ? json.data : [];
+                $("#statShippingCount").text(rows.length);
+                return rows;
             }
         },
-        "columns": [{
-                "data": function (row, type, val, meta) {
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
                     return meta.row + 1;
                 }
             },
             {
-                "data": "transported_name"
+                data: "transported_name",
+                render: function (data) {
+                    return '<span class="fw-semibold text-dark">' + escapeHtml(data) + '</span>';
+                }
             },
             {
-                "data": function (row, type, val, meta) {
-                    return '\
-                        <button class="btn btn-outline-warning btn-sm edit_shipping"><i class="fas fa-edit"></i></button>\
-                        <button class="btn btn-outline-danger btn-sm delete_shipping"><i class="fas fa-trash"></i></button>\
-                    ';
-
-                },
-                "bSortable": false
+                data: "order_count",
+                className: "text-center",
+                render: function (cnt) {
+                    var n = parseInt(cnt || 0, 10);
+                    return '<span class="cat-usage-pill' + (n === 0 ? ' is-zero' : '') + '">' + n + ' รายการ</span>';
+                }
+            },
+            {
+                data: null,
+                className: "text-end",
+                bSortable: false,
+                render: function (row) {
+                    var inUse = parseInt(row.order_count || 0, 10) > 0;
+                    var delTitle = inUse ? "มีคำสั่งซื้ออ้างอิงบริษัทขนส่งนี้อยู่" : "ลบบริษัทขนส่ง";
+                    return '<div class="cat-actions-wrap">' +
+                        '<button type="button" class="btn btn-outline-warning btn-sm edit_shipping" title="แก้ไข"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-outline-danger btn-sm delete_shipping' + (inUse ? ' cat-btn-locked' : '') + '" title="' + delTitle + '"><i class="fas fa-trash"></i></button>' +
+                    '</div>';
+                }
             }
         ]
     });
 
-    $('#addShipping').click(function (e) {
-        e.preventDefault();
-        $('.shipping-label').text('เพิ่มบริษัทขนส่ง');
-        $('#fn_shipping').val('add_shipping');
-        $('#transported_id').val('');
-        $('#transported_name').val('');
-        $('#add-shipping').show();
-        $('#edit-shipping').hide();
-        $('#shippingModal').modal('show');
+    $("#shippingModal").on("shown.bs.modal", function () {
+        $("#transported_name").trigger("focus");
     });
 
-
-    $('#shipping-table tbody').on('click', '.edit_shipping', function () {
-        var data = dataTable2.row($(this).parents('tr')).data();
-        $('.shipping-label').text('แก้ไขบริษัทขนส่ง');
-        $('#fn_shipping').val('edit_shipping');
-        $('#transported_id').val(data.transported_id);
-        $('#transported_name').val(data.transported_name);
-        $('#add-shipping').hide();
-        $('#edit-shipping').show();
-        $('#shippingModal').modal('show');
+    $("#addShipping").on("click", function (e) {
+        e.preventDefault();
+        $(".shipping-label").text("เพิ่มบริษัทขนส่ง");
+        $("#fn_shipping").val("add_shipping");
+        $("#transported_id").val("");
+        $("#transported_name").val("");
+        $("#add-shipping").show();
+        $("#edit-shipping").hide();
+        $("#shippingModal").modal("show");
     });
 
-    $('#add-shipping,#edit-shipping').click(function (e) {
-        e.preventDefault();
-        $('#form-shipping').submit();
+    $("#shipping-table tbody").on("click", ".edit_shipping", function () {
+        var data = getRowData(dataTable2, $(this));
+        if (!data) return;
+        $(".shipping-label").text("แก้ไขบริษัทขนส่ง");
+        $("#fn_shipping").val("edit_shipping");
+        $("#transported_id").val(data.transported_id);
+        $("#transported_name").val(data.transported_name);
+        $("#add-shipping").hide();
+        $("#edit-shipping").show();
+        $("#shippingModal").modal("show");
     });
 
-    $('#form-shipping').submit(function (e) {
+    $("#add-shipping, #edit-shipping").on("click", function (e) {
         e.preventDefault();
+        $("#form-shipping").trigger("submit");
+    });
+
+    $("#form-shipping").on("submit", function (e) {
+        e.preventDefault();
+        var name = $.trim($("#transported_name").val());
+        if (name === "") {
+            Swal.fire("กรุณากรอกข้อมูล", "กรุณาระบุชื่อบริษัทขนส่ง", "warning");
+            $("#transported_name").trigger("focus");
+            return;
+        }
+
+        var $btns = $("#add-shipping, #edit-shipping");
+        $btns.prop("disabled", true);
         $.ajax({
             type: "POST",
             url: "api/category.php",
-            data: $(this).serialize(), // เก็บข้อมูลทั้งหมดในฟอร์ม
+            data: $(this).serialize(),
             dataType: "json",
             success: function (res) {
-                if (res.status == "success") {
-                    Swal.fire(res.title, res.message, res.icon).then((result) => {
-                        dataTable2.ajax.reload();
-                        $('#shippingModal').modal('hide');
+                if (res.status === "success") {
+                    Swal.fire(res.title, res.message, res.icon).then(function () {
+                        dataTable2.ajax.reload(null, false);
+                        $("#shippingModal").modal("hide");
                     });
                 } else {
-                    Swal.fire(res.title, res.message, res.icon);
+                    Swal.fire(res.title || "ไม่สำเร็จ", res.message || "", res.icon || "error");
                 }
             },
-            error: function (xhr, status, error) {
-                console.error("เกิดข้อผิดพลาด:", error);
+            error: function () {
+                Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+            },
+            complete: function () {
+                $btns.prop("disabled", false);
             }
         });
     });
 
-    $('#shipping-table tbody').on('click', '.delete_shipping', function () {
-        var data = dataTable2.row($(this).parents('tr')).data();
-        Swal.fire({
-            title: 'คุณแน่ใจใช่ไหม?',
-            text: "หากลบแล้วคุณจะไม่สามารถย้อนกลับได้!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'ใช่แล้ว ลบออก!',
-            cancelButtonText: 'ยกเลิก'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'api/category.php',
-                    dataType: 'json',
-                    data: {
-                        fn: "delete_shipping",
-                        transported_id: data.transported_id
-                    },
-                    success: function (data) {
-                        Swal.fire(data.title, data.message, data.icon).then(() => {
-                            dataTable2.ajax.reload();
-                        });
-                    }
-                });
+    $("#shipping-table tbody").on("click", ".delete_shipping", function () {
+        var data = getRowData(dataTable2, $(this));
+        if (!data) return;
 
-            }
+        var usedCnt = parseInt(data.order_count || 0, 10);
+        if (usedCnt > 0) {
+            Swal.fire(
+                "ไม่สามารถลบได้",
+                "มีคำสั่งซื้อ " + usedCnt + " รายการอ้างอิงบริษัทขนส่ง \"" + data.transported_name + "\" อยู่ จึงไม่สามารถลบได้",
+                "warning"
+            );
+            return;
+        }
+
+        Swal.fire({
+            title: "ยืนยันการลบบริษัทขนส่ง?",
+            text: "คุณต้องการลบบริษัทขนส่ง \"" + data.transported_name + "\" ใช่หรือไม่",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "ใช่, ลบออก",
+            cancelButtonText: "ยกเลิก"
+        }).then(function (result) {
+            if (!result.isConfirmed) return;
+            $.ajax({
+                type: "POST",
+                url: "api/category.php",
+                dataType: "json",
+                data: {
+                    fn: "delete_shipping",
+                    transported_id: data.transported_id
+                },
+                success: function (res) {
+                    Swal.fire(res.title || "สำเร็จ", res.message || "", res.icon || "success").then(function () {
+                        dataTable2.ajax.reload(null, false);
+                    });
+                },
+                error: function () {
+                    Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+                }
+            });
         });
     });
 });

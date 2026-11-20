@@ -102,14 +102,14 @@
                 <?php
 					if( ChkPermit() ) {
 						echo '
-							<link href="pages/'.$PAGE.'/view.css" rel="stylesheet">
-							<script src="pages/'.$PAGE.'/view.js"></script>
+							<link href="'.assetVer('pages/'.$PAGE.'/view.css').'" rel="stylesheet">
+							<script src="'.assetVer('pages/'.$PAGE.'/view.js').'"></script>
 						';
 						include_once("pages/".$PAGE."/view.php");
 					} else {
 						echo '
-							<link href="pages/404/view.css" rel="stylesheet">
-							<script src="pages/404/view.js"></script>
+							<link href="'.assetVer('pages/404/view.css').'" rel="stylesheet">
+							<script src="'.assetVer('pages/404/view.js').'"></script>
 						';
 						include_once("pages/404/view.php");
 					}

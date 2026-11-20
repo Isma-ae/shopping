@@ -12,21 +12,29 @@ if ($PAGE != 'home') {
     <!-- Header desktop -->
     <div class="container-menu-desktop">
         <!-- Topbar -->
-        <div class="top-bar">
+        <div class="top-bar oar-topbar">
             <div class="content-topbar flex-sb-m h-full container">
-                <div class="left-top-bar">
+                <div class="left-top-bar oar-topbar-left">
+                    <span class="oar-topbar-brand">
+                        <i class="fa fa-university" aria-hidden="true"></i>
+                        สำนักวิทยบริการ ม.อ.ปัตตานี
+                    </span>
+                    <span class="oar-topbar-sep" aria-hidden="true">&middot;</span>
+                    <span class="oar-topbar-note">รับหน้าร้านฟรี &amp; ส่งฟรีในวิทยาเขต</span>
                 </div>
 
-                <div class="right-top-bar flex-w h-full">
+                <div class="right-top-bar oar-topbar-right flex-w h-full">
                     <?php
                     // if (!isset($_SESSION["user_id"])) {
                     if (!isset($_SESSION["user_info"])) {
                         ?>
-                        <a href="?page=search-order" class="flex-c-m trans-04 p-lr-25">
-                            <b class="cl0 hov-cl1">ค้นหาจากเลขที่ใบสั่งซื้อ</b>
+                        <a href="?page=search-order" class="oar-topbar-link">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <span>ค้นหาจากเลขที่ใบสั่งซื้อ</span>
                         </a>
-                        <a href="login/" class="flex-c-m trans-04 p-lr-25">
-                            <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
+                        <a href="login/" class="oar-topbar-cta">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            <span>เข้าสู่ระบบ</span>
                         </a>
                         <?php
                     } else {
@@ -39,23 +47,27 @@ if ($PAGE != 'home') {
 
                         */
                         ?>
-                        <a href="#" class="flex-c-m trans-04 p-lr-25" id="profileDesk">
-                            <b class="cl0 hov-cl1"><?= htmlspecialchars($currentUser['name']) ?></b>
+                        <a href="?page=profile" class="oar-topbar-link oar-topbar-user" id="profileDesk">
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                            <span><?= htmlspecialchars($currentUser['name']) ?></span>
                         </a>
                         <?php
                         if (htmlspecialchars($currentUser['role']) == 'admin') {
                             ?>
-                            <a href="./admin/" class="flex-c-m trans-04 p-lr-25">
-                                <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
+                            <a href="./admin/" class="oar-topbar-badge">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                <span>ผู้ดูแลระบบ</span>
                             </a>
                             <?php
                         }
                         ?>
-                        <a href="?page=shipping_list" class="flex-c-m trans-04 p-lr-25">
-                            <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
+                        <a href="?page=shipping_list" class="oar-topbar-link">
+                            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            <span>รายการสั่งซื้อ</span>
                         </a>
-                        <a href="#" class="flex-c-m trans-04 p-lr-25" id="logout">
-                            <b class="cl0 hov-cl1">ออกจากระบบ</b>
+                        <a href="#" class="oar-topbar-link oar-topbar-logout" id="logout">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            <span>ออกจากระบบ</span>
                         </a>
                         <?php
                     }
@@ -93,8 +105,17 @@ if ($PAGE != 'home') {
 
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                        <i class="zmdi zmdi-search"></i>
+                    <div class="oar-inline-search">
+                        <form class="oar-inline-search-form" method="get" action="./">
+                            <input type="hidden" name="page" value="product">
+                            <input type="text" name="search" class="oar-inline-search-input" placeholder="ค้นหาสินค้า..." autocomplete="off">
+                            <button type="button" class="oar-inline-search-cancel js-oar-search-close" aria-label="ยกเลิกการค้นหา" title="ยกเลิก">
+                                <i class="zmdi zmdi-close" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="oar-inline-search-trigger js-oar-search-toggle" aria-label="ค้นหาสินค้า" title="ค้นหาสินค้า">
+                                <i class="zmdi zmdi-search" aria-hidden="true"></i>
+                            </button>
+                        </form>
                     </div>
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
@@ -116,8 +137,17 @@ if ($PAGE != 'home') {
 
             <!-- Icon header -->
             <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
-                    <i class="zmdi zmdi-search"></i>
+                <div class="oar-inline-search oar-inline-search--mobile">
+                    <form class="oar-inline-search-form" method="get" action="./">
+                        <input type="hidden" name="page" value="product">
+                        <input type="text" name="search" class="oar-inline-search-input" placeholder="ค้นหาสินค้า..." autocomplete="off">
+                        <button type="button" class="oar-inline-search-cancel js-oar-search-close" aria-label="ยกเลิกการค้นหา" title="ยกเลิก">
+                            <i class="zmdi zmdi-close" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="oar-inline-search-trigger js-oar-search-toggle" aria-label="ค้นหาสินค้า" title="ค้นหาสินค้า">
+                            <i class="zmdi zmdi-search" aria-hidden="true"></i>
+                        </button>
+                    </form>
                 </div>
 
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
@@ -137,50 +167,50 @@ if ($PAGE != 'home') {
 
         <!-- Menu Mobile -->
         <div class="menu-mobile">
-            <ul class="topbar-mobile">
-                <li>
-                    <div class="left-top-bar">
-                        <?php
-                        if (isset($_SESSION["user_info"])) {
-                            ?>
-
-                            <a href="#" class="flex-c-m p-lr-10 trans-04">
-                                <b class="cl0 hov-cl1"><?= htmlspecialchars($currentUser['name']) ?></b>
+            <ul class="topbar-mobile oar-topbar-mobile">
+                <?php if (isset($_SESSION["user_info"])) { ?>
+                    <li class="oar-topbar-mobile-user">
+                        <div class="left-top-bar">
+                            <a href="?page=profile" class="oar-topbar-m-user">
+                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                <span><?= htmlspecialchars($currentUser['name']) ?></span>
                             </a>
-                            <?php
-
-                        }
-                        ?>
-                    </div>
-                </li>
+                        </div>
+                    </li>
+                <?php } ?>
 
                 <li>
-                    <div class="right-top-bar flex-w h-full">
+                    <div class="right-top-bar oar-topbar-m-actions flex-w h-full">
                         <?php
                         // if (!isset($_SESSION["user_id"])) {
                         if (!isset($_SESSION["user_info"])) {
                             ?>
-                            <a href="?page=search-order" class="flex-c-m p-lr-10 trans-04">
-                                <b class="cl0 hov-cl1">ค้าหาจากเลขที่ใบสั่งซื้อ</b>
+                            <a href="?page=search-order" class="oar-topbar-m-link">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                                <span>ค้นหาจากเลขที่ใบสั่งซื้อ</span>
                             </a>
-                            <a href="login/" class="flex-c-m p-lr-10 trans-04">
-                                <b class="cl0 hov-cl1">เข้าสู่ระบบ</b>
+                            <a href="login/" class="oar-topbar-m-cta">
+                                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                <span>เข้าสู่ระบบ</span>
                             </a>
                             <?php
                         } else {
                             if (htmlspecialchars($currentUser['role']) == 'admin') {
                                 ?>
-                                <a href="./admin/" class="flex-c-m p-lr-10 trans-04">
-                                    <b class="cl0 hov-cl1">ผู้ดูแลระบบ</b>
+                                <a href="./admin/" class="oar-topbar-m-badge">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                    <span>ผู้ดูแลระบบ</span>
                                 </a>
                                 <?php
                             }
                             ?>
-                            <a href="?page=shipping_list" class="flex-c-m p-lr-10 trans-04">
-                                <b class="cl0 hov-cl1">รายการสั่งซื้อ</b>
+                            <a href="?page=shipping_list" class="oar-topbar-m-link">
+                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                <span>รายการสั่งซื้อ</span>
                             </a>
-                            <a href="#" class="flex-c-m p-lr-10 trans-04" id="logout">
-                                <b class="cl0 hov-cl1">ออกจากระบบ</b>
+                            <a href="#" class="oar-topbar-m-link oar-topbar-m-logout" id="logout">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                <span>ออกจากระบบ</span>
                             </a>
                             <?php
                         }
@@ -204,20 +234,4 @@ if ($PAGE != 'home') {
             </ul>
         </div>
     </div>
-
-    <!-- Modal Search -->
-    <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-        <div class="container-search-header">
-            <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="images/icons/icon-close2.png" alt="CLOSE">
-            </button>
-
-            <form class="wrap-search-header flex-w p-l-15">
-                <button class="flex-c-m trans-04">
-                    <i class="zmdi zmdi-search"></i>
-                </button>
-                <input class="plh3" type="text" name="search" placeholder="ค้นหา...">
-            </form>
-        </div>
-    </div>
-    </header>
+</header>

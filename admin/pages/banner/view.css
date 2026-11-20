@@ -1,0 +1,221 @@
+/* ==========================================================================
+   Admin - Banner Management Page
+   ========================================================================== */
+
+.bn-tip-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f4f7fe;
+    border: 1px solid #d9e4fc;
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    color: #364a72;
+}
+
+.bn-tip-bar i {
+    color: #1572e8;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.bn-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(24, 32, 48, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.bn-card:hover {
+    transform: translateY(-3px);
+    border-color: #c8d6f5;
+    box-shadow: 0 12px 28px rgba(21, 114, 232, 0.12);
+}
+
+.bn-thumb-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 44%;
+    background: #f4f6f9;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.bn-thumb-wrap img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.bn-card:hover .bn-thumb-wrap img {
+    transform: scale(1.03);
+}
+
+.bn-order-pill {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    background: rgba(26, 32, 53, 0.78);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+}
+
+.bn-zoom-pill {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1a2035;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+}
+
+.bn-thumb-wrap:hover .bn-zoom-pill {
+    opacity: 1;
+}
+
+.bn-card-body {
+    padding: 16px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.bn-card-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 6px;
+    line-height: 1.4;
+}
+
+.bn-card-title.is-empty {
+    color: #9ca3af;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.bn-card-desc {
+    font-size: 13.5px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bn-link-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    font-size: 12px;
+    color: #364a72;
+    background: #f1f5fe;
+    border: 1px solid #dbe5fb;
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin-top: auto;
+    align-self: flex-start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bn-link-chip i {
+    color: #1572e8;
+    flex-shrink: 0;
+}
+
+.bn-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 11px 18px;
+    background: #fafbfc;
+    border-top: 1px solid #edf0f5;
+}
+
+.bn-slide-id {
+    font-size: 12px;
+    color: #8b95a5;
+}
+
+.bn-card-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Empty State */
+.bn-empty-state {
+    background: #f8f9fc;
+    border: 1.5px dashed #d3dce9;
+    border-radius: 16px;
+    text-align: center;
+    padding: 48px 20px;
+}
+
+.bn-empty-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e8f0fe;
+    color: #1572e8;
+    font-size: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+/* Modal Preview */
+.bn-preview-box {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    max-height: 280px;
+    background: #f6f8fb;
+    border: 1.5px dashed #cfd8e6;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bn-preview-box img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    display: block;
+}
+
+.bn-preview-placeholder {
+    text-align: center;
+    color: #8690a0;
+    padding: 28px 16px;
+}

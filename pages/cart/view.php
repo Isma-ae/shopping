@@ -1,81 +1,112 @@
-<div class="container">
-    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="./" class="stext-109 cl8 hov-cl1 trans-04">
-            หน้าแรก
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <span class="stext-109 cl4">
-            รถเข็นสินค้า
-        </span>
-    </div>
-</div>
-
-<form class="bg0 p-t-75 p-b-85">
+<!-- Breadcrumb -->
+<section class="cart-breadcrumb-bar">
     <div class="container">
-        <div class="m-l-25 m-r--38 m-lr-0-xl">
-            <div class="wrap-table-shopping-cart">
-                <table class="table-shopping-cart">
-                    <thead>
-                        <tr class="table_head">
-                            <th class="my-column-1">
-                                <input class="form-check-input" type="checkbox" id="checkAll">
-                            </th>
-                            <th class="my-column-2">สินค้า</th>
-                            <th class="my-column-3"></th>
-                            <th class="column-3">ราคา</th>
-                            <th class="column-4">จำนวน</th>
-                            <th class="my-column-4">รวม</th>
-                            <th class="my-column-5"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="cart_data">
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                <div class="flex-w flex-m m-r-20 m-tb-5">
-
-                    <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5"
-                        id="continue-shopping">
-                        กลับไปซื้อเพิ่ม
-                    </div>
-                </div>
-
-                <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-                    id="empty-basket">
-                    ล้างตะกร้า
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row p-t-20">
-            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50"></div>
-            <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
-                <div class="bor10 p-lr-40 p-t-30 p-b-40 p-lr-15-sm">
-
-                    <div class="flex-w flex-t p-t-27 p-b-33">
-                        <div class="size-208">
-                            <span class="mtext-101 cl2">
-                                รวมทั้งหมด:
-                            </span>
-                        </div>
-
-                        <div class="size-209 p-t-1">
-                            <span class="mtext-110 cl2 cart-total">
-                                0 บาท
-                            </span>
-                        </div>
-                    </div>
-
-                    <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-                        type="button" id="btn-checkout">
-                        ดำเนินการชำระเงิน
-                    </button>
-                </div>
-            </div>
-        </div>
+        <nav class="cart-breadcrumb" aria-label="breadcrumb">
+            <a href="./">หน้าแรก</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <a href="?page=product">สินค้าทั้งหมด</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span class="is-current">ตะกร้าสินค้า</span>
+        </nav>
     </div>
-</form>
+</section>
+
+<!-- Main Cart Page -->
+<section class="cart-page-section">
+    <div class="container">
+        <div class="cart-page-head">
+            <div>
+                <span class="oar-eyebrow">SHOPPING CART</span>
+                <h1 class="oar-heading">ตะกร้าสินค้าของคุณ</h1>
+            </div>
+            <div class="cart-head-count d-none" id="cartHeadCount">
+                ทั้งหมด <strong id="cartTotalItems">0</strong> รายการ
+            </div>
+        </div>
+
+        <form class="cart-layout-form" onsubmit="return false;">
+            <div class="row align-items-start">
+                <!-- Left Column: Cart Items -->
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <div class="cart-card">
+                        <div class="cart-card-toolbar d-none" id="cartToolbar">
+                            <label class="cart-check-all-label" for="checkAll">
+                                <input class="form-check-input cart-checkbox" type="checkbox" id="checkAll">
+                                <span class="cart-check-all-text">
+                                    เลือกทั้งหมด
+                                    <small id="cartSelectedHint">(เลือกแล้ว 0 รายการ)</small>
+                                </span>
+                            </label>
+
+                            <button type="button" class="cart-clear-btn" id="empty-basket">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                <span>ล้างตะกร้า</span>
+                            </button>
+                        </div>
+
+                        <div class="cart_data cart-list" id="cartItemList">
+                            <div class="cart-loading">
+                                <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                                <span>กำลังโหลดรายการสินค้าในตะกร้า...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Sticky Order Summary -->
+                <div class="col-lg-4">
+                    <aside class="cart-summary-card">
+                        <h3 class="cart-summary-title">สรุปคำสั่งซื้อ</h3>
+
+                        <div class="cart-summary-rows">
+                            <div class="cart-summary-row">
+                                <span>รายการที่เลือก</span>
+                                <strong id="cartSummarySelected">0 รายการ (0 ชิ้น)</strong>
+                            </div>
+                            <div class="cart-summary-row">
+                                <span>ยอดรวมสินค้า</span>
+                                <strong id="cartSubtotal">฿0</strong>
+                            </div>
+                            <div class="cart-summary-row cart-summary-row--note">
+                                <span>ค่าจัดส่ง</span>
+                                <span>คำนวณในขั้นตอนถัดไป</span>
+                            </div>
+                        </div>
+
+                        <div class="cart-summary-divider"></div>
+
+                        <div class="cart-summary-total">
+                            <span>รวมทั้งหมด</span>
+                            <strong class="cart-total">฿0</strong>
+                        </div>
+
+                        <button type="button" class="cart-btn-checkout" id="btn-checkout">
+                            <span>ดำเนินการชำระเงิน</span>
+                            <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                        </button>
+
+                        <button type="button" class="cart-btn-continue" id="continue-shopping">
+                            <i class="fa fa-angle-left mr-2" aria-hidden="true"></i>
+                            <span>กลับไปเลือกซื้อสินค้าเพิ่ม</span>
+                        </button>
+
+                        <div class="cart-service-notes">
+                            <div class="cart-service-note">
+                                <i class="fa fa-university" aria-hidden="true"></i>
+                                <span>รับหน้าร้านฟรีที่เคาน์เตอร์สำนักวิทยบริการ</span>
+                            </div>
+                            <div class="cart-service-note">
+                                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                                <span>จัดส่งฟรีภายในวิทยาเขต ม.อ.ปัตตานี</span>
+                            </div>
+                            <div class="cart-service-note">
+                                <i class="fa fa-qrcode" aria-hidden="true"></i>
+                                <span>รองรับชำระเงินผ่าน Thai QR PromptPay</span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

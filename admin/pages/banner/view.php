@@ -1,9 +1,9 @@
 <div class="page-inner">
     <div class="page-header">
-        <h3 class="fw-bold mb-3">ประเภท</h3>
+        <h3 class="fw-bold mb-3">จัดการแบนเนอร์</h3>
         <ul class="breadcrumbs mb-3">
             <li class="nav-home">
-                <a href="#">
+                <a href="./">
                     <i class="icon-home"></i>
                 </a>
             </li>
@@ -11,79 +11,118 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="#">แบนเนอร์</a>
+                <a href="?page=banner">แบนเนอร์</a>
             </li>
         </ul>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex align-items-center">
-                        <h4 class="card-title">แบนเนอร์</h4>
-                        <a class="btn btn-primary btn-round ms-auto" href="?page=product-add" id="add">
-                            <i class="fa fa-plus"></i>
-                            เพิ่มแบนเนอร์
-                        </a>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h4 class="card-title mb-0">แบนเนอร์หน้าแรก</h4>
+                            <span class="badge badge-primary" id="bannerCountBadge">0 รายการ</span>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-round" id="add">
+                            <i class="fa fa-plus me-1"></i>เพิ่มแบนเนอร์
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row slide-data"></div>
+                    <div class="bn-tip-bar mb-4">
+                        <i class="fas fa-info-circle"></i>
+                        <span>แนะนำภาพแบนเนอร์แนวนอนขนาด <strong>1920 &times; 800 px</strong> (อัตราส่วน 12:5) รองรับไฟล์ JPG, PNG, WEBP เพื่อการแสดงผลที่คมชัดทั้งหน้าจอคอมพิวเตอร์และมือถือ</span>
+                    </div>
+
+                    <div class="row g-4 slide-data">
+                        <div class="col-12 text-center py-5 text-muted">
+                            <i class="fas fa-spinner fa-spin me-2"></i>กำลังโหลดแบนเนอร์...
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<div class="modal fade" id="slideModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<!-- Add / Edit Banner Modal -->
+<div class="modal fade" id="slideModal" tabindex="-1" aria-labelledby="slideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">
-                    <span class="fw-mediumbold" id="slideModalLabel"></span>
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
+                <h5 class="modal-title fw-bold" id="slideModalLabel">เพิ่มแบนเนอร์</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="form-slide">
-                    <input type="hidden" id="fn" name="fn" />
-                    <input type="hidden" id="slide_id" name="slide_id" />
-                    <div class="text-center">
-                        <img id="img" src="assets/img/image.png" alt="slide image" class="img-thumbnail"
-                                style="width: 300px;" onerror="errorImage(this,'assets/img/image.png')">
-                    </div>
-                    <br>
+                <form id="form-slide" enctype="multipart/form-data">
+                    <input type="hidden" id="fn" name="fn" value="add_slide" />
+                    <input type="hidden" id="slide_id" name="slide_id" value="" />
+
                     <div class="mb-3">
-                        <label for="slide_img" class="form-label">ภาพสไลด์</label>
-                        <input type="file" class="form-control form-control-user" name="slide_img" id="slide_img" 
-                            accept="img/*" onchange="imgf_change(this,'#img','assets/img/image.png')">
+                        <label class="form-label fw-semibold">ตัวอย่างภาพแบนเนอร์</label>
+                        <div class="bn-preview-box" id="bannerPreviewBox">
+                            <img id="img" src="" alt="ตัวอย่างแบนเนอร์" class="d-none">
+                            <div class="bn-preview-placeholder" id="bannerPlaceholder">
+                                <i class="fas fa-image fa-2x mb-2"></i>
+                                <div>ยังไม่ได้เลือกรูปภาพแบนเนอร์</div>
+                                <small class="text-muted">แนะนำขนาด 1920 &times; 800 px</small>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="mb-3">
-                        <label for="slide_name" class="form-label">หัวข้อ หรือชื่อเรื่อง</label>
+                        <label for="slide_img" class="form-label fw-semibold">
+                            เลือกไฟล์ภาพแบนเนอร์ <span class="text-danger" id="imgReqMark">*</span>
+                        </label>
+                        <input type="file" class="form-control" name="slide_img" id="slide_img"
+                            accept="image/jpeg,image/png,image/gif,image/webp">
+                        <small class="text-muted d-none" id="imgEditHint">เว้นว่างไว้หากต้องการใช้ภาพเดิม</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="slide_name" class="form-label fw-semibold">หัวข้อหรือชื่อแบนเนอร์</label>
                         <input type="text" class="form-control" id="slide_name" name="slide_name"
-                            placeholder="กรุณากรอกหัวข้อ..." />
+                            placeholder="เช่น โปรโมชันเสื้อที่ระลึกครบรอบ 55 ปี (ไม่บังคับ)" />
                     </div>
+
                     <div class="mb-3">
-                        <label for="slide_detail" class="form-label">รายละเอียด</label>
+                        <label for="slide_detail" class="form-label fw-semibold">รายละเอียดเพิ่มเติม</label>
                         <input type="hidden" name="slide_detail" />
                         <textarea id="slide_detail"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="slide_link" class="form-label">ลิงค์ (กรณีให้ไปหน้าอื่นเมื่อกดสไลด์)</label>
+
+                    <div class="mb-2">
+                        <label for="slide_link" class="form-label fw-semibold">ลิงก์ปลายทางเมื่อคลิกแบนเนอร์</label>
                         <input type="text" class="form-control" id="slide_link" name="slide_link"
-                            placeholder="กรุณากรอกลิงค์..." />
+                            placeholder="เช่น ?page=product หรือ https://... (เว้นว่างได้)" />
                     </div>
                 </form>
             </div>
-            <div class="modal-footer border-0">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">ยกเลิก</button>
                 <button type="button" class="btn btn-success manage-slide" id="add-slide">
-                    บันทึก
+                    <i class="fas fa-save me-1"></i>บันทึกแบนเนอร์
                 </button>
                 <button type="button" class="btn btn-warning manage-slide" id="edit-slide">
-                    แก้ไข
+                    <i class="fas fa-check me-1"></i>บันทึกการแก้ไข
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full Image Preview Modal -->
+<div class="modal fade" id="bannerZoomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="bannerZoomTitle">ตัวอย่างแบนเนอร์</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center bg-light p-3">
+                <img id="bannerZoomImg" src="" alt="Banner Preview" class="img-fluid rounded shadow-sm" style="max-height:75vh;">
             </div>
         </div>
     </div>

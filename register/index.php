@@ -19,13 +19,13 @@
     <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
     <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
     <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
-    <link rel="stylesheet" type="text/css" href="../css/util.css">
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
-    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="<?=assetVer('../css/util.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?=assetVer('../css/main.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?=assetVer('../style.css');?>">
 
     <script src="../vendor/jquery/jquery-3.6.0.min.js"></script>
     <script src="../vendor/sweetalert/sweetalert.min.js"></script>
-    <script src="script.js"></script>
+    <script src="<?=assetVer('script.js');?>"></script>
 </head>
 
 <body class="animsition">

@@ -1,9 +1,37 @@
 $(function () {
     load_qty();
 
-    select_cart();
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
 
-    function select_cart() {
+    function formatBaht(amount) {
+        var num = Number(amount || 0);
+        if (isNaN(num)) num = 0;
+        var hasFraction = Math.abs(num - Math.round(num)) > 0.001;
+        return "฿" + num.toLocaleString("th-TH", {
+            minimumFractionDigits: hasFraction ? 2 : 0,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function getCheckedCartIds() {
+        var ids = [];
+        $('.cart_data .cart-item-check:checked:not(:disabled)').each(function () {
+            ids.push(String($(this).val()));
+        });
+        return ids;
+    }
+
+    function select_cart(preserveChecked) {
+        var previouslyChecked = preserveChecked ? getCheckedCartIds() : [];
+
         $.ajax({
             type: "post",
             url: "api/cart.php",
@@ -16,103 +44,166 @@ $(function () {
                     window.location.href = './login';
                     return;
                 }
+
+                var items = Array.isArray(res.data) ? res.data : [];
                 var html = '';
-                if (res.data.length === 0) {
-                    html += '<tr class="table_row">';
-                    html += '<td colspan="7" class="txt-center">ไม่มีสินค้าในตะกร้า<td>';
-                    html += '</tr>';
+
+                if (items.length === 0) {
+                    $('#cartToolbar').addClass('d-none');
+                    $('#cartHeadCount').addClass('d-none');
+                    $('#checkAll').prop('checked', false);
+
+                    html += '<div class="cart-empty-state">';
+                    html += '  <div class="cart-empty-icon"><i class="zmdi zmdi-shopping-cart" aria-hidden="true"></i></div>';
+                    html += '  <h4 class="cart-empty-title">ยังไม่มีสินค้าในตะกร้าของคุณ</h4>';
+                    html += '  <p class="cart-empty-desc">เลือกชมเสื้อ ของที่ระลึก และสินค้าประจำสำนักวิทยบริการได้เลย</p>';
+                    html += '  <a href="?page=product" class="cart-empty-btn"><i class="fa fa-shopping-bag mr-2" aria-hidden="true"></i>เลือกชมสินค้า</a>';
+                    html += '</div>';
+
                     $('.cart_data').html(html);
-                } else {
-                    var size_detail = '';
-                    $.each(res.data, function (i, v) {
-                        if (v.size_detail != "") {
-                            size_detail = ' (' + v.size_detail + ')';
-                        } else {
-                            size_detail = '';
+                    calculateTotal();
+                    return;
+                }
+
+                $('#cartToolbar').removeClass('d-none');
+                $('#cartHeadCount').removeClass('d-none');
+                $('#cartTotalItems').text(items.length);
+
+                $.each(items, function (i, v) {
+                    var cartId = String(v.cart_id);
+                    var unitPrice = parseFloat(v.variant_sale || 0);
+                    var qty = parseInt(v.cart_qty || 1, 10);
+                    if (isNaN(qty) || qty < 1) qty = 1;
+                    var lineTotal = unitPrice * qty;
+
+                    var isReserve = Number(v.cart_type) === 2;
+                    var remainingStock = v.remaining_stock !== undefined
+                        ? parseInt(v.remaining_stock, 10)
+                        : parseInt(v.variant_stock || 0, 10);
+                    var isOut = !isReserve && remainingStock < 1;
+
+                    var disabledAttr = isOut ? ' disabled' : '';
+                    var isChecked = !isOut && preserveChecked && previouslyChecked.indexOf(cartId) !== -1;
+                    var checkedAttr = isChecked ? ' checked' : '';
+
+                    var itemClasses = 'cart-item';
+                    if (isOut) itemClasses += ' product_out';
+                    if (isChecked) itemClasses += ' is-selected';
+
+                    // Match pages/detail logic: show color only when product has > 1 color; show size only when > 1 size
+                    var colorCount = parseInt(v.color_count || 0, 10);
+                    var sizeCount = parseInt(v.size_count || 0, 10);
+                    var colorVal = $.trim(v.variant_color || '');
+                    var sizeVal = $.trim(v.variant_size || '');
+                    var sizeDetail = $.trim(v.size_detail || '');
+
+                    var variantHtml = '';
+                    if (colorCount > 1) {
+                        var colorLabel = colorVal !== '' ? colorVal : 'มาตรฐาน';
+                        variantHtml += '<span class="cart-variant-pill"><strong>สี:</strong>' + escapeHtml(colorLabel) + '</span>';
+                    }
+                    if (sizeCount > 1) {
+                        var sizeLabel = sizeVal !== '' ? sizeVal : 'มาตรฐาน';
+                        if (sizeDetail !== '') {
+                            sizeLabel += ' (' + sizeDetail + ')';
                         }
+                        variantHtml += '<span class="cart-variant-pill"><strong>ขนาด:</strong>' + escapeHtml(sizeLabel) + '</span>';
+                    }
 
-                        if (v.cart_type != 2) {
-                            if (v.variant_stock < 1) {
-                                var disabled = 'disabled';
-                                var statusProduct = '<span class="product-style2">สินค้าหมด</span>';
-                                var tr_class = 'product_out';
-                                var cart_qty = v.cart_qty;
-                            } else {
-                                var disabled = '';
-                                var statusProduct = '';
-                                var tr_class = '';
-                                var cart_qty = '<div class="wrap-num-product flex-w m-l-auto m-r-0">\
-                                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" cart-id="' + v.cart_id + '">\
-                                                        <i class="fs-16 zmdi zmdi-minus"></i>\
-                                                    </div>\
-                                                    <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="' + v.cart_qty + '">\
-                                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" cart-id="' + v.cart_id + '">\
-                                                        <i class="fs-16 zmdi zmdi-plus"></i>\
-                                                    </div>\
-                                                </div>';
-                            }
-                        } else {
-                            var disabled = '';
-                            var statusProduct = '<span class="product-style2">จอง</span>';
-                            var tr_class = '';
-                            var cart_qty = '<div class="wrap-num-product flex-w m-l-auto m-r-0">\
-                                                <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" cart-id="' + v.cart_id + '">\
-                                                    <i class="fs-16 zmdi zmdi-minus"></i>\
-                                                </div>\
-                                                <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="' + v.cart_qty + '">\
-                                                <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" cart-id="' + v.cart_id + '">\
-                                                    <i class="fs-16 zmdi zmdi-plus"></i>\
-                                                </div>\
-                                            </div>';
-                        }
+                    if (isReserve) {
+                        variantHtml += '<span class="cart-status-pill cart-status-pill--reserve">สินค้าสั่งจอง</span>';
+                    } else if (isOut) {
+                        variantHtml += '<span class="cart-status-pill cart-status-pill--out">สินค้าหมด</span>';
+                    } else if (remainingStock > 0 && remainingStock <= 5) {
+                        variantHtml += '<span class="cart-status-pill cart-status-pill--low">เหลือ ' + remainingStock + ' ชิ้น</span>';
+                    }
 
-                        html += '<tr class="table_row ' + tr_class + '">';
-                        html += '<td class="my-column-1">';
-                        html += '<input class="form-check-input" type="checkbox" value="' + v.cart_id + '" ' + disabled + '>';
-                        html += '</td>';
-                        html += '<td class="my-column-2">';
-                        html += '<div class="how-itemcart1">';
-                        html += '<a href="file/product/' + v.img_name + ' target="_blank""><img src="file/product/' + v.img_name + '" alt=""></a>';
-                        html += '</div>';
-                        html += '</td>';
-                        html += '<td class="my-column-3">' + v.product_name + '<br>';
-                        html += '<span class="product-style">' + v.variant_color + '</span>';
-                        html += '<span class="product-style">' + v.variant_size + size_detail + '</span>' + statusProduct;
-                        html += '</td>';
-                        html += '<td class="column-3">฿' + v.variant_sale + '</td>';
-                        html += '<td class="column-4">' + cart_qty + '</td>';
-                        html += '<td class="my-column-4">B' + parseFloat(v.variant_sale * v.cart_qty).toFixed(2) + '</td>';
-                        html += '<td class="my-column-5"><a href="#" class="product-delete" cart-id="' + v.cart_id + '"><i class="fa fa-trash"></i></a></td>';
-                        html += '</tr>';
-                    });
-                    $('.cart_data').html(html);
-                    $('.btn-num-product-down').on('click', function () {
-                        var numProduct = Number($(this).next().val());
-                        var newVal = numProduct - 1;
-                        if (numProduct > 1) {
-                            $(this).next().val(newVal);
-                            var cartId = $(this).attr('cart-id');
-                            change_qty(cartId, newVal);
-                        }
-                    });
+                    var imgPath = (v.img_name && $.trim(v.img_name) !== '')
+                        ? 'file/product/' + encodeURIComponent(v.img_name)
+                        : 'images/icons/OARShopping.png';
+                    var detailUrl = v.product_hash
+                        ? '?page=detail&product=' + encodeURIComponent(v.product_hash)
+                        : '?page=product';
 
-                    $('.btn-num-product-up').on('click', function () {
-                        var numProduct = Number($(this).prev().val());
-                        var newVal = numProduct + 1;
-                        $(this).prev().val(newVal);
-                        var cartId = $(this).attr('cart-id');
-                        change_qty(cartId, newVal);
-                    });
+                    var qtyControlHtml = '';
+                    if (isOut) {
+                        qtyControlHtml = '<span class="cart-qty-static">จำนวน ' + qty + ' ชิ้น</span>';
+                    } else {
+                        qtyControlHtml =
+                            '<div class="cart-qty-box">' +
+                                '<button type="button" class="cart-qty-btn btn-num-product-down" cart-id="' + escapeHtml(cartId) + '" aria-label="ลดจำนวน">' +
+                                    '<i class="zmdi zmdi-minus" aria-hidden="true"></i>' +
+                                '</button>' +
+                                '<input class="cart-qty-input num-product" type="number" min="1" name="num-product1" cart-id="' + escapeHtml(cartId) + '" value="' + qty + '">' +
+                                '<button type="button" class="cart-qty-btn btn-num-product-up" cart-id="' + escapeHtml(cartId) + '" aria-label="เพิ่มจำนวน">' +
+                                    '<i class="zmdi zmdi-plus" aria-hidden="true"></i>' +
+                                '</button>' +
+                            '</div>';
+                    }
 
+                    html += '<article class="' + itemClasses + '" data-cart-id="' + escapeHtml(cartId) + '" data-unit-price="' + unitPrice + '" data-qty="' + qty + '">';
+                    html += '  <div class="cart-item-main">';
+                    html += '    <input class="form-check-input cart-checkbox cart-item-check" type="checkbox" value="' + escapeHtml(cartId) + '"' + disabledAttr + checkedAttr + ' aria-label="เลือกสินค้า">';
+                    html += '    <a href="' + detailUrl + '" class="cart-item-thumb">';
+                    html += '      <img src="' + imgPath + '" alt="' + escapeHtml(v.product_name) + '" onerror="this.onerror=null;this.src=\'images/icons/OARShopping.png\';this.classList.add(\'is-fallback-img\');">';
+                    html += '    </a>';
+                    html += '    <div class="cart-item-info">';
+                    html += '      <a href="' + detailUrl + '" class="cart-item-title">' + escapeHtml(v.product_name) + '</a>';
+                    if (variantHtml !== '') {
+                        html += '      <div class="cart-item-variants">' + variantHtml + '</div>';
+                    }
+                    html += '      <div class="cart-item-unit-price">ราคาต่อชิ้น: <strong>' + formatBaht(unitPrice) + '</strong></div>';
+                    html += '    </div>';
+                    html += '  </div>';
+                    html += '  <div class="cart-item-controls">';
+                    html +=      qtyControlHtml;
+                    html += '    <div class="cart-item-subtotal">' + formatBaht(lineTotal) + '</div>';
+                    html += '    <button type="button" class="cart-delete-btn product-delete" cart-id="' + escapeHtml(cartId) + '" title="ลบสินค้า" aria-label="ลบสินค้า">';
+                    html += '      <i class="fa fa-trash-o" aria-hidden="true"></i>';
+                    html += '    </button>';
+                    html += '  </div>';
+                    html += '</article>';
+                });
 
-                    $('.product-delete').click(function (e) {
-                        e.preventDefault();
-                        var cart_id = $(this).attr('cart-id');
-                        delete_cart(cart_id);
-                    });
+                $('.cart_data').html(html);
+                syncCheckAllState();
+                calculateTotal();
+            }
+        });
+    }
+
+    function syncCheckAllState() {
+        var total = $('.cart_data .cart-item-check:not(:disabled)').length;
+        var checked = $('.cart_data .cart-item-check:not(:disabled):checked').length;
+        $('#checkAll').prop('checked', total > 0 && total === checked);
+    }
+
+    function calculateTotal() {
+        var totalPrice = 0;
+        var selectedItems = 0;
+        var selectedQty = 0;
+
+        $('.cart_data .cart-item').each(function () {
+            var $item = $(this);
+            var $cb = $item.find('.cart-item-check');
+            var checked = $cb.is(':checked') && !$cb.is(':disabled');
+            $item.toggleClass('is-selected', checked);
+
+            if (checked) {
+                var price = parseFloat($item.attr('data-unit-price') || 0);
+                var qty = parseInt($item.find('.num-product').val() || $item.attr('data-qty') || 0, 10);
+                if (!isNaN(price) && !isNaN(qty) && qty > 0) {
+                    totalPrice += price * qty;
+                    selectedItems += 1;
+                    selectedQty += qty;
                 }
             }
         });
+
+        $('#cartSelectedHint').text('(เลือกแล้ว ' + selectedItems + ' รายการ)');
+        $('#cartSummarySelected').text(selectedItems + ' รายการ (' + selectedQty + ' ชิ้น)');
+        $('#cartSubtotal').text(formatBaht(totalPrice));
+        $('.cart-total').text(formatBaht(totalPrice));
     }
 
     function change_qty(cart_id, cart_qty) {
@@ -128,10 +219,10 @@ $(function () {
             success: function (res) {
                 if (res.data == 'n') {
                     swal(res.title, res.message, res.icon);
-                    select_cart();
+                    select_cart(true);
                     load_qty();
                 } else if (res.data == 't') {
-                    select_cart();
+                    select_cart(true);
                     load_qty();
                 }
             }
@@ -158,7 +249,7 @@ $(function () {
                 },
             },
             dangerMode: true,
-        }).then((willDelete) => {
+        }).then(function (willDelete) {
             if (willDelete) {
                 $.ajax({
                     type: "post",
@@ -170,7 +261,7 @@ $(function () {
                     dataType: "json",
                     success: function (res) {
                         if (res.data == 't') {
-                            select_cart();
+                            select_cart(true);
                             load_qty();
                         }
                     }
@@ -179,43 +270,56 @@ $(function () {
         });
     }
 
-    $('#checkAll').change(function () {
+    // Delegated item quantity & delete events
+    $('.cart_data').on('click', '.btn-num-product-down', function () {
+        var $input = $(this).siblings('.num-product');
+        var numProduct = parseInt($input.val(), 10) || 1;
+        if (numProduct > 1) {
+            var newVal = numProduct - 1;
+            $input.val(newVal);
+            change_qty($(this).attr('cart-id'), newVal);
+        }
+    });
+
+    $('.cart_data').on('click', '.btn-num-product-up', function () {
+        var $input = $(this).siblings('.num-product');
+        var numProduct = parseInt($input.val(), 10) || 1;
+        var newVal = numProduct + 1;
+        $input.val(newVal);
+        change_qty($(this).attr('cart-id'), newVal);
+    });
+
+    $('.cart_data').on('change', '.num-product', function () {
+        var val = parseInt($(this).val(), 10);
+        if (isNaN(val) || val < 1) {
+            val = 1;
+            $(this).val(1);
+        }
+        change_qty($(this).attr('cart-id'), val);
+    });
+
+    $('.cart_data').on('click', '.product-delete', function (e) {
+        e.preventDefault();
+        delete_cart($(this).attr('cart-id'));
+    });
+
+    $('#checkAll').on('change', function () {
         var checked = $(this).is(':checked');
-        $('.cart_data .form-check-input:not(:disabled)').prop('checked', checked);
+        $('.cart_data .cart-item-check:not(:disabled)').prop('checked', checked);
         calculateTotal();
     });
 
-    $('.cart_data').on('change', '.form-check-input:not(#checkAll)', function () {
-        var total = $('.cart_data .form-check-input:not(:disabled)').length;
-        var checked = $('.cart_data .form-check-input:not(:disabled):checked').length;
-        $('#checkAll').prop('checked', total === checked);
-
+    $('.cart_data').on('change', '.cart-item-check', function () {
+        syncCheckAllState();
         calculateTotal();
     });
 
-    function calculateTotal() {
-        var totalPrice = 0;
-        $('.cart_data .form-check-input:checked:not(:disabled)').each(function () {
-            var row = $(this).closest('tr');
-
-            var price = parseFloat(row.find('.column-3').text().replace('฿', '').trim());
-            var qty = parseFloat(row.find('.num-product').val());
-
-            if (!isNaN(price) && !isNaN(qty)) {
-                totalPrice += price * qty;
-            }
-        });
-
-        $('.cart-total').text(totalPrice.toFixed(2) + ' บาท');
-    }
-
-
-    $('#continue-shopping').click(function (e) {
+    $('#continue-shopping').on('click', function (e) {
         e.preventDefault();
         window.location.href = "?page=product";
     });
 
-    $('#empty-basket').click(function (e) {
+    $('#empty-basket').on('click', function (e) {
         e.preventDefault();
         swal({
             title: "แน่ใจหรือไม่ว่าจะลบสินค้าทั้งหมดในตะกร้า?",
@@ -229,14 +333,14 @@ $(function () {
                     closeModal: true,
                 },
                 confirm: {
-                    text: "ลบ",
+                    text: "ลบทั้งหมด",
                     visible: true,
                     className: "swal-button--confirm",
                     closeModal: true,
                 },
             },
             dangerMode: true,
-        }).then((willDelete) => {
+        }).then(function (willDelete) {
             if (willDelete) {
                 $.ajax({
                     type: "post",
@@ -248,7 +352,7 @@ $(function () {
                     success: function (res) {
                         if (res.data == 't') {
                             swal(res.title, res.message, res.icon);
-                            select_cart();
+                            select_cart(false);
                             load_qty();
                         }
                     }
@@ -257,12 +361,9 @@ $(function () {
         });
     });
 
-    $('#btn-checkout').click(function (e) {
+    $('#btn-checkout').on('click', function (e) {
         e.preventDefault();
-        var selected = [];
-        $('.cart_data .form-check-input:checked').each(function () {
-            selected.push($(this).val()); // value = cart_id
-        });
+        var selected = getCheckedCartIds();
 
         if (selected.length === 0) {
             swal({
@@ -285,10 +386,11 @@ $(function () {
                 if (res.success) {
                     window.location.href = './?page=checkout';
                 } else {
-                    alert('เกิดข้อผิดพลาด: ' + res.message);
+                    swal("เกิดข้อผิดพลาด", res.message || "ไม่สามารถดำเนินการต่อได้", "error");
                 }
             }
         });
     });
 
-})
+    select_cart(false);
+});
