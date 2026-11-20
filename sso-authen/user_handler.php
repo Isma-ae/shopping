@@ -28,52 +28,95 @@ function findOrCreateUser(array $normalizedUser, object $ssoUserInfo): array
         // 3. เชื่อมต่อฐานข้อมูล
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
 
-        // 4. ค้นหาผู้ใช้จากอีเมล (หรือ user_id ถ้าต้องการ)
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->execute([$normalizedUser['email']]);
-        $user = $stmt->fetch();
+        // 4. เตรียมข้อมูลสำหรับค้นหาผู้ใช้ (รองรับทั้ง PSU / Google / LINE / Facebook)
+        $externalId = trim((string)($normalizedUser['id'] ?? ''));
+        $rawEmail = trim((string)($normalizedUser['email'] ?? ''));
+        $hasRealEmail = ($rawEmail !== '' && filter_var($rawEmail, FILTER_VALIDATE_EMAIL) !== false);
+        $displayName = trim((string)($normalizedUser['name'] ?? ''));
+        if ($displayName === '') {
+            $displayName = $hasRealEmail ? $rawEmail : ($externalId ?: 'Member');
+        }
+
+        // ค้นหาจาก user_id ก่อน (สำคัญสำหรับ LINE / Facebook ที่อาจไม่มีอีเมล)
+        $user = false;
+        if ($externalId !== '') {
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ? LIMIT 1");
+            $stmt->execute([$externalId]);
+            $user = $stmt->fetch();
+        }
+
+        // หากยังไม่พบ และมีอีเมลจริง ให้ค้นหาจาก email เพื่อเชื่อมกับบัญชีเดิม
+        if (!$user && $hasRealEmail) {
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+            $stmt->execute([$rawEmail]);
+            $user = $stmt->fetch();
+        }
 
         if ($user) {
             // --- กรณีที่ 1: พบผู้ใช้ในระบบ (สมาชิกเก่า) ---
+            $updatedUserId = !empty($user['user_id']) ? $user['user_id'] : $externalId;
+            $updatedEmail = $user['email'];
+            // หากบัญชีเดิมเป็นอีเมลจำลอง (@social.local) แล้วรอบนี้ได้อีเมลจริง ให้ลองอัปเดตเฉพาะเมื่อไม่ซ้ำใคร
+            if ($hasRealEmail && substr((string)$updatedEmail, -13) === '@social.local') {
+                $dupStmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND id <> ? LIMIT 1");
+                $dupStmt->execute([$rawEmail, $user['id']]);
+                if (!$dupStmt->fetch()) {
+                    $updatedEmail = $rawEmail;
+                }
+            }
 
-            // อัปเดตข้อมูลล่าสุด (เผื่อมีการเปลี่ยนชื่อ-สกุล)
             $updateStmt = $pdo->prepare(
-                "UPDATE users SET name = ?, user_id = ? WHERE id = ?"
+                "UPDATE users SET name = ?, user_id = ?, email = ? WHERE id = ?"
             );
             $updateStmt->execute([
-                $normalizedUser['name'],
-                $normalizedUser['id'], // user_id
+                $displayName,
+                $updatedUserId,
+                $updatedEmail,
                 $user['id']
             ]);
 
-            // คืนค่าข้อมูลผู้ใช้จากฐานข้อมูลของเรา
+            $user['name'] = $displayName;
+            $user['user_id'] = $updatedUserId;
+            $user['email'] = $updatedEmail;
+            if (!isset($user['user_phone'])) {
+                $user['user_phone'] = '';
+            }
+
             return $user;
         } else {
             // --- กรณีที่ 2: ไม่พบผู้ใช้ในระบบ (สมาชิกใหม่) ---
-
-            // กำหนด Role เริ่มต้น
             $defaultRole = 'user';
 
-            // เตรียมข้อมูลและสร้างผู้ใช้ใหม่
+            // หากไม่มีอีเมลจาก LINE / Facebook ให้สร้างอีเมลจำลองที่ไม่ซ้ำ เพื่อไม่ให้ติดข้อจำกัด NOT NULL / UNIQUE
+            if ($hasRealEmail) {
+                $emailToSave = $rawEmail;
+            } else {
+                $safeId = strtolower(preg_replace('/[^a-zA-Z0-9._-]/', '', $externalId));
+                if ($safeId === '') {
+                    $safeId = 'social_' . bin2hex(random_bytes(8));
+                }
+                $emailToSave = $safeId . '@social.local';
+            }
+
             $insertStmt = $pdo->prepare(
                 "INSERT INTO users (user_id, email, name, role) VALUES (?, ?, ?, ?)"
             );
             $insertStmt->execute([
-                $normalizedUser['id'], // user_id
-                $normalizedUser['email'],
-                $normalizedUser['name'],
+                $externalId,
+                $emailToSave,
+                $displayName,
                 $defaultRole
             ]);
 
             $newUserId = $pdo->lastInsertId();
 
-            // คืนค่าข้อมูลผู้ใช้ใหม่ที่เพิ่งสร้าง
             return [
                 'id' => $newUserId,
-                'user_id' => $normalizedUser['id'],
-                'email' => $normalizedUser['email'],
-                'name' => $normalizedUser['name'],
-                'role' => $defaultRole
+                'user_id' => $externalId,
+                'email' => $emailToSave,
+                'name' => $displayName,
+                'role' => $defaultRole,
+                'user_phone' => ''
             ];
         }
     } catch (\PDOException $e) {
