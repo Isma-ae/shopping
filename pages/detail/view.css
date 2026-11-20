@@ -613,6 +613,12 @@
     color: #1f1b24 !important;
 }
 
+@media (max-width: 991px) {
+    .detail-breadcrumb-bar {
+        padding-top: 84px;
+    }
+}
+
 @media (max-width: 767px) {
     .detail-page-section {
         padding: 20px 0 60px;

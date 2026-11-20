@@ -231,9 +231,15 @@
     text-decoration: none;
 }
 
+@media (max-width: 991px) {
+    .product-page-hero {
+        padding-top: 94px;
+    }
+}
+
 @media (max-width: 767px) {
     .product-page-hero {
-        padding: 24px 0 20px;
+        padding: 90px 0 20px;
     }
 
     .product-search-box {
