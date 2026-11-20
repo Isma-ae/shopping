@@ -1,0 +1,254 @@
+/* ==========================================================================
+   OAR Shopping - Product Catalog Page
+   (Shared card & filter styles live in ../../style.css)
+   ========================================================================== */
+
+.product-page-hero {
+    background: linear-gradient(180deg, #faf6fb 0%, #ffffff 100%);
+    border-bottom: 1px solid #f0e7f4;
+    padding: 34px 0 28px;
+}
+
+.product-hero-inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.product-hero-sub {
+    margin-top: 6px;
+    font-size: 14.5px;
+    color: #6b6374;
+}
+
+.product-result-meta {
+    font-size: 14px;
+    color: #6b6374;
+    background: #ffffff;
+    border: 1px solid #ebe3f0;
+    border-radius: 999px;
+    padding: 6px 16px;
+    margin-top: 12px;
+}
+
+.product-result-meta strong {
+    font-family: PSU-Bold, sans-serif;
+    color: #7c1163;
+}
+
+.product-catalog-section {
+    background: #ffffff;
+    padding: 28px 0 84px;
+}
+
+/* Toolbar: Search & Sort */
+.product-toolbar {
+    margin-bottom: 20px;
+}
+
+.product-toolbar-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.product-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 320px;
+    max-width: 480px;
+    background: #f8f5fb;
+    border: 1px solid #e7dced;
+    border-radius: 999px;
+    padding: 4px 6px 4px 16px;
+    margin: 0 16px 12px 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-search-box:focus-within {
+    border-color: #c11a9a;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(193, 26, 154, 0.1);
+}
+
+.product-search-icon {
+    color: #93869f;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.product-search-box input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    font-family: PSU-Regular, sans-serif;
+    font-size: 14.5px;
+    color: #1f1b24;
+    padding: 6px 4px;
+    outline: none;
+}
+
+.product-search-clear {
+    color: #93869f;
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+.product-search-clear:hover {
+    color: #7c1163;
+    text-decoration: none;
+}
+
+.product-search-btn {
+    border: none;
+    background: #7c1163;
+    color: #ffffff;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 13.5px;
+    padding: 7px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.product-search-btn:hover {
+    background: #c11a9a;
+}
+
+.product-search-btn:focus {
+    outline: none;
+}
+
+.product-sort-wrap {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.product-sort-label {
+    font-size: 14px;
+    color: #6b6374;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.product-sort-select {
+    font-family: PSU-Regular, sans-serif;
+    font-size: 14px;
+    color: #1f1b24;
+    background: #f8f5fb;
+    border: 1px solid #e7dced;
+    border-radius: 999px;
+    padding: 7px 16px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.product-sort-select:focus {
+    border-color: #c11a9a;
+}
+
+.product-active-search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background: #faf4fc;
+    border: 1px solid #edd9f2;
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #463c4f;
+}
+
+.product-clear-link {
+    font-family: PSU-Bold, sans-serif;
+    color: #c11a9a;
+    font-size: 13.5px;
+}
+
+.product-clear-link:hover {
+    color: #7c1163;
+    text-decoration: underline;
+}
+
+/* Empty State */
+.product-empty-state {
+    background: #faf6fb;
+    border: 1px dashed #dcc8e2;
+    border-radius: 20px;
+    text-align: center;
+    padding: 52px 20px;
+}
+
+.product-empty-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #f2e4f6;
+    color: #7c1163;
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.product-empty-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 20px;
+    color: #1f1b24;
+    margin-bottom: 6px;
+}
+
+.product-empty-desc {
+    font-size: 14.5px;
+    color: #6b6374;
+    margin-bottom: 18px;
+}
+
+.product-empty-btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14.5px;
+    background: #7c1163;
+    color: #ffffff;
+    padding: 9px 22px;
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+}
+
+.product-empty-btn:hover {
+    background: #c11a9a;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+@media (max-width: 767px) {
+    .product-page-hero {
+        padding: 24px 0 20px;
+    }
+
+    .product-search-box {
+        max-width: 100%;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .product-sort-wrap {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .product-sort-select {
+        flex: 1;
+        margin-left: 8px;
+    }
+}

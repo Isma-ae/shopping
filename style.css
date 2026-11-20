@@ -1,0 +1,410 @@
+/* ==========================================================================
+   OAR Shopping - Shared Storefront UI Components (Home & Product Catalog)
+   ========================================================================== */
+
+.home-eyebrow,
+.oar-eyebrow {
+    display: inline-block;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #c11a9a;
+    background: #faedf8;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+}
+
+.home-heading,
+.oar-heading {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 28px;
+    line-height: 1.25;
+    color: #1f1b24;
+    margin: 0;
+}
+
+/* Filter Pills */
+.home-filter-bar,
+.oar-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.home-filter-pill,
+.oar-filter-pill {
+    font-family: PSU-Regular, sans-serif;
+    font-size: 14px;
+    color: #554d5e;
+    background: #f6f3f9;
+    border: 1px solid #ebe4f1;
+    border-radius: 999px;
+    padding: 7px 18px;
+    margin: 0 8px 8px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.home-filter-pill:hover,
+.oar-filter-pill:hover {
+    color: #7c1163;
+    border-color: #d6b6cf;
+    background: #fbf4fa;
+}
+
+.home-filter-pill.how-active1,
+.oar-filter-pill.how-active1 {
+    font-family: PSU-Bold, sans-serif;
+    background: #7c1163;
+    color: #ffffff;
+    border-color: #7c1163;
+    box-shadow: 0 4px 12px rgba(124, 17, 99, 0.22);
+}
+
+.home-filter-pill:focus,
+.oar-filter-pill:focus {
+    outline: none;
+}
+
+/* Product Card */
+.oar-product-card {
+    background: #f6f2f9;
+    border: 1px solid #e6dce8;
+    border-bottom: 3px solid #dcd0e6;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 20px rgba(31, 27, 36, 0.1), 0 3px 6px rgba(124, 17, 99, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.oar-product-card:hover {
+    transform: translateY(-5px);
+    background: #f2ebf7;
+    box-shadow: 0 18px 34px rgba(124, 17, 99, 0.16), 0 6px 12px rgba(31, 27, 36, 0.08);
+    border-color: #d8b8d2;
+    border-bottom-color: #c11a9a;
+}
+
+.oar-product-thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding-top: 100%;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.oar-product-thumb img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.55s ease;
+}
+
+.oar-product-card:hover .oar-product-thumb img {
+    transform: scale(1.06);
+}
+
+.is-fallback-img {
+    object-fit: contain !important;
+    padding: 20%;
+    background: #f8f5fc;
+}
+
+.oar-quick-cta {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    background: rgba(31, 27, 36, 0.84);
+    color: #ffffff;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 13px;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.oar-product-card:hover .oar-quick-cta {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.oar-product-body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.oar-product-title {
+    margin: 0 0 6px;
+    padding-top: 3px;
+    font-size: 15.5px;
+    line-height: 1.65;
+    min-height: 50px;
+    font-weight: 400;
+}
+
+.oar-product-title a {
+    font-family: PSU-Regular, sans-serif;
+    font-weight: 400;
+    color: #16131a;
+    transition: color 0.2s ease;
+}
+
+.oar-product-title a:hover {
+    color: #7c1163;
+    text-decoration: none;
+}
+
+.oar-product-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.oar-product-price {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 17px;
+    color: #7c1163;
+    margin-right: 6px;
+}
+
+.oar-product-sold {
+    font-size: 12px;
+    color: #6b6374;
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .home-heading,
+    .oar-heading {
+        font-size: 22px;
+    }
+
+    .oar-product-body {
+        padding: 10px 12px 12px;
+    }
+
+    .oar-product-title {
+        font-size: 14px;
+        min-height: 44px;
+    }
+
+    .oar-product-price {
+        font-size: 15px;
+    }
+}
+
+/* ==========================================================================
+   OAR Shopping - Storefront Footer
+   ========================================================================== */
+.oar-footer {
+    background: linear-gradient(180deg, #2b1026 0%, #1d0a1a 100%);
+    color: rgba(255, 255, 255, 0.78);
+    padding: 58px 0 26px;
+    border-top: 3px solid #7c1163;
+}
+
+.oar-footer-main {
+    padding-bottom: 36px;
+}
+
+.oar-footer-brand {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 8px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.oar-footer-brand img {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+
+.oar-footer-about {
+    font-size: 14px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 320px;
+    margin-bottom: 18px;
+}
+
+.oar-footer-pay {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 18px;
+}
+
+.oar-footer-pay img {
+    height: 22px;
+    width: auto;
+    background: #ffffff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.oar-footer-pay span {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.oar-footer-social {
+    display: flex;
+    align-items: center;
+}
+
+.oar-footer-social a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+}
+
+.oar-footer-social a:hover {
+    background: #c11a9a;
+    color: #ffffff;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.oar-footer-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.oar-footer-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 32px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: #c11a9a;
+}
+
+.oar-footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.oar-footer-links li {
+    margin-bottom: 10px;
+}
+
+.oar-footer-links a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.78);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+    display: inline-block;
+}
+
+.oar-footer-links a:hover {
+    color: #ffd6f5;
+    padding-left: 4px;
+    text-decoration: none;
+}
+
+.oar-footer-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.oar-footer-contact li {
+    display: flex;
+    align-items: flex-start;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.oar-footer-contact li > i {
+    width: 22px;
+    color: #e87ed0;
+    margin-top: 3px;
+    flex-shrink: 0;
+    font-size: 14px;
+}
+
+.oar-footer-contact a {
+    color: #ffffff;
+    transition: color 0.2s ease;
+}
+
+.oar-footer-contact a:hover {
+    color: #ffd6f5;
+    text-decoration: underline;
+}
+
+.oar-footer-map-link {
+    font-size: 12.5px;
+    color: #f3b3e5 !important;
+}
+
+.oar-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.oar-footer-bottom a {
+    color: rgba(255, 255, 255, 0.86);
+    transition: color 0.2s ease;
+}
+
+.oar-footer-bottom a:hover {
+    color: #ffd6f5;
+    text-decoration: none;
+}
+
+@media (max-width: 767px) {
+    .oar-footer {
+        padding: 42px 0 22px;
+    }
+
+    .oar-footer-main {
+        padding-bottom: 24px;
+    }
+}

@@ -1,30 +1,108 @@
 <?php
-
     include("../config/all.php");
-    $fn = isset( $_POST["fn"] ) ? $_POST["fn"] : "";
+    header("Content-Type: application/json; charset=utf-8");
+
+    $fn = isset($_POST["fn"]) ? $_POST["fn"] : "";
     switch ($fn) {
-        case 'check_login'	    : check_login();        break;
-        case 'add_cart'	        : add_cart();           break;
-        case 'reserve_product'  : reserve_product();    break;
-        case 'buy_product'      : buy_product();        break;
-		default: break;
-	}
+        case "check_login":     check_login();     break;
+        case "add_cart":        add_cart();        break;
+        case "reserve_product": reserve_product(); break;
+        case "buy_product":     buy_product();     break;
+        default: break;
+    }
+
+    /**
+     * Find matching variant safely, supporting single-color, single-size, and optionless products.
+     */
+    function findMatchingVariant($DB, $productHash, $rawColor, $rawSize) {
+        $pid = $DB->Escape($productHash);
+        $colorVal = trim((string)$rawColor);
+        $sizeVal = trim((string)$rawSize);
+
+        $conds = ["MD5(v.product_id) = '{$pid}'"];
+        if ($colorVal !== "") {
+            $conds[] = "COALESCE(v.variant_color, '') = '" . $DB->Escape($colorVal) . "'";
+        }
+        if ($sizeVal !== "") {
+            $conds[] = "COALESCE(v.variant_size, '') = '" . $DB->Escape($sizeVal) . "'";
+        }
+
+        $sql = "SELECT
+                    v.variant_id,
+                    MD5(v.variant_id) AS variant_hash,
+                    COALESCE(v.variant_color, '') AS variant_color,
+                    COALESCE(v.variant_size, '') AS variant_size,
+                    COALESCE(v.variant_stock, 0) AS variant_stock,
+                    COALESCE(p.reserve_id, 2) AS reserve_id
+                FROM variants v
+                INNER JOIN product p
+                    ON v.product_id = p.product_id
+                WHERE " . implode(" AND ", $conds) . "
+                ORDER BY v.variant_id ASC
+                LIMIT 1";
+        $rows = $DB->QueryObj($sql);
+        if (count($rows) > 0) {
+            return $rows[0];
+        }
+
+        // Fallback: if product has exactly one variant overall, return it cleanly
+        $fallback = $DB->QueryObj("
+            SELECT
+                v.variant_id,
+                MD5(v.variant_id) AS variant_hash,
+                COALESCE(v.variant_color, '') AS variant_color,
+                COALESCE(v.variant_size, '') AS variant_size,
+                COALESCE(v.variant_stock, 0) AS variant_stock,
+                COALESCE(p.reserve_id, 2) AS reserve_id
+            FROM variants v
+            INNER JOIN product p
+                ON v.product_id = p.product_id
+            WHERE MD5(v.product_id) = '{$pid}'
+            ORDER BY v.variant_id ASC
+            LIMIT 2
+        ");
+        return count($fallback) === 1 ? $fallback[0] : null;
+    }
+
+    function getRemainingStock($DB, $variantId, $variantStock) {
+        $vid = (int)$variantId;
+        $ordered = $DB->QueryObj("
+            SELECT IFNULL(SUM(od.qty), 0) AS sum_order
+            FROM order_detail od
+            INNER JOIN orders o ON od.order_id = o.order_id
+            WHERE od.variant_id = {$vid}
+              AND o.status_id IN (2, 3)
+        ");
+        $sumOrder = isset($ordered[0]["sum_order"]) ? (int)$ordered[0]["sum_order"] : 0;
+        return (int)$variantStock - $sumOrder;
+    }
+
+    function formatVariantLabel($color, $size) {
+        $parts = [];
+        if (trim((string)$color) !== "") {
+            $parts[] = "สี" . trim((string)$color);
+        }
+        if (trim((string)$size) !== "") {
+            $parts[] = "ขนาด " . trim((string)$size);
+        }
+        return implode(" ", $parts);
+    }
 
     function check_login() {
         if (!isset($_SESSION["user_info"])) {
             echo json_encode([
-                "data"=>'f',
-                "title"=>"กรุณาเข้าสู่ระบบ",
-                "message"=>"เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
-                "icon"=>"warning"
-            ]);
+                "data" => "f",
+                "title" => "กรุณาเข้าสู่ระบบ",
+                "message" => "เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
+                "icon" => "warning"
+            ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode([
-                "data"=>'t',
-                "title"=>"เข้าสู่ระบบ",
-                "message"=>"หยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้าได้ทันที",
-                "icon"=>"success"
-            ]);
+                "data" => "t",
+                "title" => "เข้าสู่ระบบ",
+                "message" => "หยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้าได้ทันที",
+                "icon" => "success"
+            ], JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -32,199 +110,205 @@
         global $DB;
         if (!isset($_SESSION["user_info"])) {
             echo json_encode([
-                "data"=>'f',
-                "title"=>"กรุณาเข้าสู่ระบบ",
-                "message"=>"เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
-                "icon"=>"warning"
-            ]);
+                "data" => "f",
+                "title" => "กรุณาเข้าสู่ระบบ",
+                "message" => "เข้าสู่ระบบก่อนหยิบสินค้าลงตะกร้าหรือสั่งซื้อสินค้า",
+                "icon" => "warning"
+            ], JSON_UNESCAPED_UNICODE);
             exit();
         }
-        $currentUser = $_SESSION['user_info'];
-        if ($_POST["variant_color"] != "") {
-            $color = " AND variant_color = '".$_POST["variant_color"]."'";
-            $message1 = "สี".$_POST["variant_color"]."";
-        } else {
-            $color = "";
-            $message1 = "";
+
+        $currentUser = $_SESSION["user_info"];
+        $userId = (int)($currentUser["id"] ?? 0);
+        $productHash = $_POST["product_id"] ?? "";
+        $productName = trim((string)($_POST["product_name"] ?? "สินค้า"));
+        $rawColor = $_POST["variant_color"] ?? "";
+        $rawSize = $_POST["variant_size"] ?? "";
+        $cartQty = max(1, (int)($_POST["cart_qty"] ?? 1));
+
+        $variant = findMatchingVariant($DB, $productHash, $rawColor, $rawSize);
+        if (!$variant) {
+            echo json_encode([
+                "data" => "n",
+                "title" => $productName,
+                "message" => "ไม่พบตัวเลือกสินค้าที่ระบุ กรุณาลองใหม่อีกครั้ง",
+                "icon" => "error"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
         }
 
-        if ($_POST["variant_size"] != "") {
-            $size = " AND variant_size = '".$_POST["variant_size"]."'";
-            $message2 = "ขนาด ".$_POST["variant_size"]."";
-        } else {
-            $size = "";
-            $message2 = "";
-        }
-        $sql = "SELECT
-                    variant_id,
-                    variant_stock,
-                    product.reserve_id
-                FROM variants
-                INNER JOIN product
-                    ON variants.product_id = product.product_id
-                WHERE MD5(variants.product_id) = '".$_POST["product_id"]."'".$color."".$size."";
-        $obj = $DB->QueryObj($sql);
-        $sql2 = "SELECT IFNULL(SUM(qty), 0) AS sum_order
-            FROM order_detail od
-            JOIN orders o ON od.order_id = o.order_id
-            WHERE od.variant_id = ".$obj[0]['variant_id']." 
-            AND o.status_id IN (2, 3)";
-        $obj2 = $DB->QueryObj($sql2);
-        $stock = $obj[0]["variant_stock"] - $obj2[0]["sum_order"];
-        if ($stock < $_POST["cart_qty"]) {
-            if ($obj[0]["variant_stock"] < 1) {
-                $stock_text = "หมดแล้ว";
-            } else {
-                $stock_text = "เหลือเพียง ".$obj[0]["variant_stock"];
-            }
-            if ($obj[0]["reserve_id"] == 2) {
+        $variantId = (int)$variant["variant_id"];
+        $stock = getRemainingStock($DB, $variantId, $variant["variant_stock"]);
+        $label = formatVariantLabel($variant["variant_color"], $variant["variant_size"]);
+
+        if ($stock < $cartQty) {
+            $stockText = $stock < 1 ? "หมดแล้ว" : "เหลือเพียง " . $stock . " ชิ้น";
+            $prefix = $label !== "" ? $label . " " : "สินค้านี้";
+            if ((int)$variant["reserve_id"] === 2) {
                 echo json_encode([
-                    "data"=>'n',
-                    "title"=>$_POST["product_name"],
-                    "message"=> "$message1 $message2 ".$stock_text,
-                    "icon"=>"error"
-                ]);
+                    "data" => "n",
+                    "title" => $productName,
+                    "message" => trim($prefix . $stockText),
+                    "icon" => "error"
+                ], JSON_UNESCAPED_UNICODE);
                 exit();
             } else {
                 echo json_encode([
-                    "data"=>'r',
-                    "title"=>$_POST["product_name"],
-                    "message"=> "$message1 $message2 ".$stock_text." ต้องการจองใช่หรือไม่",
-                    "icon"=>"warning"
-                ]);
+                    "data" => "r",
+                    "title" => $productName,
+                    "message" => trim($prefix . $stockText . " ต้องการจองใช่หรือไม่"),
+                    "icon" => "warning"
+                ], JSON_UNESCAPED_UNICODE);
                 exit();
             }
         }
-        $check = "SELECT
-                    cart_id
-                FROM cart
-                WHERE
-                    variant_id = '".$obj[0]["variant_id"]."'
-                    AND user_id = '".htmlspecialchars($currentUser['id'])."'
-                    AND cart_type = 1";
-        $obj_check = $DB->QueryObj($check);
-        if (sizeof($obj_check) > 0) {
-            $insert = $DB->Query("UPDATE cart SET cart_qty = cart_qty + 1 WHERE cart_id = ".$obj_check[0]["cart_id"]);
+
+        $objCheck = $DB->QueryObj("
+            SELECT cart_id
+            FROM cart
+            WHERE variant_id = {$variantId}
+              AND user_id = {$userId}
+              AND cart_type = 1
+        ");
+        if (count($objCheck) > 0) {
+            $cartId = (int)$objCheck[0]["cart_id"];
+            $insert = $DB->Query("UPDATE cart SET cart_qty = cart_qty + {$cartQty} WHERE cart_id = {$cartId}");
         } else {
-            $insert = $DB->QueryInsert('cart',[
-                'cart_id'       => $DB->QueryMaxId('cart','cart_id'),
-                'variant_id'    => $obj[0]["variant_id"],
-                'cart_qty'      => $_POST["cart_qty"],
-                'user_id'       => htmlspecialchars($currentUser['id']),
-                'cart_type'     => 1,
-                'cart_status'   => 1,
+            $insert = $DB->QueryInsert("cart", [
+                "cart_id" => $DB->QueryMaxId("cart", "cart_id"),
+                "variant_id" => $variantId,
+                "cart_qty" => $cartQty,
+                "user_id" => $userId,
+                "cart_type" => 1,
+                "cart_status" => 1
             ]);
         }
 
         if ($insert) {
             echo json_encode([
-                "data"=>'t',
-                "title"=> $_POST["product_name"],
-                "message"=>"ถูกเพิ่มลงตะกร้าแล้ว",
-                "icon"=>"success"
-            ]);
+                "data" => "t",
+                "title" => $productName,
+                "message" => "ถูกเพิ่มลงตะกร้าแล้ว",
+                "icon" => "success"
+            ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode([
-                "data"=>'n',
-                "title"=>"ไม่สำเร็จ",
-                "message"=>"เพิ่มลงตะกร้าไม่สำเร็จเนื่องจาก ".$insert->error,
-                "icon"=>"error"
-            ]);
+                "data" => "n",
+                "title" => "ไม่สำเร็จ",
+                "message" => "เพิ่มลงตะกร้าไม่สำเร็จเนื่องจาก " . $DB->Error(),
+                "icon" => "error"
+            ], JSON_UNESCAPED_UNICODE);
         }
     }
-    
+
     function reserve_product() {
         global $DB;
-        $currentUser = $_SESSION['user_info'];
-        $sql = "SELECT
-                    variant_id
-                FROM variants
-                WHERE
-                    variant_color = '".$_POST["variant_color"]."'
-                    AND variant_size = '".$_POST["variant_size"]."'
-                    AND MD5(product_id) = '".$_POST["product_id"]."'";
-        $obj = $DB->QueryObj($sql);
-        $check = "SELECT
-                    cart_id
-                FROM cart
-                WHERE
-                    variant_id = '".$obj[0]["variant_id"]."'
-                    AND user_id = '".htmlspecialchars($currentUser['id'])."'
-                    AND cart_type = 2";
-        $obj_check = $DB->QueryObj($check);
-        if (sizeof($obj_check) > 0) {
-            $insert = $DB->Query("UPDATE cart SET cart_qty = cart_qty + 1 WHERE cart_id = ".$obj_check[0]["cart_id"]);
+        if (!isset($_SESSION["user_info"])) {
+            echo json_encode([
+                "data" => "f",
+                "title" => "กรุณาเข้าสู่ระบบ",
+                "message" => "กรุณาเข้าสู่ระบบก่อนจองสินค้า",
+                "icon" => "warning"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $currentUser = $_SESSION["user_info"];
+        $userId = (int)($currentUser["id"] ?? 0);
+        $productHash = $_POST["product_id"] ?? "";
+        $productName = trim((string)($_POST["product_name"] ?? "สินค้า"));
+        $rawColor = $_POST["variant_color"] ?? "";
+        $rawSize = $_POST["variant_size"] ?? "";
+        $cartQty = max(1, (int)($_POST["cart_qty"] ?? 1));
+
+        $variant = findMatchingVariant($DB, $productHash, $rawColor, $rawSize);
+        if (!$variant) {
+            echo json_encode([
+                "data" => "n",
+                "title" => "ไม่สำเร็จ",
+                "message" => "ไม่พบตัวเลือกสินค้าที่ต้องการจอง",
+                "icon" => "error"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $variantId = (int)$variant["variant_id"];
+        $objCheck = $DB->QueryObj("
+            SELECT cart_id
+            FROM cart
+            WHERE variant_id = {$variantId}
+              AND user_id = {$userId}
+              AND cart_type = 2
+        ");
+        if (count($objCheck) > 0) {
+            $cartId = (int)$objCheck[0]["cart_id"];
+            $insert = $DB->Query("UPDATE cart SET cart_qty = cart_qty + {$cartQty} WHERE cart_id = {$cartId}");
         } else {
-            $insert = $DB->QueryInsert('cart',[
-                'cart_id'       => $DB->QueryMaxId('cart','cart_id'),
-                'variant_id'    => $obj[0]["variant_id"],
-                'cart_qty'      => $_POST["cart_qty"],
-                'user_id'       => htmlspecialchars($currentUser['id']),
-                'cart_type'     => 2,
-                'cart_status'   => 1,
+            $insert = $DB->QueryInsert("cart", [
+                "cart_id" => $DB->QueryMaxId("cart", "cart_id"),
+                "variant_id" => $variantId,
+                "cart_qty" => $cartQty,
+                "user_id" => $userId,
+                "cart_type" => 2,
+                "cart_status" => 1
             ]);
         }
 
         if ($insert) {
             echo json_encode([
-                "data"=>'t',
-                "title"=> $_POST["product_name"],
-                "message"=>"ได้ถูกสั่งจองเรียบร้อยแล้ว",
-                "icon"=>"success"
-            ]);
+                "data" => "t",
+                "title" => $productName,
+                "message" => "ได้ถูกสั่งจองเรียบร้อยแล้ว",
+                "icon" => "success"
+            ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode([
-                "data"=>'n',
-                "title"=>"ไม่สำเร็จ",
-                "message"=>"สั่งจองเรียบร้อยไม่สำเร็จเนื่องจาก ".$insert->error,
-                "icon"=>"error"
-            ]);
+                "data" => "n",
+                "title" => "ไม่สำเร็จ",
+                "message" => "สั่งจองไม่สำเร็จเนื่องจาก " . $DB->Error(),
+                "icon" => "error"
+            ], JSON_UNESCAPED_UNICODE);
         }
     }
 
     function buy_product() {
         global $DB;
-        if ($_POST["variant_color"] != "") {
-            $color = " AND variant_color = '".$_POST["variant_color"]."'";
-            $message1 = "สี".$_POST["variant_color"]."";
-        } else {
-            $color = "";
-            $message1 = "";
+        $productHash = $_POST["product_id"] ?? "";
+        $productName = trim((string)($_POST["product_name"] ?? "สินค้า"));
+        $rawColor = $_POST["variant_color"] ?? "";
+        $rawSize = $_POST["variant_size"] ?? "";
+        $cartQty = max(1, (int)($_POST["cart_qty"] ?? 1));
+
+        $variant = findMatchingVariant($DB, $productHash, $rawColor, $rawSize);
+        if (!$variant) {
+            echo json_encode([
+                "data" => "n",
+                "title" => $productName,
+                "message" => "ไม่พบตัวเลือกสินค้าที่ระบุ กรุณาลองใหม่อีกครั้ง",
+                "icon" => "error"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
         }
 
-        if ($_POST["variant_size"] != "") {
-            $size = " AND variant_size = '".$_POST["variant_size"]."'";
-            $message2 = "ขนาด ".$_POST["variant_size"]."";
-        } else {
-            $size = "";
-            $message2 = "";
-        }
-        $sql = "SELECT
-                    MD5(variant_id) AS variant_id,
-                    variant_stock
-                FROM variants
-                INNER JOIN product
-                    ON variants.product_id = product.product_id
-                WHERE MD5(variants.product_id) = '".$_POST["product_id"]."'".$color."".$size."";
-        $obj = $DB->QueryObj($sql);
-        if ($obj[0]["variant_stock"] < $_POST["cart_qty"]) {
-            if ($obj[0]["variant_stock"] < 1) {
-                $stock_text = "หมดแล้ว";
-            } else {
-                $stock_text = "เหลือเพียง ".$obj[0]["variant_stock"];
-            }
+        $variantId = (int)$variant["variant_id"];
+        $stock = getRemainingStock($DB, $variantId, $variant["variant_stock"]);
+        $label = formatVariantLabel($variant["variant_color"], $variant["variant_size"]);
+
+        if ($stock < $cartQty) {
+            $stockText = $stock < 1 ? "หมดแล้ว" : "เหลือเพียง " . $stock . " ชิ้น";
+            $prefix = $label !== "" ? $label . " " : "สินค้านี้";
             echo json_encode([
-                "data"=>'n',
-                "title"=>$_POST["product_name"],
-                "message"=> "$message1 $message2 ".$stock_text,
-                "icon"=>"error"
-            ]);
+                "data" => "n",
+                "title" => $productName,
+                "message" => trim($prefix . $stockText),
+                "icon" => "error"
+            ], JSON_UNESCAPED_UNICODE);
             exit();
         }
 
         echo json_encode([
-            "data"=>'t',
-            "variant_id" => $obj[0]["variant_id"]
-        ]);
-
+            "data" => "t",
+            "variant_id" => $variant["variant_hash"]
+        ], JSON_UNESCAPED_UNICODE);
     }
+?>
