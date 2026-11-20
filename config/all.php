@@ -17,7 +17,7 @@
    $host = "localhost";
 	$user = "root";
 	$pass = "";
-	$dbname = "db_shopping";
+	$dbname = "shopping";
     /* $host = "localhost";
 	$user = "shopping";
 	$pass = "**123shopping321**";
