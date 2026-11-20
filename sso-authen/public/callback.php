@@ -28,7 +28,7 @@ try {
     // }
     // exit;
     if ($role) {
-        header("Location: ".APP_BASE_PATH.""); 
+        header("Location: " . rtrim(APP_BASE_PATH, '/') . "/");
     } 
     exit;
 
@@ -39,6 +39,6 @@ try {
         'เกิดข้อผิดพลาด',
         $e->getMessage(),
         'error',
-        APP_BASE_PATH . '' // กลับไปหน้าแรกของแอป
+        rtrim(APP_BASE_PATH, '/') . '/' // กลับไปหน้าแรกของแอป
     );
 }

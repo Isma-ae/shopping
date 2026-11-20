@@ -13,14 +13,14 @@ $isLocal = in_array($httpHost, ['localhost', '127.0.0.1'], true)
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
 
 if ($isLocal) {
-    define('APP_BASE_PATH', $protocol . $httpHost . '/shopping/');
+    define('APP_BASE_PATH', $protocol . $httpHost . '/shopping');
 } else {
-    define('APP_BASE_PATH', 'https://shopping.oas.psu.ac.th/');
+    define('APP_BASE_PATH', 'https://shopping.oas.psu.ac.th');
 }
 
 // โดยปกติ Provider จะใช้ Absolute path (URL แบบเต็ม) เท่านั้น โดย $absoluteRedirectUri จะถูกนำไปใช้ใน redirectUri ของหน้า callback เพื่อ redirect หลังจาก login สำเร็จ
 $host = $httpHost;
-$absoluteRedirectUri = APP_BASE_PATH . '/sso-authen';
+$absoluteRedirectUri = rtrim(APP_BASE_PATH, '/') . '/sso-authen';
 
 // 1. โหลด Autoloader ของ Composer
 // ทำให้เราสามารถเรียกใช้ Class จาก Library ทั้งหมดได้โดยอัตโนมัติ
