@@ -14,14 +14,20 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
 
-   $host = "localhost";
-	$user = "root";
-	$pass = "";
-	$dbname = "shopping";
-    /* $host = "localhost";
-	$user = "shopping";
-	$pass = "**123shopping321**";
-	$dbname = "shopping";*/
+    $httpHost = $_SERVER['HTTP_HOST'] ?? '';
+    $isLocal = in_array($httpHost, ['localhost', '127.0.0.1'], true)
+        || strpos($httpHost, 'localhost:') === 0
+        || strpos($httpHost, '127.0.0.1:') === 0;
+
+    $host = "localhost";
+    $dbname = "shopping";
+    if ($isLocal) {
+        $user = "root";
+        $pass = "";
+    } else {
+        $user = "shopping";
+        $pass = "**123shopping321**";
+    }
     $DB = new Database($host, $user, $pass, $dbname);
     define( 'HOST', 'localhost' );
     define( 'USER', 'payment' );
@@ -161,6 +167,12 @@
             $v = file_exists($fullPath) ? filemtime($fullPath) : time();
             $sep = strpos($path, '?') === false ? '?' : '&';
             return $path . $sep . 'v=' . $v;
+        }
+    }
+
+    if (!function_exists('asset_url')) {
+        function asset_url($path) {
+            return assetVer($path);
         }
     }
 

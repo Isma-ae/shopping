@@ -1,3 +1,292 @@
-.p-label {
-    text-align: right;
+/* ==========================================================================
+   Admin - Add Product (Group from Inventory API) Page
+   ========================================================================== */
+
+.pa-filter-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pa-filter-label {
+    font-size: 13px;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.pa-filter-select {
+    min-width: 140px;
+    border-radius: 999px;
+    font-size: 13px;
+    padding-left: 12px;
+}
+
+.pa-sel-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+/* Selected table row highlight */
+#shirtTable tbody tr.is-selected {
+    background-color: #f4f2ff !important;
+}
+
+#shirtTable tbody tr.is-selected td:first-child {
+    box-shadow: inset 3px 0 0 #6861ce;
+}
+
+/* Product info cell */
+.pa-item-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 240px;
+}
+
+.pa-thumb-btn {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: 1px solid #e7eaf0;
+    border-radius: 9px;
+    overflow: hidden;
+    background: #f8f9fb;
+    cursor: pointer;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.pa-thumb-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.pa-thumb-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pa-thumb-empty {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    border: 1px dashed #d3d9e4;
+    border-radius: 9px;
+    background: #f8f9fb;
+    color: #a0aab8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.pa-name {
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.35;
+}
+
+.pa-detail-sub {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 2px;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pa-code-chip {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: #f1f3f7;
+    color: #4b5563;
+    padding: 1px 6px;
+    border-radius: 5px;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.pa-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f4f6fa;
+    color: #374151;
+    border: 1px solid #e4e8f0;
+    white-space: nowrap;
+}
+
+.pa-price-cost {
+    color: #6c757d;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.pa-price-sale {
+    font-weight: 700;
+    color: #1f2937;
+    white-space: nowrap;
+}
+
+.pa-stock-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pa-stock-pill.is-ok {
+    background: #e9f7ef;
+    color: #198754;
+    border: 1px solid #c5ebd5;
+}
+
+.pa-stock-pill.is-low {
+    background: #fff7e6;
+    color: #b86e00;
+    border: 1px solid #ffe0a3;
+}
+
+.pa-stock-pill.is-out {
+    background: #fdecec;
+    color: #dc3545;
+    border: 1px solid #f8c6cb;
+}
+
+/* Modal selected summary box */
+.pa-selected-box {
+    background: #f8f9fd;
+    border: 1px solid #e3e7f2;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.pa-selected-box-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.pa-selected-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 110px;
+    overflow-y: auto;
+}
+
+.pa-sel-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #ffffff;
+    border: 1px solid #dce1ee;
+    color: #374151;
+}
+
+.pa-sel-chip strong {
+    color: #1572e8;
+}
+
+/* Modal image upload preview */
+.pa-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border: 1px dashed #cfd6e4;
+    border-radius: 10px;
+    background: #fafbfe;
+}
+
+.pa-preview-box {
+    flex: 0 0 92px;
+    width: 92px;
+    height: 92px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e2e6ef;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pa-preview-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pa-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #9aa5b6;
+    font-size: 11px;
+    text-align: center;
+    padding: 6px;
+}
+
+.pa-preview-placeholder i {
+    font-size: 22px;
+}
+
+/* Reserve radio option cards */
+.pa-reserve-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #dfe3eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.pa-reserve-option:hover {
+    border-color: #6861ce;
+    background: #faf9ff;
+}
+
+.pa-reserve-option:has(input:checked) {
+    border-color: #6861ce;
+    background: #f5f3ff;
+}
+
+.pa-reserve-option .form-check-input {
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.pa-lightbox-img {
+    max-height: 70vh;
+    object-fit: contain;
 }
