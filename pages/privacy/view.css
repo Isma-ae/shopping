@@ -1,0 +1,297 @@
+/* ==========================================================================
+   Storefront - Privacy Policy & User Data Deletion Page (?page=privacy)
+   ========================================================================== */
+
+.oar-privacy-hero {
+    background: linear-gradient(135deg, #2b1026 0%, #5c104c 52%, #7c1163 100%);
+    color: #ffffff;
+    padding: 46px 0 42px;
+}
+
+.oar-privacy-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 16px;
+}
+
+.oar-privacy-breadcrumb a {
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+}
+
+.oar-privacy-breadcrumb a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.oar-privacy-hero-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.oar-privacy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.oar-privacy-title {
+    font-family: 'PSU-Bold', sans-serif;
+    font-size: 32px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    color: #ffffff;
+}
+
+.oar-privacy-subtitle {
+    margin: 0;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.86);
+}
+
+.oar-privacy-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.oar-privacy-jump-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #7c1163;
+    font-weight: 600;
+    font-size: 13.5px;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.oar-privacy-jump-btn:hover {
+    color: #5c104c;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    text-decoration: none;
+}
+
+.oar-privacy-section {
+    background: #faf6fb;
+    padding: 44px 0 72px;
+}
+
+/* Sticky TOC */
+.oar-privacy-toc {
+    position: sticky;
+    top: 96px;
+    background: #ffffff;
+    border: 1px solid #eee3f0;
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: 0 4px 16px rgba(43, 16, 38, 0.04);
+}
+
+.oar-privacy-toc-title {
+    font-family: 'PSU-Bold', sans-serif;
+    font-size: 15px;
+    color: #2b1026;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1e6f3;
+}
+
+.oar-privacy-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.oar-privacy-toc-list a {
+    display: block;
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: #4f4452;
+    text-decoration: none;
+    transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.oar-privacy-toc-list a:hover,
+.oar-privacy-toc-list a.active {
+    background: #f8ecf6;
+    color: #7c1163;
+    font-weight: 600;
+}
+
+/* Content Cards */
+.oar-privacy-card {
+    background: #ffffff;
+    border: 1px solid #eee3f0;
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px rgba(43, 16, 38, 0.04);
+    scroll-margin-top: 96px;
+}
+
+.oar-privacy-card--highlight {
+    border-color: #d9a7ce;
+    border-left: 4px solid #7c1163;
+    background: #fffdff;
+}
+
+.oar-privacy-card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.oar-privacy-num {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #f8ecf6;
+    color: #7c1163;
+    font-family: 'PSU-Bold', sans-serif;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oar-privacy-card h2 {
+    font-family: 'PSU-Bold', sans-serif;
+    font-size: 20px;
+    color: #2b1026;
+    margin: 0;
+    line-height: 1.35;
+}
+
+.oar-privacy-card p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #3f3642;
+    margin-bottom: 12px;
+}
+
+.oar-privacy-list,
+.oar-privacy-steps {
+    padding-left: 20px;
+    margin: 0 0 12px;
+    color: #3f3642;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.oar-privacy-list li,
+.oar-privacy-steps li {
+    margin-bottom: 8px;
+}
+
+.oar-privacy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    background: #f8ecf6;
+    color: #5c104c;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.oar-privacy-note i {
+    margin-top: 3px;
+    font-size: 16px;
+    color: #7c1163;
+}
+
+.oar-privacy-link {
+    color: #7c1163;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.oar-privacy-link:hover {
+    color: #c11a9a;
+}
+
+.oar-privacy-footnote {
+    font-size: 14px !important;
+    color: #6b5d70 !important;
+    padding-top: 10px;
+    border-top: 1px dashed #e6d5e9;
+}
+
+.oar-privacy-contact-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.oar-privacy-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #3f3642;
+}
+
+.oar-privacy-contact-item i {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #f8ecf6;
+    color: #7c1163;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.oar-privacy-contact-item a {
+    color: #7c1163;
+    font-weight: 600;
+}
+
+@media (max-width: 991.98px) {
+    .oar-privacy-title {
+        font-size: 26px;
+    }
+
+    .oar-privacy-meta {
+        align-items: flex-start;
+    }
+
+    .oar-privacy-toc {
+        position: static;
+    }
+
+    .oar-privacy-card {
+        padding: 20px 18px;
+    }
+}

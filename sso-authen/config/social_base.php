@@ -1,7 +1,7 @@
 <?php
 /**
  * sso-authen/config/social_base.php
- * ตัวช่วยตั้งค่าพื้นฐานสำหรับ Social OAuth (LINE / Facebook)
+ * ตัวช่วยตั้งค่าพื้นฐานสำหรับ Social OAuth (LINE Login)
  */
 
 if (!session_id()) {

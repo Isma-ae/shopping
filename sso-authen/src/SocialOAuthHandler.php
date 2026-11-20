@@ -1,7 +1,7 @@
 <?php
 /**
  * sso-authen/src/SocialOAuthHandler.php
- * จัดการกระบวนการ OAuth 2.0 สำหรับ LINE Login และ Facebook Login ด้วย PHP cURL
+ * จัดการกระบวนการ OAuth 2.0 สำหรับ LINE Login ด้วย PHP cURL
  */
 
 namespace SsoAuthen;
@@ -25,7 +25,7 @@ class SocialOAuthHandler
     {
         $clientId = trim((string)($this->config['clientID'] ?? ''));
         $clientSecret = trim((string)($this->config['clientSecret'] ?? ''));
-        $label = $this->config['label'] ?? strtoupper($this->config['provider'] ?? 'Social');
+        $label = $this->config['label'] ?? strtoupper($this->config['provider'] ?? 'LINE');
 
         if (
             $clientId === '' || $clientSecret === ''
@@ -37,7 +37,7 @@ class SocialOAuthHandler
     }
 
     /**
-     * เริ่มต้นการเข้าสู่ระบบโดยส่งผู้ใช้ไปยังหน้ายินยอมของ LINE หรือ Facebook
+     * เริ่มต้นการเข้าสู่ระบบโดยส่งผู้ใช้ไปยังหน้ายินยอมของ LINE
      */
     public function login(): void
     {
@@ -47,21 +47,17 @@ class SocialOAuthHandler
         $state = bin2hex(random_bytes(16));
         $_SESSION['oauth_state_' . $provider] = $state;
 
+        $nonce = bin2hex(random_bytes(12));
+        $_SESSION['oauth_nonce_line'] = $nonce;
+
         $params = [
             'response_type' => 'code',
             'client_id'     => $this->config['clientID'],
             'redirect_uri'  => $this->config['redirectUri'],
             'state'         => $state,
+            'scope'         => implode(' ', $this->config['scopes'] ?? ['profile', 'openid', 'email']),
+            'nonce'         => $nonce,
         ];
-
-        if ($provider === 'line') {
-            $params['scope'] = implode(' ', $this->config['scopes'] ?? ['profile', 'openid', 'email']);
-            $nonce = bin2hex(random_bytes(12));
-            $_SESSION['oauth_nonce_line'] = $nonce;
-            $params['nonce'] = $nonce;
-        } else {
-            $params['scope'] = implode(',', $this->config['scopes'] ?? ['public_profile', 'email']);
-        }
 
         $authUrl = $this->config['authorizeUrl'] . '?' . http_build_query($params);
         header('Location: ' . $authUrl);
@@ -78,7 +74,7 @@ class SocialOAuthHandler
         $provider = $this->config['provider'];
         $label = $this->config['label'] ?? strtoupper($provider);
 
-        // กรณีผู้ใช้กดยกเลิกที่หน้าล็อกอินของ LINE / Facebook
+        // กรณีผู้ใช้กดยกเลิกที่หน้าล็อกอินของ LINE
         if (!empty($_GET['error'])) {
             $errCode = (string)$_GET['error'];
             if ($errCode === 'access_denied') {
@@ -99,8 +95,6 @@ class SocialOAuthHandler
 
         if ($provider === 'line') {
             [$normalizedUser, $rawUserInfo] = $this->fetchLineUser($code);
-        } elseif ($provider === 'facebook') {
-            [$normalizedUser, $rawUserInfo] = $this->fetchFacebookUser($code);
         } else {
             throw new Exception("ไม่รองรับผู้ให้บริการ: {$provider}");
         }
@@ -185,58 +179,6 @@ class SocialOAuthHandler
             'email'      => $email,
             'department' => null,
             'provider'   => 'line',
-        ];
-
-        return [$normalized, $rawInfo];
-    }
-
-    /**
-     * แลก Authorization Code และดึงโปรไฟล์จาก Facebook Graph API
-     */
-    private function fetchFacebookUser(string $code): array
-    {
-        $tokenUrl = $this->config['tokenUrl'] . '?' . http_build_query([
-            'client_id'     => $this->config['clientID'],
-            'redirect_uri'  => $this->config['redirectUri'],
-            'client_secret' => $this->config['clientSecret'],
-            'code'          => $code,
-        ]);
-
-        $tokenData = $this->httpRequest('GET', $tokenUrl);
-
-        if (empty($tokenData['access_token'])) {
-            $msg = $tokenData['error']['message'] ?? 'ไม่ได้รับ Access Token จาก Facebook';
-            throw new Exception('เชื่อมต่อ Facebook ไม่สำเร็จ: ' . $msg);
-        }
-
-        $profileUrl = $this->config['profileUrl'] . '?' . http_build_query([
-            'fields'       => 'id,name,email,first_name,last_name',
-            'access_token' => $tokenData['access_token'],
-        ]);
-
-        $profile = $this->httpRequest('GET', $profileUrl);
-
-        if (empty($profile['id'])) {
-            $msg = $profile['error']['message'] ?? 'ไม่สามารถดึงข้อมูลโปรไฟล์จาก Facebook ได้';
-            throw new Exception($msg);
-        }
-
-        $email = (!empty($profile['email']) && filter_var($profile['email'], FILTER_VALIDATE_EMAIL))
-            ? $profile['email']
-            : null;
-
-        $rawInfo = $profile;
-        $rawInfo['provider'] = 'facebook';
-
-        $normalized = [
-            'id'         => 'fb_' . $profile['id'],
-            'username'   => $email ?: ('fb_' . $profile['id']),
-            'name'       => trim((string)($profile['name'] ?? '')) ?: 'Facebook User',
-            'firstName'  => $profile['first_name'] ?? null,
-            'lastName'   => $profile['last_name'] ?? null,
-            'email'      => $email,
-            'department' => null,
-            'provider'   => 'facebook',
         ];
 
         return [$normalized, $rawInfo];

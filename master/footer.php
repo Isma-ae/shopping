@@ -107,6 +107,9 @@
                     <li>
                         <a href="<?= $footerBase; ?>?page=contact">ติดต่อเรา / ส่งข้อความ</a>
                     </li>
+                    <li>
+                        <a href="<?= $footerBase; ?>?page=privacy">นโยบายความเป็นส่วนตัว (PDPA)</a>
+                    </li>
                     <?php if ($isLoggedIn) { ?>
                     <li>
                         <a href="<?= $footerBase; ?>?page=shipping_list">รายการสั่งซื้อของฉัน</a>
@@ -160,6 +163,8 @@
                 <a href="https://www.oas.psu.ac.th/" target="_blank" rel="noopener noreferrer">
                     Office of Academic Resources, PSU Pattani
                 </a>
+                &middot;
+                <a href="<?= $footerBase; ?>?page=privacy">นโยบายความเป็นส่วนตัว</a>
             </p>
         </div>
     </div>

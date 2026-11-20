@@ -1,3 +1,518 @@
-.my-password {
+/* ==========================================================================
+   OAR Shopping - Modern Login Page
+   ========================================================================== */
+
+.oar-login-body {
+    background: #faf6fb;
+    min-height: 100vh;
+}
+
+/* Topbar */
+.oar-login-topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #f0e6f4;
+    box-shadow: 0 4px 18px rgba(43, 16, 38, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.oar-login-topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    gap: 16px;
+}
+
+.oar-login-logo {
+    display: inline-flex;
+    align-items: center;
+}
+
+.oar-login-logo img {
+    max-height: 44px;
+    width: auto;
+    display: block;
+}
+
+.oar-login-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #faf6fb;
+    border: 1px solid #e9dcee;
+    color: #5a4c66;
+    font-size: 13.5px;
+    font-family: PSU-Bold, sans-serif;
+    text-decoration: none;
+    transition: all 0.18s ease;
+}
+
+.oar-login-back-btn:hover {
+    background: #f5eaf7;
+    border-color: #d6b6e0;
+    color: #7c1163;
+    text-decoration: none;
+}
+
+/* Main Canvas */
+.oar-login-main {
+    padding: 48px 0 72px;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(193, 26, 154, 0.07) 0%, transparent 42%),
+        radial-gradient(circle at 88% 82%, rgba(124, 17, 99, 0.07) 0%, transparent 45%),
+        #faf6fb;
+}
+
+.oar-login-card {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 26px;
+    border: 1px solid #ede3f2;
+    overflow: hidden;
+    box-shadow: 0 22px 60px rgba(43, 16, 38, 0.1);
+}
+
+/* Left Brand Showcase Panel */
+.oar-login-brand {
+    position: relative;
+    background: linear-gradient(155deg, #2b1026 0%, #5c104c 52%, #8a1570 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.oar-login-brand-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(2px);
+}
+
+.oar-login-brand-orb--1 {
+    width: 240px;
+    height: 240px;
+    top: -80px;
+    right: -70px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.oar-login-brand-orb--2 {
+    width: 220px;
+    height: 220px;
+    bottom: -90px;
+    left: -70px;
+    background: radial-gradient(circle, rgba(244, 134, 214, 0.22) 0%, rgba(244, 134, 214, 0) 70%);
+}
+
+.oar-login-brand-content {
+    position: relative;
+    z-index: 2;
+    padding: 46px 40px;
+}
+
+.oar-login-brand-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 22px;
+}
+
+.oar-login-visual-wrap {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    text-align: center;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+}
+
+.oar-login-visual {
+    max-width: 195px;
+    max-height: 140px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.oar-login-brand-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 24px;
+    line-height: 1.3;
+    color: #ffffff;
+    margin: 0 0 10px;
+}
+
+.oar-login-brand-desc {
+    font-size: 14px;
+    line-height: 1.68;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 24px;
+}
+
+.oar-login-perks {
+    list-style: none;
+    margin: 0;
+    padding: 20px 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.oar-login-perks li {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.oar-perk-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+/* Right Form Panel */
+.oar-login-form-col {
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+}
+
+.oar-login-form-inner {
+    width: 100%;
+    padding: 42px 46px;
+}
+
+.oar-login-head {
+    margin-bottom: 26px;
+}
+
+.oar-login-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 30px;
+    color: #1f1b24;
+    margin: 2px 0 6px;
+    line-height: 1.2;
+}
+
+.oar-login-subtitle {
+    font-size: 14px;
+    color: #6b6374;
+    line-height: 1.55;
+}
+
+/* Form Fields */
+.oar-field {
+    margin-bottom: 18px;
+}
+
+.oar-label {
+    display: block;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 13.5px;
+    color: #2f2636;
+    margin-bottom: 7px;
+}
+
+.oar-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 7px;
+}
+
+.oar-forgot-link {
+    font-size: 13px;
+    color: #7c1163;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.oar-forgot-link:hover {
+    color: #c11a9a;
+    text-decoration: underline;
+}
+
+.oar-input-group {
+    position: relative;
+}
+
+.oar-input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9c8ea9;
+    font-size: 16px;
+    pointer-events: none;
+    transition: color 0.18s ease;
+}
+
+.oar-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 44px;
+    border-radius: 13px;
+    border: 1.5px solid #e6dce9;
+    background: #fcfafd;
+    font-size: 14.5px;
+    color: #1f1b24;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.oar-input--has-toggle {
+    padding-right: 46px;
+}
+
+.oar-input::placeholder {
+    color: #a699b3;
+}
+
+.oar-input:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: #7c1163;
+    box-shadow: 0 0 0 4px rgba(124, 17, 99, 0.1);
+}
+
+.oar-input-group:focus-within .oar-input-icon {
+    color: #7c1163;
+}
+
+.oar-pass-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    color: #8b7d99;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.oar-pass-toggle:hover {
+    background: #f5ebf7;
+    color: #7c1163;
+}
+
+/* Primary Submit Button */
+.oar-submit-btn {
+    width: 100%;
+    height: 50px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #7c1163 0%, #c11a9a 100%);
+    color: #ffffff;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(124, 17, 99, 0.25);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.oar-submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(124, 17, 99, 0.34);
+}
+
+.oar-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Divider */
+.oar-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0 18px;
+    color: #8f829c;
+    font-size: 13px;
+}
+
+.oar-divider::before,
+.oar-divider::after {
+    content: "";
+    flex: 1 1 0;
+    height: 1px;
+    background: #ece3f1;
+}
+
+/* OAuth / SSO Buttons */
+.oar-social-grid {
+    margin-left: -6px;
+    margin-right: -6px;
+}
+
+.oar-social-grid > [class*="col-"] {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.oar-oauth-btn {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.oar-oauth-btn:hover {
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+.oar-oauth-img {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.oar-oauth-img--sm {
+    height: 20px;
+}
+
+.oar-oauth-btn--psu {
+    background: #ffffff;
+    border: 1.5px solid #e1d7ea;
+    color: #1c3d7a !important;
+}
+
+.oar-oauth-btn--psu:hover {
+    border-color: #1c3d7a;
+    background: #f5f8ff;
+    box-shadow: 0 6px 16px rgba(28, 61, 122, 0.1);
+}
+
+.oar-oauth-btn--google {
+    background: #ffffff;
+    border: 1.5px solid #e1d7ea;
+    color: #2f2636 !important;
+}
+
+.oar-oauth-btn--google:hover {
+    border-color: #c7b6d6;
+    background: #faf7fc;
+    box-shadow: 0 6px 16px rgba(31, 27, 36, 0.08);
+}
+
+.oar-oauth-btn--line {
+    background: #06C755;
+    border: 1.5px solid #06C755;
+    color: #ffffff !important;
+    box-shadow: 0 8px 18px rgba(6, 199, 85, 0.22);
+}
+
+.oar-oauth-btn--line:hover {
+    background: #05b04b;
+    border-color: #05b04b;
+    box-shadow: 0 10px 22px rgba(6, 199, 85, 0.3);
+}
+
+/* Footer Links inside Form Panel */
+.oar-login-footer {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #f0e8f4;
+    text-align: center;
+}
+
+.oar-register-note {
+    font-size: 14px;
+    color: #5b5166;
+}
+
+.oar-register-link {
+    color: #7c1163;
+    font-family: PSU-Bold, sans-serif;
+    margin-left: 4px;
+    text-decoration: none;
+}
+
+.oar-register-link:hover {
+    color: #c11a9a;
+    text-decoration: underline;
+}
+
+.oar-legal-note {
+    font-size: 12.5px;
+    color: #8f829c;
+}
+
+.oar-legal-note a {
+    color: #7c1163;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .oar-login-main {
+        padding: 28px 0 52px;
+    }
+
+    .oar-login-brand-content {
+        padding: 30px 26px;
+    }
+
+    .oar-login-visual-wrap {
+        display: none;
+    }
+
+    .oar-login-perks {
+        display: none;
+    }
+
+    .oar-login-brand-desc {
+        margin-bottom: 0;
+    }
+
+    .oar-login-form-inner {
+        padding: 30px 24px;
+    }
+
+    .oar-login-title {
+        font-size: 26px;
+    }
 }

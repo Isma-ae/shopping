@@ -28,7 +28,7 @@ function findOrCreateUser(array $normalizedUser, object $ssoUserInfo): array
         // 3. เชื่อมต่อฐานข้อมูล
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
 
-        // 4. เตรียมข้อมูลสำหรับค้นหาผู้ใช้ (รองรับทั้ง PSU / Google / LINE / Facebook)
+        // 4. เตรียมข้อมูลสำหรับค้นหาผู้ใช้ (รองรับทั้ง PSU / Google / LINE)
         $externalId = trim((string)($normalizedUser['id'] ?? ''));
         $rawEmail = trim((string)($normalizedUser['email'] ?? ''));
         $hasRealEmail = ($rawEmail !== '' && filter_var($rawEmail, FILTER_VALIDATE_EMAIL) !== false);
@@ -37,7 +37,7 @@ function findOrCreateUser(array $normalizedUser, object $ssoUserInfo): array
             $displayName = $hasRealEmail ? $rawEmail : ($externalId ?: 'Member');
         }
 
-        // ค้นหาจาก user_id ก่อน (สำคัญสำหรับ LINE / Facebook ที่อาจไม่มีอีเมล)
+        // ค้นหาจาก user_id ก่อน (สำคัญสำหรับ LINE ที่อาจไม่มีอีเมล)
         $user = false;
         if ($externalId !== '') {
             $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ? LIMIT 1");
@@ -87,7 +87,7 @@ function findOrCreateUser(array $normalizedUser, object $ssoUserInfo): array
             // --- กรณีที่ 2: ไม่พบผู้ใช้ในระบบ (สมาชิกใหม่) ---
             $defaultRole = 'user';
 
-            // หากไม่มีอีเมลจาก LINE / Facebook ให้สร้างอีเมลจำลองที่ไม่ซ้ำ เพื่อไม่ให้ติดข้อจำกัด NOT NULL / UNIQUE
+            // หากไม่มีอีเมลจาก LINE ให้สร้างอีเมลจำลองที่ไม่ซ้ำ เพื่อไม่ให้ติดข้อจำกัด NOT NULL / UNIQUE
             if ($hasRealEmail) {
                 $emailToSave = $rawEmail;
             } else {
