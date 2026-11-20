@@ -5,14 +5,21 @@
  * * ไฟล์ตั้งค่าหลัก (Main Configuration File) ทำหน้าที่โหลดการตั้งค่าทั้งหมดที่จำเป็นสำหรับ SSO Handler
  */
 
-// APP_BASE_PATH กำหนด Path หลักของแอปพลิเคชัน (ใช้สำหรับสร้าง URL ภายใน)
-// ถ้าแอปอยู่ที่ root ของโดเมน ให้ใส่เป็นค่าว่าง '' ถ้าแอปอยู่ในโฟลเดอร์ย่อย ให้ใส่ / ตามด้วยชื่อโฟลเดอร์ เช่น '/sso-authen' (กรณี Virtual Host ของ Laragon ให้เว้นว่างเช่นกัน)
-define('APP_BASE_PATH', 'http://localhost/shopping/');
-
-// โดยปกติ Provider จะใช้ Absolute path (URL แบบเต็ม) เท่านั้น ()ขึ้นอยู่กับการสร้าง URIs Redirect) โดย $absoluteRedirectUri จะถูกนำไปใช้ใน redirectUri ของหน้า callback เพื่อ redirect หลังจาก login สำเร็จ 
+// APP_BASE_PATH กำหนด Path หลักของแอปพลิเคชันแบบสลับอัตโนมัติระหว่าง Local กับเซิร์ฟเวอร์จริง
+$httpHost = $_SERVER['HTTP_HOST'] ?? '';
+$isLocal = in_array($httpHost, ['localhost', '127.0.0.1'], true)
+    || strpos($httpHost, 'localhost:') === 0
+    || strpos($httpHost, '127.0.0.1:') === 0;
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-// $absoluteRedirectUri = $protocol . $host . APP_BASE_PATH;
+
+if ($isLocal) {
+    define('APP_BASE_PATH', $protocol . $httpHost . '/shopping/');
+} else {
+    define('APP_BASE_PATH', 'https://shopping.oas.psu.ac.th/');
+}
+
+// โดยปกติ Provider จะใช้ Absolute path (URL แบบเต็ม) เท่านั้น โดย $absoluteRedirectUri จะถูกนำไปใช้ใน redirectUri ของหน้า callback เพื่อ redirect หลังจาก login สำเร็จ
+$host = $httpHost;
 $absoluteRedirectUri = APP_BASE_PATH . '/sso-authen';
 
 // 1. โหลด Autoloader ของ Composer
