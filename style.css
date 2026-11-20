@@ -802,3 +802,26 @@
     max-width: calc(100vw - 110px);
     height: 40px;
 }
+
+/* ==========================================================================
+   OAR Shopping - Navbar Active State (Text Color Only)
+   ========================================================================== */
+.main-menu > li.active-menu > a,
+.main-menu > li:hover > a {
+    color: #c11a9a;
+}
+
+.main-menu-m > li.active-menu > a {
+    color: #ffe066;
+}
+
+.oar-topbar-right a.oar-topbar-link.is-active,
+.oar-topbar-mobile a.oar-topbar-m-link.is-active,
+.oar-topbar-mobile a.oar-topbar-m-user.is-active {
+    color: #ffe066;
+}
+
+.wrap-icon-header .icon-header-item.is-active > a,
+.wrap-icon-header .icon-header-item.is-active > a i {
+    color: #c11a9a;
+}

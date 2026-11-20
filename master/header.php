@@ -1,5 +1,6 @@
 <?php
-if ($PAGE != 'home') {
+$currentPage = $PAGE ?? 'home';
+if ($currentPage != 'home') {
     $header = ' class="header-v4"';
     $wrap = ' how-shadow1';
 } else {
@@ -7,6 +8,13 @@ if ($PAGE != 'home') {
     $wrap = '';
 }
 
+$isNavHome     = ($currentPage === 'home');
+$isNavProduct  = in_array($currentPage, ['product', 'detail'], true);
+$isNavContact  = ($currentPage === 'contact');
+$isNavSearch   = ($currentPage === 'search-order');
+$isNavProfile  = in_array($currentPage, ['profile', 'address', 'address-add'], true);
+$isNavOrders   = in_array($currentPage, ['shipping_list', 'shipping', 'order', 'evidence', 'return'], true);
+$isNavCart     = in_array($currentPage, ['cart', 'checkout'], true);
 ?>
 <header<?= $header; ?>>
     <!-- Header desktop -->
@@ -28,7 +36,7 @@ if ($PAGE != 'home') {
                     // if (!isset($_SESSION["user_id"])) {
                     if (!isset($_SESSION["user_info"])) {
                         ?>
-                        <a href="?page=search-order" class="oar-topbar-link">
+                        <a href="?page=search-order" class="oar-topbar-link<?= $isNavSearch ? ' is-active' : ''; ?>">
                             <i class="fa fa-search" aria-hidden="true"></i>
                             <span>ค้นหาจากเลขที่ใบสั่งซื้อ</span>
                         </a>
@@ -47,7 +55,7 @@ if ($PAGE != 'home') {
 
                         */
                         ?>
-                        <a href="?page=profile" class="oar-topbar-link oar-topbar-user" id="profileDesk">
+                        <a href="?page=profile" class="oar-topbar-link oar-topbar-user<?= $isNavProfile ? ' is-active' : ''; ?>" id="profileDesk">
                             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                             <span><?= htmlspecialchars($currentUser['name']) ?></span>
                         </a>
@@ -61,7 +69,7 @@ if ($PAGE != 'home') {
                             <?php
                         }
                         ?>
-                        <a href="?page=shipping_list" class="oar-topbar-link">
+                        <a href="?page=shipping_list" class="oar-topbar-link<?= $isNavOrders ? ' is-active' : ''; ?>">
                             <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                             <span>รายการสั่งซื้อ</span>
                         </a>
@@ -87,16 +95,16 @@ if ($PAGE != 'home') {
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
                     <ul class="main-menu">
-                        <li>
+                        <li<?= $isNavHome ? ' class="active-menu"' : ''; ?>>
                             <a href="./"
                                 style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff;"><b>หน้าแรก</b></a>
                         </li>
 
-                        <li>
+                        <li<?= $isNavProduct ? ' class="active-menu"' : ''; ?>>
                             <a href="?page=product"
                                 style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff;"><b>สินค้า</b></a>
                         </li>
-                        <li>
+                        <li<?= $isNavContact ? ' class="active-menu"' : ''; ?>>
                             <a href="?page=contact"
                                 style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff;"><b>ติดต่อ</b></a>
                         </li>
@@ -118,7 +126,7 @@ if ($PAGE != 'home') {
                         </form>
                     </div>
 
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart<?= $isNavCart ? ' is-active' : ''; ?>"
                         data-notify="0">
                         <a href="?page=cart"><i class="zmdi zmdi-shopping-cart"></i></a>
                     </div>
@@ -150,7 +158,7 @@ if ($PAGE != 'home') {
                     </form>
                 </div>
 
-                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart<?= $isNavCart ? ' is-active' : ''; ?>"
                     data-notify="2">
                     <a href="?page=cart"><i class="zmdi zmdi-shopping-cart"></i></a>
                 </div>
@@ -171,7 +179,7 @@ if ($PAGE != 'home') {
                 <?php if (isset($_SESSION["user_info"])) { ?>
                     <li class="oar-topbar-mobile-user">
                         <div class="left-top-bar">
-                            <a href="?page=profile" class="oar-topbar-m-user">
+                            <a href="?page=profile" class="oar-topbar-m-user<?= $isNavProfile ? ' is-active' : ''; ?>">
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                                 <span><?= htmlspecialchars($currentUser['name']) ?></span>
                             </a>
@@ -185,7 +193,7 @@ if ($PAGE != 'home') {
                         // if (!isset($_SESSION["user_id"])) {
                         if (!isset($_SESSION["user_info"])) {
                             ?>
-                            <a href="?page=search-order" class="oar-topbar-m-link">
+                            <a href="?page=search-order" class="oar-topbar-m-link<?= $isNavSearch ? ' is-active' : ''; ?>">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                                 <span>ค้นหาจากเลขที่ใบสั่งซื้อ</span>
                             </a>
@@ -204,7 +212,7 @@ if ($PAGE != 'home') {
                                 <?php
                             }
                             ?>
-                            <a href="?page=shipping_list" class="oar-topbar-m-link">
+                            <a href="?page=shipping_list" class="oar-topbar-m-link<?= $isNavOrders ? ' is-active' : ''; ?>">
                                 <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                 <span>รายการสั่งซื้อ</span>
                             </a>
@@ -220,15 +228,15 @@ if ($PAGE != 'home') {
             </ul>
 
             <ul class="main-menu-m">
-                <li>
+                <li<?= $isNavHome ? ' class="active-menu"' : ''; ?>>
                     <a href="./">หน้าแรก</a>
                 </li>
 
-                <li>
+                <li<?= $isNavProduct ? ' class="active-menu"' : ''; ?>>
                     <a href="?page=product">สินค้า</a>
                 </li>
 
-                <li>
+                <li<?= $isNavContact ? ' class="active-menu"' : ''; ?>>
                     <a href="?page=contact">ติดต่อ</a>
                 </li>
             </ul>
