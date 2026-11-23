@@ -23,7 +23,6 @@
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
     <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
     <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
     <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
@@ -83,7 +82,7 @@
         </span>
     </div>
 
-    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <script src="<?=assetVer('vendor/animsition/js/animsition.min.js');?>"></script>
     <script src="vendor/bootstrap/js/popper.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/select2/select2.min.js"></script>

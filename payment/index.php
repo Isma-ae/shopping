@@ -154,7 +154,7 @@
             </div>
         </div>
     </section>
-    <script src="../vendor/animsition/js/animsition.min.js"></script>
+    <script src="<?=assetVer('../vendor/animsition/js/animsition.min.js');?>"></script>
     <!--===============================================================================================-->
     <script src="../vendor/bootstrap/js/popper.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>

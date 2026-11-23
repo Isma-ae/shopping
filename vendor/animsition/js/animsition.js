@@ -111,9 +111,6 @@
             if(event.originalEvent.persisted) __.in.call(_this);
           });
 
-          // Firefox back button issue #4
-          $window.on('unload.' + namespace, function() { });
-
           $document.on('click.' + namespace, options.linkElement, function(event) {
             event.preventDefault();
             var $self = $(this);
