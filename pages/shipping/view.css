@@ -1,0 +1,494 @@
+/* ==========================================================================
+   OAR Shopping - Shipping & Delivery Policy Page
+   ========================================================================== */
+
+.ship-breadcrumb-bar {
+    background: #faf6fb;
+    border-bottom: 1px solid #f0e7f4;
+    padding: 14px 0;
+}
+
+.ship-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 13.5px;
+    color: #7c7486;
+}
+
+.ship-breadcrumb a {
+    color: #6b6374;
+    transition: color 0.2s ease;
+}
+
+.ship-breadcrumb a:hover {
+    color: #7c1163;
+    text-decoration: none;
+}
+
+.ship-breadcrumb i {
+    margin: 0 9px;
+    font-size: 13px;
+    color: #b4a7be;
+}
+
+.ship-breadcrumb .is-current {
+    color: #1f1b24;
+    font-family: PSU-Bold, sans-serif;
+}
+
+.ship-page-section {
+    background: #ffffff;
+    padding: 32px 0 88px;
+}
+
+.ship-page-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.ship-head-sub {
+    margin-top: 6px;
+    font-size: 14.5px;
+    color: #6b6374;
+    max-width: 650px;
+    line-height: 1.55;
+}
+
+.ship-secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14.5px;
+    color: #7c1163;
+    background: #ffffff;
+    border: 1.5px solid #dec3db;
+    padding: 9px 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ship-secondary-btn:hover {
+    background: #7c1163;
+    border-color: #7c1163;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* 3 Shipping Method Cards */
+.ship-methods-row {
+    margin-bottom: 8px;
+}
+
+.ship-method-card {
+    height: 100%;
+    background: #ffffff;
+    border: 1px solid #ece4f1;
+    border-radius: 20px;
+    padding: 22px 22px 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(31, 27, 36, 0.055);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.ship-method-card:hover {
+    transform: translateY(-4px);
+    border-color: #d8b8d2;
+    box-shadow: 0 16px 32px rgba(124, 17, 99, 0.1);
+}
+
+.ship-method-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.ship-method-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #7c1163 0%, #c11a9a 100%);
+    color: #ffffff;
+    font-size: 19px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(124, 17, 99, 0.2);
+}
+
+.ship-fee-pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 12.5px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #faedf8;
+    color: #7c1163;
+    border: 1px solid #ead0e6;
+}
+
+.ship-fee-pill.is-free {
+    background: #e9f7ef;
+    color: #198754;
+    border-color: #c5ebd5;
+}
+
+.ship-method-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 18px;
+    color: #1f1b24;
+    margin: 0 0 8px;
+}
+
+.ship-method-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #5e5568;
+    margin: 0 0 16px;
+    flex: 1 1 auto;
+}
+
+.ship-method-desc strong {
+    font-family: PSU-Bold, sans-serif;
+    color: #7c1163;
+}
+
+.ship-method-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #f2eaf6;
+    font-size: 12.5px;
+    color: #776f80;
+    line-height: 1.45;
+}
+
+.ship-method-meta i {
+    color: #c11a9a;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* Left Detail Card */
+.ship-detail-card {
+    height: 100%;
+    background: #ffffff;
+    border: 1px solid #ece4f1;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(31, 27, 36, 0.06);
+}
+
+.ship-card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 26px;
+    background: #faf6fb;
+    border-bottom: 1px solid #eee5f3;
+}
+
+.ship-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #7c1163 0%, #c11a9a 100%);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 6px 14px rgba(124, 17, 99, 0.2);
+}
+
+.ship-card-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 19px;
+    color: #1f1b24;
+    margin: 0 0 2px;
+}
+
+.ship-card-sub {
+    font-size: 13.5px;
+    color: #6b6374;
+}
+
+.ship-detail-body {
+    padding: 26px;
+}
+
+/* Timeline Steps */
+.ship-timeline {
+    list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ship-timeline li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
+}
+
+.ship-step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #faedf8;
+    border: 1.5px solid #e0c1dc;
+    color: #7c1163;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.ship-step-content h3 {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 16px;
+    color: #1f1b24;
+    margin: 0 0 5px;
+}
+
+.ship-step-content p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #554d5e;
+    margin: 0;
+}
+
+.ship-step-content strong {
+    font-family: PSU-Bold, sans-serif;
+    color: #2f2636;
+}
+
+.ship-step-content a {
+    color: #7c1163;
+    font-family: PSU-Bold, sans-serif;
+    text-decoration: underline;
+}
+
+.ship-step-content a:hover {
+    color: #c11a9a;
+}
+
+.ship-note-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    background: #faf6fb;
+    border: 1px solid #eadcf0;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #554863;
+}
+
+.ship-note-box i {
+    color: #c11a9a;
+    font-size: 16px;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.ship-note-box strong {
+    font-family: PSU-Bold, sans-serif;
+    color: #2f2636;
+}
+
+.ship-note-box a {
+    color: #7c1163;
+    font-family: PSU-Bold, sans-serif;
+    text-decoration: underline;
+}
+
+/* Right Side Visual + Support Card */
+.ship-side-card {
+    height: 100%;
+    background: linear-gradient(155deg, #7c1163 0%, #580b46 58%, #2b1026 100%);
+    border-radius: 22px;
+    overflow: hidden;
+    color: #ffffff;
+    box-shadow: 0 16px 36px rgba(124, 17, 99, 0.18);
+    display: flex;
+    flex-direction: column;
+}
+
+.ship-visual-wrap {
+    position: relative;
+    height: 210px;
+    overflow: hidden;
+    background: #3d0932;
+}
+
+.ship-visual-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.ship-side-card:hover .ship-visual-wrap img {
+    transform: scale(1.04);
+}
+
+.ship-visual-badge {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 12.5px;
+    color: #7c1163;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 5px 13px;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.ship-side-body {
+    padding: 22px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+.ship-side-tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    color: #ffd6f5;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 4px 11px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+}
+
+.ship-side-title {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 20px;
+    color: #ffffff;
+    margin: 0 0 10px;
+}
+
+.ship-side-address {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 12px;
+}
+
+.ship-side-address i,
+.ship-side-phones i {
+    color: #ffd6f5;
+}
+
+.ship-side-phones {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 20px;
+}
+
+.ship-side-phones a {
+    color: #ffffff;
+    font-family: PSU-Bold, sans-serif;
+    text-decoration: none;
+}
+
+.ship-side-phones a:hover {
+    color: #ffd6f5;
+    text-decoration: underline;
+}
+
+.ship-side-actions {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ship-side-btn {
+    flex: 1 1 140px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 13.5px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.ship-side-btn--primary {
+    background: #ffffff;
+    color: #7c1163 !important;
+}
+
+.ship-side-btn--primary:hover {
+    background: #faedf8;
+    color: #580b46 !important;
+    transform: translateY(-1px);
+}
+
+.ship-side-btn--ghost {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: #ffffff !important;
+}
+
+.ship-side-btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .ship-breadcrumb-bar {
+        padding-top: 84px;
+    }
+}
+
+@media (max-width: 767px) {
+    .ship-page-section {
+        padding: 20px 0 64px;
+    }
+
+    .ship-card-head {
+        padding: 16px 18px;
+    }
+
+    .ship-detail-body {
+        padding: 18px;
+    }
+
+    .ship-side-body {
+        padding: 18px;
+    }
+}
