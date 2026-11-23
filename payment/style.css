@@ -1,50 +1,557 @@
-.thaiqrpayment {
-    background-color: #717fe0;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+/* ==========================================================================
+   OAR Shopping - Thai QR PromptPay Payment Page
+   ========================================================================== */
+
+.oar-pay-body {
+    background: #faf6fb;
+    min-height: 100vh;
+}
+
+/* Topbar */
+.oar-pay-topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #f0e6f4;
+    box-shadow: 0 4px 18px rgba(43, 16, 38, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.oar-pay-topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: 70px;
-    text-align: center;
+    gap: 16px;
+}
+
+.oar-pay-logo img {
+    max-height: 44px;
+    width: auto;
+    display: block;
+}
+
+.oar-pay-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #faf6fb;
+    border: 1px solid #e9dcee;
+    color: #5a4c66;
+    font-size: 13.5px;
+    font-family: PSU-Bold, sans-serif;
+    text-decoration: none;
+    transition: all 0.18s ease;
+}
+
+.oar-pay-back-btn:hover {
+    background: #f5eaf7;
+    border-color: #d6b6e0;
+    color: #7c1163;
+    text-decoration: none;
+}
+
+/* Main */
+.oar-pay-main {
+    padding: 46px 0 84px;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(193, 26, 154, 0.07) 0%, transparent 42%),
+        radial-gradient(circle at 88% 82%, rgba(124, 17, 99, 0.07) 0%, transparent 45%),
+        #faf6fb;
+}
+
+.oar-pay-head {
+    max-width: 980px;
+    margin: 0 auto 26px;
+}
+
+.oar-pay-heading {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 30px;
+    color: #1f1b24;
+    margin: 4px 0 6px;
+    line-height: 1.25;
+}
+
+.oar-pay-sub {
+    font-size: 14.5px;
+    color: #6b6374;
+    line-height: 1.55;
+}
+
+/* Payment Card */
+.oar-pay-card {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 26px;
+    border: 1px solid #ede3f2;
+    overflow: hidden;
+    box-shadow: 0 22px 60px rgba(43, 16, 38, 0.1);
+}
+
+/* Left QR Column */
+.oar-pay-qr-col {
+    position: relative;
+    background: linear-gradient(155deg, #2b1026 0%, #5c104c 52%, #8a1570 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.oar-pay-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(2px);
+}
+
+.oar-pay-orb--1 {
+    width: 240px;
+    height: 240px;
+    top: -80px;
+    right: -70px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.oar-pay-orb--2 {
+    width: 220px;
+    height: 220px;
+    bottom: -90px;
+    left: -70px;
+    background: radial-gradient(circle, rgba(244, 134, 214, 0.22) 0%, rgba(244, 134, 214, 0) 70%);
+}
+
+.oar-pay-qr-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.thaiqrpayment-box {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    background: #ffffff;
+}
+
+.thaiqrpayment {
+    background-color: #113566;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+}
+
+.thaiqrpayment img {
+    max-height: 44px;
+    width: auto;
+    object-fit: contain;
 }
 
 .qr-box {
-    background-color: #ffffff;
-    border: 2px solid #717fe0;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 20px;
+    background: #ffffff;
+    padding: 18px 18px 14px;
+}
+
+.qr-img-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.qrcode {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.qr-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(31, 27, 36, 0.88);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 18px;
+    gap: 10px;
+}
+
+.qr-overlay i {
+    font-size: 32px;
+    color: #ffd6f5;
+}
+
+.qr-overlay strong {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 16px;
+}
+
+.qr-reload-btn {
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #7c1163 0%, #c11a9a 100%);
+    color: #ffffff;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 13.5px;
+    padding: 8px 18px;
+    cursor: pointer;
+}
+
+.qr-reload-btn:focus {
+    outline: none;
+}
+
+.qr-amount-strip {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed #e6dce8;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #6b6374;
+}
+
+.qr-amount-strip strong {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 20px;
+    color: #7c1163;
 }
 
 .countdown-box {
-    margin-top: 10px;
-    background-color: #ebeeff;
-    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 16px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 12px;
     text-align: center;
-    border-radius: 10px;
+    font-size: 14px;
+}
+
+.countdown-box strong {
+    font-family: PSU-Bold, sans-serif;
+    color: #ffe066;
+    font-size: 16px;
+}
+
+.countdown-box.is-expired {
+    background: rgba(220, 53, 69, 0.28);
+    border-color: rgba(255, 180, 190, 0.45);
+    color: #ffe3e7;
+}
+
+.oar-pay-download-btn {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #7c1163 !important;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14px;
+    text-decoration: none !important;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+    transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.oar-pay-download-btn:hover {
+    background: #faedf8;
+    transform: translateY(-1px);
+}
+
+/* Right Info Column */
+.oar-pay-info-col {
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+}
+
+.oar-pay-info-inner {
+    width: 100%;
+    padding: 40px 44px;
+    display: flex;
+    flex-direction: column;
 }
 
 .info-title {
-    margin-bottom: 10px;
-    background-color: #717fe0;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+    margin-bottom: 22px;
+}
+
+.info-title-badge {
+    display: inline-block;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.3px;
+    color: #c11a9a;
+    background: #faedf8;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+}
+
+.info-title h2 {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 22px;
+    color: #1f1b24;
+    margin: 0;
+}
+
+.oar-info-grid {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.oar-info-grid > [class*="col-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 14px;
 }
 
 .info-item {
-    margin-bottom: 10px;
-    background-color: #ebeeff;
-    padding: 20px;
-    border: 2px solid #717fe0;
-    border-radius: 10px;
+    height: 100%;
+    background: #faf6fb;
+    border: 1px solid #ede2f1;
+    border-radius: 14px;
+    padding: 14px 18px;
+}
+
+.info-item--highlight {
+    background: #fdf5fc;
+    border-color: #e4c5e0;
 }
 
 .info-label {
-    font-size: 12pt;
+    font-size: 12.5px;
+    color: #7c7287;
+    margin-bottom: 4px;
 }
 
-.my-bg {
-    background-image: url('../images/9307194.png');
-    background-repeat: no-repeat;
-    background-size: cover;
+.info-value {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 15.5px;
+    color: #1f1b24;
+    word-break: break-word;
+}
+
+.info-value--price {
+    font-size: 20px;
+    color: #7c1163;
+}
+
+.info-value--mono {
+    font-size: 14.5px;
+    letter-spacing: 0.4px;
+    color: #4a3c59;
+}
+
+.warn-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fff8eb;
+    border: 1px solid #f6deb4;
+    border-radius: 13px;
+    padding: 13px 16px;
+    font-size: 13.5px;
+    color: #8f4f00;
+    margin: 6px 0 18px;
+    line-height: 1.55;
+}
+
+.warn-text i {
+    color: #d97706;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.oar-pay-status-box {
+    background: #f6f2fa;
+    border: 1px solid #e7dced;
+    border-radius: 14px;
+    padding: 16px 18px;
+    text-align: center;
+}
+
+.after-pay-message {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14px;
+    color: #4a3c59;
+    margin-bottom: 6px;
+}
+
+.after-pay-message i {
+    color: #7c1163;
+}
+
+.after-pay-link {
+    font-size: 13.5px;
+    color: #6b6374;
+}
+
+.after-pay-link a {
+    color: #7c1163;
+    font-family: PSU-Bold, sans-serif;
+    text-decoration: underline;
+}
+
+.after-pay-link a:hover {
+    color: #c11a9a;
+}
+
+.oar-pay-footer-actions {
+    margin-top: 22px;
+    text-align: center;
+}
+
+.oar-pay-cancel-link {
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14px;
+    color: #6b6374;
+    text-decoration: none;
+    transition: color 0.18s ease;
+}
+
+.oar-pay-cancel-link:hover {
+    color: #7c1163;
+    text-decoration: none;
+}
+
+/* State Cards (Paid / Cancelled / Error) */
+.oar-pay-state-card {
+    max-width: 560px;
+    margin: 24px auto;
+    background: #ffffff;
+    border: 1px solid #ede3f2;
+    border-radius: 24px;
+    padding: 46px 32px;
+    text-align: center;
+    box-shadow: 0 18px 44px rgba(43, 16, 38, 0.08);
+}
+
+.oar-pay-state-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin-bottom: 16px;
+}
+
+.oar-pay-state-icon.is-success {
+    background: #e9f7ef;
+    color: #198754;
+}
+
+.oar-pay-state-icon.is-warn {
+    background: #fff4e5;
+    color: #d97706;
+}
+
+.oar-pay-state-icon.is-muted {
+    background: #f4eff7;
+    color: #7c7287;
+}
+
+.oar-pay-state-card h2 {
+    font-family: PSU-Bold, sans-serif;
+    font-size: 22px;
+    color: #1f1b24;
+    margin: 0 0 10px;
+}
+
+.oar-pay-state-card p {
+    font-size: 14.5px;
+    color: #6b6374;
+    line-height: 1.6;
+    margin: 0 0 24px;
+}
+
+.oar-pay-state-card strong {
+    font-family: PSU-Bold, sans-serif;
+    color: #7c1163;
+}
+
+.oar-pay-state-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.oar-pay-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14.5px;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #7c1163 0%, #c11a9a 100%);
+    padding: 10px 24px;
+    border-radius: 999px;
+    text-decoration: none !important;
+    box-shadow: 0 8px 18px rgba(124, 17, 99, 0.22);
+}
+
+.oar-pay-outline-btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: PSU-Bold, sans-serif;
+    font-size: 14.5px;
+    color: #7c1163 !important;
+    background: #ffffff;
+    border: 1.5px solid #dec3db;
+    padding: 9px 22px;
+    border-radius: 999px;
+    text-decoration: none !important;
+}
+
+.oar-pay-outline-btn:hover {
+    background: #faedf8;
+    border-color: #7c1163;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .oar-pay-main {
+        padding: 28px 0 56px;
+    }
+
+    .oar-pay-qr-inner {
+        padding: 30px 24px;
+    }
+
+    .oar-pay-info-inner {
+        padding: 28px 24px;
+    }
+
+    .oar-pay-heading {
+        font-size: 24px;
+    }
 }
