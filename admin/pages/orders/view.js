@@ -224,6 +224,13 @@ $(document).ready(function () {
                         btns += '<a href="print.php?order_id=' + encodeURIComponent(row.order_id) + '" target="_blank" class="btn btn-sm btn-outline-success" title="พิมพ์ใบปะหน้าพัสดุ">' +
                             '<i class="fas fa-print"></i></a>';
                     }
+                    if (Number(row.status_id) === 4) {
+                        btns += '<button type="button" class="btn btn-sm btn-outline-danger js-delete-order" ' +
+                            'data-order-id="' + escapeHtml(row.order_id) + '" ' +
+                            'data-order-no="' + escapeHtml(row.order_no) + '" ' +
+                            'title="ลบคำสั่งซื้อที่ยกเลิก">' +
+                            '<i class="fas fa-trash-alt"></i></button>';
+                    }
                     btns += '</div>';
                     return btns;
                 }
@@ -243,6 +250,54 @@ $(document).ready(function () {
     $("#shippingTypeFilter").on("change", function () {
         shipping_type = Number($(this).val() || 0);
         dataTable.ajax.reload();
+    });
+
+    $("#add-row tbody").on("click", ".js-delete-order", function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var orderId = $btn.attr("data-order-id");
+        var orderNo = $btn.attr("data-order-no") || "";
+
+        Swal.fire({
+            title: "ยืนยันลบคำสั่งซื้อ?",
+            text: "คำสั่งซื้อหมายเลข " + orderNo + " และรายการสินค้าที่เกี่ยวข้องจะถูกลบออกจากระบบถาวร",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "ลบคำสั่งซื้อ",
+            cancelButtonText: "ยกเลิก"
+        }).then(function (result) {
+            if (!result.isConfirmed) return;
+
+            $btn.prop("disabled", true);
+            $.ajax({
+                url: "api/orders.php",
+                type: "POST",
+                data: {
+                    fn: "delete_order",
+                    order_id: orderId
+                },
+                dataType: "json",
+                success: function (res) {
+                    Swal.fire(
+                        (res && res.title) || "สำเร็จ",
+                        (res && res.message) || "",
+                        (res && res.icon) || "success"
+                    );
+                    if (res && res.status === "success") {
+                        dataTable.ajax.reload(null, false);
+                        select_count();
+                    } else {
+                        $btn.prop("disabled", false);
+                    }
+                },
+                error: function () {
+                    $btn.prop("disabled", false);
+                    Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้", "error");
+                }
+            });
+        });
     });
 
     select_count();

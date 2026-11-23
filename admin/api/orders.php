@@ -21,6 +21,7 @@
         case 'update_shipping' : update_shipping(); break;
         case 'update_receipt'  : update_receipt();  break;
         case 'update_status'   : update_status();   break;
+        case 'delete_order'    : delete_order();    break;
         default: break;
     }
 
@@ -194,6 +195,82 @@
                 "status"  => "error",
                 "title"   => "ไม่สำเร็จ",
                 "message" => "บันทึกสถานะไม่สำเร็จ",
+                "icon"    => "error"
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    function delete_order() {
+        global $DB, $host, $user, $pass, $isLocal;
+        $orderId = (int)($_POST["order_id"] ?? 0);
+        if ($orderId <= 0) {
+            echo json_encode([
+                "status"  => "error",
+                "title"   => "ข้อมูลไม่ถูกต้อง",
+                "message" => "ไม่พบรหัสคำสั่งซื้อที่ต้องการลบ",
+                "icon"    => "warning"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $rows = $DB->QueryObj("SELECT order_id, order_no, status_id FROM orders WHERE order_id = {$orderId} LIMIT 1");
+        if (empty($rows)) {
+            echo json_encode([
+                "status"  => "error",
+                "title"   => "ไม่พบคำสั่งซื้อ",
+                "message" => "ไม่พบคำสั่งซื้อนี้ในระบบ หรืออาจถูกลบไปแล้ว",
+                "icon"    => "warning"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $order = $rows[0];
+        if ((int)($order["status_id"] ?? 0) !== 4) {
+            echo json_encode([
+                "status"  => "error",
+                "title"   => "ไม่สามารถลบได้",
+                "message" => "สามารถลบได้เฉพาะรายการที่มีสถานะ \"ยกเลิก\" เท่านั้น",
+                "icon"    => "warning"
+            ], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $orderNo = (string)($order["order_no"] ?? "");
+        $orderNoEsc = $DB->Escape($orderNo);
+
+        // ลบหลักฐานการโอนเงิน (ถ้ามีแนบไว้กับคำสั่งซื้อที่ยกเลิกนี้)
+        if ($orderNo !== "") {
+            $evRows = $DB->QueryObj("SELECT evidence_slip FROM evidence WHERE order_no = '{$orderNoEsc}'");
+            $DB->QueryDelete("evidence", "order_no = '{$orderNoEsc}'");
+            foreach ($evRows as $ev) {
+                $slipName = basename((string)($ev["evidence_slip"] ?? ""));
+                if ($slipName === "") continue;
+                $localFile = "../../file/evidence/" . $slipName;
+                if (file_exists($localFile) && is_file($localFile)) {
+                    @unlink($localFile);
+                }
+                if (empty($isLocal)) {
+                    @deleteFileFTP($host, $user, $pass, "/home/httpd/vhost/shopping.oas.psu.ac.th/file/evidence/", $slipName);
+                }
+            }
+        }
+
+        // ลบรายละเอียดสินค้าในคำสั่งซื้อและลบคำสั่งซื้อ
+        $DB->QueryDelete("order_detail", "order_id = {$orderId}");
+        $deleted = $DB->QueryDelete("orders", "order_id = {$orderId} AND status_id = 4");
+
+        if ($deleted) {
+            echo json_encode([
+                "status"  => "success",
+                "title"   => "ลบคำสั่งซื้อสำเร็จ",
+                "message" => "ลบคำสั่งซื้อหมายเลข {$orderNo} ออกจากระบบเรียบร้อยแล้ว",
+                "icon"    => "success"
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode([
+                "status"  => "error",
+                "title"   => "ลบไม่สำเร็จ",
+                "message" => "ไม่สามารถลบคำสั่งซื้อนี้ได้ กรุณาลองใหม่อีกครั้ง",
                 "icon"    => "error"
             ], JSON_UNESCAPED_UNICODE);
         }

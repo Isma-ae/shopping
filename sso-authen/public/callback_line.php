@@ -14,7 +14,7 @@ try {
     $internalUser = $handler->handleCallback();
 
     if (!empty($internalUser)) {
-        header('Location: ' . rtrim(APP_BASE_PATH, '/') . '/index.php');
+        header('Location: ' . rtrim(APP_BASE_PATH, '/') . '/');
         exit;
     }
 

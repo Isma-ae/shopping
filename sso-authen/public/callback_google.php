@@ -2,7 +2,7 @@
 /** 
  * public/callback.php
  * *  
- */ 
+ */
 
 // 1. โหลดคอนฟิกกลาง
 require_once __DIR__ . '/../config/config_google.php';
@@ -17,7 +17,7 @@ try {
 
     // หลังจาก Callback สำเร็จ ให้ Redirect ตาม Role ของผู้ใช้
     $role = $internalUser['role'] ?? 'subscriber';
-    
+
     // **หมายเหตุ:** คุณอาจจะต้องสร้างไฟล์เหล่านี้ในแอปพลิเคชันของคุณ
     // if ($role === 'admin') {
     //     header("Location: ".APP_BASE_PATH."/admin_page.php"); 
@@ -28,8 +28,8 @@ try {
     // }
     // exit;
     if ($role) {
-        header("Location: ".APP_BASE_PATH."/index.php"); 
-    } 
+        header("Location: " . APP_BASE_PATH . "/");
+    }
     exit;
 
 } catch (Exception $e) {
@@ -39,6 +39,6 @@ try {
         'เกิดข้อผิดพลาด',
         $e->getMessage(),
         'error',
-        APP_BASE_PATH . '/index.php' // กลับไปหน้าแรกของแอป
+        APP_BASE_PATH . '/' // กลับไปหน้าแรกของแอป
     );
 }
